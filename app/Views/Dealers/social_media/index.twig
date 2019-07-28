@@ -1,0 +1,134 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Social Marketing{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+  {% if forbidden %}
+    <img src="/assets/images/social_media/dashboard.png" class="img-fluid">
+    <div class="modal fade forbidden-modal" tabindex="-1" role="dialog" aria-labelledby="forbidden-modal-title" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-secondary">
+          <div class="modal-header">
+            <h1 class="modal-title mx-auto text-white" id="forbidden-modal-title">Section Unavailable!</h1>
+            <a href="/" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </a>
+          </div>
+          <div class="modal-body text-center">
+            <img src="/assets/images/padlock.png" width="100">
+            <p class="mt-3 font-large text-white">Please contact your account manager to learn more about Place1SEO's managed Social Media Accounts.</p>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-lg btn-block btn-primary" href="/{{ action.services }}#social_media">Activate Social Media section</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <h1 class="text-center">Social Media Monthly Summary</h1>
+    {% if periods and totals and posts %}
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="btn-group">
+            <button type="button" class="btn btn-large btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="social-media-period-button">
+              {{ periods|first.start|date('F j, Y') }} - {{ periods|first.end|date('F j, Y') }}
+            </button>
+            <div class="dropdown-menu" id="social-media-period-dropdown">
+              {% for period in periods %}
+                <a class="dropdown-item" href="javascript:void(0);"
+                  data-period_start="{{ period.start }}">
+                  {{ period.start|date('F j, Y') }} - {{ period.end|date('F j, Y') }}
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3 mb-3">
+        <div class="col-12 text-center">
+          {% for item in media %}
+            <img src="/assets/images/social_media/{{ item.name }}.png" alt="{{ item.title }}" width="100" height="100" class="ml-1 mr-1">
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="row">
+            {% set current  = periods|keys[0] %}
+            {% set previous = (periods|keys|length > 1) ? periods|keys[1] : -1 %}
+            <!-- Posts -->
+            <div class="col-md-6">
+              <p class="text-secondary h4 font-weight-light mb-0">Posts</p>
+              <h2 class="mb-0" id="posts-count">{{ totals[periods[current].start].posts }}</h2>
+              {% if not totals[periods[current].start].posts %}
+                {% set percent = -100 %}
+              {% endif %}
+              {% if not periods[previous] is defined or not totals[periods[previous].start].posts %}
+                {% set percent = 0 %}
+              {% endif %}
+              {% if periods[current] is defined and periods[previous] is defined
+                and totals[periods[current].start].posts and totals[periods[previous].start].posts %}
+                {% set percent = (totals[periods[current].start].posts / totals[periods[previous].start].posts) * 100 - 100 %}
+              {% endif %}
+              <h6 id="posts-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+                <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+              </h6>
+            </div>
+            <!-- Engagements -->
+            <div class="col-md-6">
+              <p class="text-secondary h4 font-weight-light mb-0">Engagements</p>
+              <h2 class="mb-0" id="engagements-count">{{ totals[periods[current].start].engagements }}</h2>
+              {% if not totals[periods[current].start].engagements %}
+                {% set percent = -100 %}
+              {% endif %}
+              {% if not periods[previous] is defined or not totals[periods[previous].start].engagements %}
+                {% set percent = 0 %}
+              {% endif %}
+              {% if periods[current] is defined and periods[previous] is defined
+                and totals[periods[current].start].engagements and totals[periods[previous].start].engagements %}
+                {% set percent = (totals[periods[current].start].engagements / totals[periods[previous].start].engagements) * 100 - 100 %}
+              {% endif %}
+              <h6 id="engagements-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+                <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+              </h6>
+            </div>
+          </div>
+          <!-- Impressions -->
+          <div class="row">
+            <div class="col-12">
+              <canvas id="impressions-chart" width="200" height="150"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <canvas id="monthly-post-counts-chart" width="400" height="300"></canvas>
+        </div>
+      </div>
+    {% else %}
+      <div class="alert alert-danger">Sorry, there is not enough data to display.</div>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
+{% block footer_scripts %}
+  {{ parent() }}
+  {% if not forbidden and periods and totals and posts %}
+  <script>
+    var totals  = {{ totals|json_encode|raw }};
+    var posts   = {{ posts|json_encode|raw }};
+    var periods = {{ periods|json_encode|raw }};
+  </script>
+  <script src="/assets/js/Chart.bundle.min.js"></script>
+  <script src="/assets/js/social-media/monthly-post-counts-chart.js"></script>
+  <script src="/assets/js/social-media/impressions-chart.js"></script>
+  <script src="/assets/js/social-media/index.js"></script>
+  {% else %}
+    <script>
+    $(document).ready(function() {
+      $('.forbidden-modal').modal({backdrop: 'static', keyboard: false});
+    });
+    </script>
+  {% endif %}
+{% endblock %}
+

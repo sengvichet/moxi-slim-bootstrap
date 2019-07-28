@@ -1,0 +1,227 @@
+<h5 class="text-uppercase">Essential Information</h5>
+{% include 'Dealers/partials/errors.twig' %}
+<form action="/{{ essential_information.action }}" method="POST" id="essential-information-form" class="needs-validation" novalidate>
+  <input type="hidden" name="company_id" value="{% if contact_information.data.company %}{{ contact_information.data.company.id }}{% endif %}">
+  <h6>Hours of Operation</h6>
+  {% if messages.error.hours is defined and messages.error.hours %}
+    <ul class="list-group mt-3 mb-3">
+      {% for message in messages.error.hours %}
+        <li class="list-group-item list-group-item-danger">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% for day in essential_information.days %}
+    {% if essential_information.data.hours[day] is defined %}
+      {% for hours in essential_information.data.hours[day] %}
+        <div class="form-group row{% if loop.first %} init{% endif %}">
+          {% if loop.first %}
+            <label class="col-sm-3 col-md-2 col-form-label">{{ day|capitalize }}</label>
+            <div class="d-flex align-items-center col-sm-3 col-md-2">
+              <div class="material-switch pull-right" id="{{ day }}-switch">
+                <input id="{{ day }}-checkbox" name="days[{{ day }}]" type="checkbox" data-day="{{ day }}" checked>
+                <label for="{{ day }}-checkbox" class="label-primary"></label>
+                <span id="{{ day }}-span"></span>
+              </div>
+            </div>
+          {% else %}
+            <div class="col-sm-6 col-md-4"></div>
+          {% endif %}
+          <div class="{{ day }}-hours-inputs d-flex justify-content-evenly col-sm-6 col-md-8">
+            <select name="start[{{ day }}][]" class="form-control mr-2">
+              <option hidden>Opens at</option>
+              {% for hour in essential_information.hours %}
+                <option value="{{ loop.index }}"
+                  {% if hours.start == '00:00:00' and hours.end == '24:00:00' %}
+                    {% if hour == essential_information.all_hours_label %}selected{% endif %}
+                  {% elseif hours.start|date('g:i a') == hour %}selected{% endif %}>{{ hour }}</option>
+              {% endfor %}
+            </select>
+            <span class="mr-2">-</span>
+            <select name="end[{{ day }}][]" class="form-control mr-2">
+              <option hidden>Closes at</option>
+              {% for hour in essential_information.hours %}
+                <option value="{{ loop.index }}"
+                {% if hours.start == '00:00:00' and hours.end == '24:00:00' %}
+                  {% if hour == essential_information.all_hours_label %}selected{% endif %}
+                {% elseif hours.end|date('g:i a') == hour %}selected{% endif %}>{{ hour }}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-md mr-2 remove-hours-button" data-day="{{ day }}">&times;</button>
+            <button class="btn btn-md btn-outline-primary add-hours-button" data-day="{{ day }}">ADD HOURS</button>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="form-group row init">
+        <label class="col-sm-3 col-md-2 col-form-label">{{ day|capitalize }}</label>
+        <div class="d-flex align-items-center col-sm-3 col-md-2">
+          <div class="material-switch pull-right" id="{{ day }}-switch">
+            <input id="{{ day }}-checkbox" name="days[{{ day }}]" type="checkbox" data-day="{{ day }}">
+            <label for="{{ day }}-checkbox" class="label-primary"></label>
+            <span id="{{ day }}-span"></span>
+          </div>
+        </div>
+        <div class="{{ day }}-hours-inputs d-flex justify-content-evenly col-sm-6 col-md-8">
+          <select name="start[{{ day }}][]" class="form-control mr-2">
+            <option hidden>Opens at</option>
+            {% for hour in essential_information.hours %}
+              <option value="{{ loop.index }}">{{ hour }}</option>
+            {% endfor %}
+          </select>
+          <span class="mr-2">-</span>
+          <select name="end[{{ day }}][]" class="form-control mr-2">
+            <option hidden>Closes at</option>
+            {% for hour in essential_information.hours %}
+              <option value="{{ loop.index }}">{{ hour }}</option>
+            {% endfor %}
+          </select>
+          <button class="btn btn-md mr-2 remove-hours-button" data-day="{{ day }}">&times;</button>
+          <button class="btn btn-md btn-outline-primary add-hours-button" data-day="{{ day }}">ADD HOURS</button>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+  {% if essential_information.data.hours.holiday is defined %}
+      {% for hours in essential_information.data.hours.holiday %}
+        <div class="form-group row{% if loop.first %} init{% endif %}">
+          {% if loop.first %}
+            <label class="col-sm-3 col-md-2 col-form-label">Holiday</label>
+            <div class="d-flex align-items-center col-sm-3 col-md-2">
+              <div class="material-switch pull-right" id="holiday-switch">
+                <input id="holiday-checkbox" name="days[holiday]" type="checkbox" data-day="holiday" checked>
+                <label for="holiday-checkbox" class="label-primary"></label>
+                <span id="holiday-span"></span>
+              </div>
+            </div>
+          {% else %}
+            <div class="col-sm-6 col-md-4"></div>
+          {% endif %}
+          <div class="holiday-hours-inputs d-flex justify-content-evenly col-sm-6 col-md-8">
+            <select name="start[holiday][]" class="form-control mr-2">
+              <option hidden>Opens at</option>
+              {% for hour in essential_information.hours %}
+                <option value="{{ loop.index }}"
+                  {% if hours.start|date('g:i a') == hour %}selected{% endif %}>{{ hour }}</option>
+              {% endfor %}
+            </select>
+            <span class="mr-2">-</span>
+            <select name="end[holiday][]" class="form-control mr-2">
+              <option hidden>Closes at</option>
+              {% for hour in essential_information.hours %}
+                <option value="{{ loop.index }}"
+                {% if hours.end|date('g:i a') == hour %}selected{% endif %}>{{ hour }}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-md mr-2 remove-hours-button" data-day="holiday">&times;</button>
+            <button class="btn btn-md btn-outline-primary add-hours-button" data-day="holiday">ADD HOURS</button>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="form-group row init">
+        <label class="col-sm-3 col-md-2 col-form-label">Holiday</label>
+        <div class="d-flex align-items-center col-sm-3 col-md-2">
+          <div class="material-switch pull-right" id="holiday-switch">
+            <input id="holiday-checkbox" name="days[holiday]" type="checkbox" data-day="holiday">
+            <label for="holiday-checkbox" class="label-primary"></label>
+            <span id="holiday-span"></span>
+          </div>
+        </div>
+        <div class="holiday-hours-inputs d-flex justify-content-evenly col-sm-6 col-md-8">
+          <select name="start[holiday][]" class="form-control mr-2">
+            <option hidden>Opens at</option>
+            {% for hour in essential_information.hours %}
+              <option value="{{ loop.index }}">{{ hour }}</option>
+            {% endfor %}
+          </select>
+          <span class="mr-2">-</span>
+          <select name="end[holiday][]" class="form-control mr-2">
+            <option hidden>Closes at</option>
+            {% for hour in essential_information.hours %}
+              <option value="{{ loop.index }}">{{ hour }}</option>
+            {% endfor %}
+          </select>
+          <button class="btn btn-md mr-2 remove-hours-button" data-day="holiday">&times;</button>
+          <button class="btn btn-md btn-outline-primary add-hours-button" data-day="holiday">ADD HOURS</button>
+        </div>
+      </div>
+    {% endif %}
+  <h6>Notes:</h6>
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <textarea class="form-control" name="notes">{% if essential_information.data.information.notes is defined %}{{ essential_information.data.information.notes }}{% endif %}</textarea>
+    </div>
+  </div>
+  <h6>Payment Methods</h6>
+  {% if messages.error.payment_methods is defined and messages.error.payment_methods %}
+    <ul class="list-group mt-3 mb-3">
+      {% for message in messages.error.payment_methods %}
+        <li class="list-group-item list-group-item-danger">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <div class="row">
+    {% for method in essential_information.payment_methods %}
+      <div class="col-md-3 flex-center">
+        <img src="/assets/images/payment_methods/{{ method.name }}.png" alt="{{ method.title }}" width="75" class="mb-2">
+        <label class="container">
+          <input type="checkbox" name="payment_methods[{{ method.id }}]" {% if essential_information.data.payment_methods is defined and method.id in essential_information.data.payment_methods %}checked{% endif %}>
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    {% endfor %}
+  </div>
+  <h6>Business Description:<br><i>(Max {{ fields.essential_information.business_description.max_length }} characters)</i></h6>
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <textarea class="form-control {% if messages.error.information.business_description is defined %}is-invalid{% endif %}" name="business_description" maxlength="{{ fields.essential_information.business_description.max_length }}">{% if messages.input.business_description is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.business_description }}{% else %}{% if essential_information.data.information.business_description is defined %}{{ essential_information.data.information.business_description }}{% endif %}{% endif %}</textarea>
+      {% if messages.error.information.business_description is defined %}
+        {% for error in messages.error.information.business_description %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  <h6>Business Tagline:
+    <br><i>(Max {{ fields.essential_information.business_tagline.max_length }} characters. A catchy, tag line that helps distinguish and focus your business!)</i>
+  </h6>
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <textarea class="form-control {% if messages.error.information.business_tagline is defined %}is-invalid{% endif %}" name="business_tagline" maxlength="{{ fields.essential_information.business_tagline.max_length }}">{% if messages.input.business_tagline is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.business_tagline }}{% else %}{% if essential_information.data.information.business_tagline is defined %}{{ essential_information.data.information.business_tagline }}{% endif %}{% endif %}</textarea>
+      {% if messages.error.information.business_tagline is defined %}
+        {% for error in messages.error.information.business_tagline %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  <h6>Keywords:</h6>
+  <div class="form-group row">
+    <div class="col-sm-12 keywords">
+      <select id="keywords-input" data-role="tagsinput" multiple {% if messages.error.keywords.keywords is defined %}class="is-invalid"{% endif %}>
+        {% if messages.input.keywords is defined %}
+          {% for keyword in messages.input.keywords|split(',') %}
+            <option value="{{ keyword }}">{{ keyword }}</option>
+          {% endfor %}
+        {% else %}
+          {% if essential_information.data.keywords is defined %}
+            {% for keyword in essential_information.data.keywords %}
+              <option value="{{ keyword.keyword }}">{{ keyword.keyword }}</option>
+            {% endfor %}
+          {% endif %}
+        {% endif %}
+      </select>
+      {% if messages.error.keywords.keywords is defined %}
+        {% for error in messages.error.keywords.keywords %}
+          <div class="invalid-feedback" style="display: block">{{ error }}</div>
+        {% endfor %}
+      {% endif %}
+      <input type="hidden" name="keywords" value="">
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <input type="submit" class="btn btn-md btn-warning" value="Save Changes">
+    </div>
+  </div>
+</form>

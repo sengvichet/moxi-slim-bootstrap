@@ -1,0 +1,460 @@
+<h5 class="text-uppercase">Website Information</h5>
+<div class="alert alert-info font-weight-bold">Please fill out as much of this information as possible. If you are unable to provide all of the information requested on this page, please be sure to include contact info for your IT service. We will reach out to them for any information you are unable to provide.</div>
+{% include 'Dealers/partials/errors.twig' %}
+<form action="/{{ website_information.action }}" method="POST" id="website-information-form" class="needs-validation" novalidate>
+  <input type="hidden" name="company_id" value="{% if contact_information.data.company %}{{ contact_information.data.company.id }}{% endif %}">
+  <h6>Basic Website Information</h6>
+  <!-- Website URL -->
+  <div class="form-group row">
+    <label for="website-url-input" class="col-sm-3 col-form-label">Website URL</label>
+    <div class="col-sm-9">
+      <input type="url" id="website-url-input"
+        class="form-control {% if messages.error.website_information.website_url is defined %}is-invalid{% endif %}"
+        name="website_url" placeholder="http://website.net" required
+        maxlength="{{ fields.company.website.max_length }}"
+        value="{% if messages.input.website_url is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.website_url }}{% else %}{% if contact_information.data.company.website is defined %}{{ contact_information.data.company.website }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_url is defined %}
+        {% for error in messages.error.website_information.website_url %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Hint: try pasting your website link directly from the web browser.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Website Name -->
+  <div class="form-group row">
+    <label for="website-name-input" class="col-sm-3 col-form-label">Name of Website</label>
+    <div class="col-sm-9">
+      <input type="text" id="website-name-input"
+        class="form-control {% if messages.error.website_information.website_name is defined %}is-invalid{% endif %}"
+        name="website_name" placeholder="Name of Website"
+        maxlength="{{ fields.website_information.website_name.max_length }}"
+        value="{% if messages.input.website_name is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.website_name }}{% else %}{% if website_information.data.website_information.name is defined %}{{ website_information.data.website_information.name }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_name is defined %}
+        {% for error in messages.error.website_information.website_name %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid website name.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Website Phone -->
+  <div class="form-group row">
+    <label for="website-phone-input" class="col-sm-3 col-form-label">Company Phone</label>
+    <div class="col-sm-9">
+      <input type="tel" id="website-phone-input"
+        class="form-control {% if messages.error.website_information.website_phone is defined %}is-invalid{% endif %}"
+        name="website_phone" placeholder="Company Phone" required
+        maxlength="{{ fields.company.company_phone.max_length }}"
+        value="{% if messages.input.website_phone is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.website_phone }}{% else %}{% if contact_information.data.company.phone is defined %}{{ contact_information.data.company.phone }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_phone is defined %}
+        {% for error in messages.error.website_information.website_phone %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid phone.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Website Street -->
+  <div class="form-group row">
+    <label for="website-street-input" class="col-sm-3 col-form-label">Street Address</label>
+    <div class="col-sm-9">
+      <input type="text" id="website-street-input"
+        class="form-control {% if messages.error.website_information.website_street is defined %}is-invalid{% endif %}"
+        name="website_street" placeholder="Street Address" required
+        maxlength="{{ fields.company.street_address.max_length }}"
+        value="{% if messages.input.website_street is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.website_street }}{% else %}{% if contact_information.data.company.street is defined %}{{ contact_information.data.company.street }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_street is defined %}
+        {% for error in messages.error.website_information.website_street %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid street.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Website Address Line 2 -->
+  <div class="form-group row">
+    <label for="website-address-line-2-input" class="col-sm-3 col-form-label">Address Line 2</label>
+    <div class="col-sm-9">
+      <input type="text" id="website-address-line-2-input"
+        class="form-control {% if messages.error.website_information.website_address_line_2 is defined %}is-invalid{% endif %}"
+        name="website_address_line_2" placeholder="Address Line 2"
+        maxlength="{{ fields.company.address_line_2.max_length }}"
+        value="{% if messages.input.website_address_line_2 is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.website_address_line_2 }}{% else %}{% if contact_information.data.company.address_line_2 is defined %}{{ contact_information.data.company.address_line_2 }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_address_line_2 is defined %}
+        {% for error in messages.error.website_information.website_address_line_2 %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid address.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Website City -->
+  <div class="form-group row">
+    <label for="website-city-input" class="col-sm-3 col-form-label">City</label>
+    <div class="col-sm-9">
+      <input type="text" id="website-city-input"
+        class="form-control {% if messages.error.website_information.city is defined %}is-invalid{% endif %}"
+        name="website_city" placeholder="City" required
+        maxlength="{{ fields.company.city.max_length }}"
+        value="{% if messages.input.website_city is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.website_city }}{% else %}{% if contact_information.data.company.city is defined %}{{ contact_information.data.company.city }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_city is defined %}
+        {% for error in messages.error.website_information.website_city %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid city.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Website State -->
+  <div class="form-group row">
+    <label for="website-state-input" class="col-sm-3 col-form-label">State</label>
+    <div class="col-sm-9">
+      <input type="text" id="website-state-input"
+        class="form-control {% if messages.error.website_information.state is defined %}is-invalid{% endif %}"
+        name="website_state" placeholder="State" required
+        maxlength="{{ fields.company.state.max_length }}"
+        value="{% if messages.input.website_state is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.website_state }}{% else %}{% if contact_information.data.company.state is defined %}{{ contact_information.data.company.state }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_state is defined %}
+        {% for error in messages.error.website_information.website_state %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid state.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Website Zip Code -->
+  <div class="form-group row">
+    <label for="website-zip-input" class="col-sm-3 col-form-label">Zip Code</label>
+    <div class="col-sm-9">
+      <input type="text" id="website-zip-input"
+        class="form-control {% if messages.error.website_information.zip is defined %}is-invalid{% endif %}"
+        name="website_zip" placeholder="Zip Code" required
+        maxlength="{{ fields.company.zip_code.max_length }}"
+        value="{% if messages.input.website_zip is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.website_zip }}{% else %}{% if contact_information.data.company.zip is defined %}{{ contact_information.data.company.zip }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_zip is defined %}
+        {% for error in messages.error.website_information.website_zip %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid zip code.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Website Email -->
+  <div class="form-group row">
+    <label for="website-email-input" class="col-sm-3 col-form-label">Email To Be Displayed On The Website</label>
+    <div class="col-sm-9">
+      <input type="email" id="website-email-input"
+        class="form-control {% if messages.error.website_information.website_email is defined %}is-invalid{% endif %}"
+        name="website_email" placeholder="Email To Be Displayed On The Website"
+        maxlength="{{ fields.website_information.website_email.max_length }}"
+        value="{% if messages.input.website_email is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.website_email }}{% else %}{% if website_information.data.website_information.email is defined %}{{ website_information.data.website_information.email }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.website_email is defined %}
+        {% for error in messages.error.website_information.website_email %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid email.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Contact Information For IT -->
+  <div class="form-group row">
+    <label for="email-email-input" class="col-sm-3 col-form-label">
+      Contact Information For IT
+    </label>
+    <div class="col-sm-9">
+      <a href="javascript:void(0);" class="font-italic" id="add-contact-information-link">Add Contact Information</a>
+      <p class="font-italic">(You will be directed to Business Information tab to add IT to Additional Key Personnel list. Both in-house and external IT contact info acceptable.)</p>
+    </div>
+  </div>
+  <!-- Contact IT -->
+  {#<div class="form-group row">
+    <label for="contact-it-input" class="col-sm-3 col-form-label">Contact Information For IT</label>
+    <div class="col-sm-9">
+      <input type="text" id="contact-it-input"
+        class="form-control {% if messages.error.website_information.contact_it is defined %}is-invalid{% endif %}"
+        name="contact_it" placeholder="Contact Information For IT"
+        maxlength="{{ fields.website_information.contact_it.max_length }}"
+        value="{% if messages.input.contact_it is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.contact_it }}{% else %}{% if website_information.data.website_information.contact_it is defined %}{{ website_information.data.website_information.contact_it }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_information.contact_it is defined %}
+        {% for error in messages.error.website_information.contact_it %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid information.</div>
+      {% endif %}
+    </div>
+  </div>#}
+  <h6>Website Emailing Information</h6>
+  <!-- Email Host -->
+  <div class="form-group row">
+    <label for="email-host-select" class="col-sm-3 col-form-label">Email Host</label>
+    <div class="col-sm-9">
+      <select id="email-host-select" name="email_host"
+        class="form-control {% if messages.error.email_information.email_host is defined %}is-invalid{% endif %}">
+          <!-- option Outlook -->
+          <option value="outlook"
+          {% if messages.input.email_host is defined
+            and messages.input.email_host == 'outlook' %}selected{% else %}
+          {% if website_information.data.email_information.host is defined
+            and website_information.data.email_information.host == 'outlook' %}selected{% endif %}{% endif %}>Outlook 365</option>
+          <!-- option Gmail -->
+          <option value="gmail"
+          {% if messages.input.email_host is defined
+            and messages.input.email_host == 'gmail' %}selected{% else %}
+          {% if website_information.data.email_information.host is defined
+            and website_information.data.email_information.host == 'gmail' %}selected{% endif %}{% endif %}>Gmail</option>
+          <!-- option other -->
+          <option value="other"
+          {% if messages.input.email_host is defined
+            and messages.input.email_host == 'other' %}selected{% else %}
+          {% if website_information.data.email_information.host is defined
+            and website_information.data.email_information.host == 'other' %}selected{% endif %}{% endif %}>Other</option>
+        </select>
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.email_information.email_host is defined %}
+        {% for error in messages.error.email_information.email_host %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid email host.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Email Login -->
+  <div class="form-group row">
+    <label for="email-login-input" class="col-sm-3 col-form-label">Email Login</label>
+    <div class="col-sm-9">
+      <input type="text" id="email-login-input"
+        class="form-control {% if messages.error.email_information.email_login is defined %}is-invalid{% endif %}"
+        name="email_login" placeholder="Email Login"
+        maxlength="{{ fields.email_information.email_login.max_length }}"
+        value="{% if messages.input.email_login is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.email_login }}{% else %}{% if website_information.data.email_information.login is defined %}{{ website_information.data.email_information.login }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.email_information.email_login is defined %}
+        {% for error in messages.error.email_information.email_login %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid email login.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Email Password -->
+  <div class="form-group row">
+    <label for="email-password-input" class="col-sm-3 col-form-label">Password</label>
+    <div class="col-sm-9">
+      <input type="password" id="email-password-input"
+        class="form-control {% if messages.error.email_information.email_password is defined %}is-invalid{% endif %}"
+        name="email_password" placeholder="Email Password"
+        maxlength="{{ fields.email_information.email_password.max_length }}"
+        value="{% if messages.input.email_password is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.email_password }}{% else %}{% if website_information.data.email_information.password is defined %}{{ website_information.data.email_information.password }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.email_information.email_password is defined %}
+        {% for error in messages.error.email_information.email_password %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid email password.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Email Email -->
+  <div class="form-group row">
+    <label for="email-email-input" class="col-sm-3 col-form-label">
+      Email Address To Send From<br>
+      <span class="font-italic">(If different from login email above)</span>
+    </label>
+    <div class="col-sm-9">
+      <input type="email" id="email-email-input"
+        class="form-control {% if messages.error.email_information.email_email is defined %}is-invalid{% endif %}"
+        name="email_email" placeholder="Email Address To Send From"
+        maxlength="{{ fields.email_information.email_email.max_length }}"
+        value="{% if messages.input.email_email is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.email_email }}{% else %}{% if website_information.data.email_information.email is defined %}{{ website_information.data.email_information.email }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.email_information.email_email is defined %}
+        {% for error in messages.error.email_information.email_email %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid email.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Email Port (optional) -->
+  <div class="form-group row" id="email-port-block" style="display: none">
+    <label for="email-port-input" class="col-sm-3 col-form-label">Port</label>
+    <div class="col-sm-9">
+      <input type="number" id="email-port-input"
+        class="form-control {% if messages.error.email_information.email_port is defined %}is-invalid{% endif %}"
+        name="email_port" placeholder="Port"
+        maxlength="{{ fields.email_information.email_port.max_length }}"
+        value="{% if messages.input.email_port is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.email_port }}{% else %}{% if website_information.data.email_information.port is defined %}{{ website_information.data.email_information.port }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.email_information.email_port is defined %}
+        {% for error in messages.error.email_information.email_port %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid mailing port.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Email Protocol (optional) -->
+  <div class="form-group row" id="email-protocol-block" style="display: none">
+    <label for="email-protocol-input" class="col-sm-3 col-form-label">Protocol</label>
+    <div class="col-sm-9">
+      <input type="text" id="email-protocol-input"
+        class="form-control {% if messages.error.email_information.email_protocol is defined %}is-invalid{% endif %}"
+        name="email_protocol" placeholder="Protocol"
+        maxlength="{{ fields.email_information.email_protocol.max_length }}"
+        value="{% if messages.input.email_protocol is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.email_protocol }}{% else %}{% if website_information.data.email_information.protocol is defined %}{{ website_information.data.email_information.protocol }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.email_information.email_protocol is defined %}
+        {% for error in messages.error.email_information.email_protocol %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid mailing protocol.</div>
+      {% endif %}
+    </div>
+  </div>
+  <h6>For Newsletters (Mailchimp)</h6>
+  <!-- Mailchimp API Key -->
+  <div class="form-group row">
+    <label for="newsletters-api-key-input" class="col-sm-3 col-form-label">API Key</label>
+    <div class="col-sm-9">
+      <input type="text" id="newsletters-api-key-input"
+        class="form-control {% if messages.error.newsletters.mailchimp_api_key is defined %}is-invalid{% endif %}"
+        name="mailchimp_api_key" placeholder="API Key"
+        maxlength="{{ fields.newsletters.mailchimp_api_key.max_length }}"
+        value="{% if messages.input.mailchimp_api_key is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.mailchimp_api_key }}{% else %}{% if website_information.data.newsletters.api_key is defined %}{{ website_information.data.newsletters.api_key }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.newsletters.mailchimp_api_key is defined %}
+        {% for error in messages.error.newsletters.mailchimp_api_key %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid API Key.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Mailchimp List -->
+  <div class="form-group row">
+    <label for="newsletters-mailchimp-list-input" class="col-sm-3 col-form-label">Mail Chimp List</label>
+    <div class="col-sm-9">
+      <input type="text" id="newsletters-mailchimp-list-input"
+        class="form-control {% if messages.error.newsletters.mailchimp_list is defined %}is-invalid{% endif %}"
+        name="mailchimp_list" placeholder="Mail Chimp List"
+        maxlength="{{ fields.newsletters.mailchimp_list.max_length }}"
+        value="{% if messages.input.mailchimp_list is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.mailchimp_list }}{% else %}{% if website_information.data.newsletters.list is defined %}{{ website_information.data.newsletters.list }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.newsletters.mailchimp_list is defined %}
+        {% for error in messages.error.newsletters.mailchimp_list %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid Mail Chimp list.</div>
+      {% endif %}
+    </div>
+  </div>
+  <h6>Information Needed To Go Live With Website</h6>
+  <!-- Contact My IT Specialist -->
+  <div class="form-group row">
+    <label for="need-contact-input" class="col-sm-3 col-form-label">Contact My IT Specialist</label>
+    <div class="col-sm-9 d-flex align-items-center">
+      <input type="checkbox" id="need-contact-input" name="live_need_contact"
+        class="{% if messages.error.website_live_information.live_need_contact is defined %}is-invalid{% endif %}"
+        {% if messages.input.live_need_contact is defined and messages.input.live_need_contact and messages.error.count is defined and messages.error.count %}checked{% else %}{% if website_information.data.website_live_information.need_contact_it is defined and website_information.data.website_live_information.need_contact_it %}checked{% endif %}{% endif %} value="1">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_live_information.live_need_contact is defined %}
+        {% for error in messages.error.website_live_information.live_need_contact %}
+          <div class="invalid-feedback" style="display: block">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please check or uncheck the checkbox.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Domain Host -->
+  <div class="form-group row">
+    <label for="live-domain-host-input" class="col-sm-3 col-form-label">Domain Host</label>
+    <div class="col-sm-9">
+      <input type="text" id="live-domain-host-input"
+        class="form-control {% if messages.error.website_live_information.live_domain_host is defined %}is-invalid{% endif %}"
+        name="live_domain_host" placeholder="Domain Host"
+        maxlength="{{ fields.website_live_information.live_domain_host.max_length }}"
+        value="{% if messages.input.live_domain_host is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.live_domain_host }}{% else %}{% if website_information.data.website_live_information.domain_host is defined %}{{ website_information.data.website_live_information.domain_host }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_live_information.live_domain_host is defined %}
+        {% for error in messages.error.website_live_information.live_domain_host %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid domain host.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Username -->
+  <div class="form-group row">
+    <label for="live-username-input" class="col-sm-3 col-form-label">Username/Email/Customer ID</label>
+    <div class="col-sm-9">
+      <input type="text" id="live-username-input"
+        class="form-control {% if messages.error.website_live_information.live_website_username is defined %}is-invalid{% endif %}"
+        name="live_website_username" placeholder="Username/Email/Customer ID"
+        maxlength="{{ fields.website_live_information.live_website_username.max_length }}"
+        value="{% if messages.input.live_website_username is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.live_website_username}}{% else %}{% if website_information.data.website_live_information.username is defined %}{{ website_information.data.website_live_information.username }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_live_information.live_website_username is defined %}
+        {% for error in messages.error.website_live_information.live_website_username %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid username/email/customer ID.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Password -->
+  <div class="form-group row">
+    <label for="live-password-input" class="col-sm-3 col-form-label">Password</label>
+    <div class="col-sm-9">
+      <input type="password" id="live-password-input" name="live_website_password"
+        class="form-control {% if messages.error.website_live_information.live_website_password is defined %}is-invalid{% endif %}"
+        maxlength="{{ fields.website_live_information.live_website_password.max_length }}"
+        value="{% if messages.input.live_website_password is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.live_website_password }}{% else %}{% if website_information.data.website_live_information.password is defined %}{{ website_information.data.website_live_information.password }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.website_live_information.live_website_password is defined %}
+        {% for error in messages.error.website_live_information.live_website_password %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid password.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Button -->
+  <div class="row">
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    </div>
+  </div>
+</form>

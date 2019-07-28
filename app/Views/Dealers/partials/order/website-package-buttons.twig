@@ -1,0 +1,31 @@
+<div class="row website-package-buttons-row">
+  {% for option in costs[costs_type].options %}
+    {% if option.title %}
+      <div class="col-12 col-md-{{ (12 / costs[costs_type].options_count)|number_format }} table-responsive">
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <td colspan="2">
+                <button type="button" class="btn btn-block btn-md website-package-button
+                  {% if messages.input[0][costs_type] is defined %}
+                    {% if messages.input[0][costs_type] == option.id %}btn-primary{% else %}btn-secondary{% endif %}
+                  {% else %}
+                    {% if order.costs[costs_type] is defined %}
+                      {% if order.costs[costs_type] == option.id %}btn-primary{% else %}btn-secondary{% endif %}
+                    {% else %}
+                      {% if costs[costs_type].default == option.id %}btn-primary{% else %}btn-secondary{% endif %}
+                    {% endif %}
+                  {% endif %}" data-option-name="{{ costs_type }}" data-option-value="{{ option.id }}" data-option-group="{{ costs[costs_type].group }}">{{ option.title }}
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Monthly - ${{ costs[costs_type].options[option.id - 1].cost }}</td>
+              <td>Start Up - ${{ costs[costs_type].options[option.id - 1].setup }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>

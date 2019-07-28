@@ -1,0 +1,169 @@
+{% extends 'Dealers/website/index.twig' %}
+{% block title %}Updated Estimated Cost{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      {% include 'Dealers/partials/order/breadcrumbs.twig' %}
+    </div>
+  </div>
+  <h1 class="text-center">Updated Estimated Cost</h1>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered table-striped bg-warning">
+        <thead>
+          <tr>
+            <th colspan="4"><h3 class="text-center">Website Estimated Totals:</h3></th>
+          </tr>
+          <tr>
+            <th>Monthly Hosting: </th>
+            <th>${{ totals.cost }}</th>
+            <th>Start up Costs:</th>
+            <th>${{ totals.setup }}</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr class="text-center">
+            <th colspan="4">Website Package</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Website Option</th>
+            <th>Selection Made</th>
+            <th>Monthly Fees</th>
+            <th>Start Up Cost</th>
+          </tr>
+          {% for costs_type, cost in costs %}
+            {% if cost.group == 'website_package' %}
+            <tr>
+              <td>{{ cost.title }}</td>
+              <td>{% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].title }}{% endif %}</td>
+              <td>${% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].cost }}{% else %}0{% endif %}</td>
+              <td>${% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].setup }}{% else %}0{% endif %}</td>
+            </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12 col-md-6">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr class="text-center">
+            <th colspan="4">Home Page</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Website Option</th>
+            <th>Selection Made</th>
+            <th>Monthly Fees</th>
+            <th>Start Up Cost</th>
+          </tr>
+          {% for costs_type, cost in costs %}
+            {% if cost.group == 'home_page' %}
+            <tr>
+              <td>{{ cost.title }}</td>
+              <td>{% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].title }}{% endif %}</td>
+              <td>${% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].cost }}{% else %}0{% endif %}</td>
+              <td>${% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].setup }}{% else %}0{% endif %}</td>
+            </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr class="text-center">
+            <th colspan="4">Website Pages</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Website Option</th>
+            <th>Selection Made</th>
+            <th>Monthly Fees</th>
+            <th>Start Up Cost</th>
+          </tr>
+          {% for costs_type, cost in costs %}
+            {% if cost.group == 'website_pages' %}
+              {% if (order.costs[costs_type] is defined) %}
+                {% if (order.costs[costs_type] is iterable) %}
+                  {% for page in order.costs[costs_type] %}
+                    <tr>
+                      <td>{{ cost.title|replace({'{id}': loop.index}) }}</td>
+                      <td>{{ costs[costs_type].options[page - 1].title }}</td>
+                      <td>${{ costs[costs_type].options[page - 1].cost }}</td>
+                      <td>${{ costs[costs_type].options[page - 1].setup }}</td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td>{{ cost.title|replace({'{id}': 1}) }}</td>
+                    <td>{{ costs[costs_type].options[order.costs[costs_type] - 1].title }}</td>
+                    <td>${{ costs[costs_type].options[order.costs[costs_type] - 1].cost }}</td>
+                    <td>${{ costs[costs_type].options[order.costs[costs_type] - 1].setup }}</td>
+                  </tr>
+                {% endif %}
+              {% else %}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>$0</td>
+                  <td>$0</td>
+                </tr>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12 col-md-6">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr class="text-center">
+            <th colspan="4">Special Features</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Website Option</th>
+            <th>Selection Made</th>
+            <th>Monthly Fees</th>
+            <th>Start Up Cost</th>
+          </tr>
+          {% for costs_type, cost in costs %}
+            {% if cost.group == 'special_features' %}
+            <tr>
+              <td>{{ cost.title }}</td>
+              <td>{% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].title }}{% endif %}</td>
+              <td>${% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].cost }}{% else %}0{% endif %}</td>
+              <td>${% if (order.costs[costs_type] is defined) %}{{ costs[costs_type].options[order.costs[costs_type] - 1].setup }}{% else %}0{% endif %}</td>
+            </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-12">
+      <form action="/{{ action }}" method="POST">
+        <input type="hidden" name="order_id" value="{{ order.order.id }}">
+        <button type="submit" class="btn btn-success btn-lg btn-block">
+          Update Website Order
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

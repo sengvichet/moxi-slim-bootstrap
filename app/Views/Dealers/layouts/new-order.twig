@@ -1,0 +1,45 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block footer_scripts %}
+  <script src="/assets/js/sweetalert2.all.min.js"></script>
+  <script src="/assets/js/bootstrap-form-validation.js"></script>
+  <script src="/assets/js/website/new-order.js"></script>
+{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+<div class="row align-items-center">
+  <div class="col-12">
+    <h1>{% block order_page_title %}{% endblock %}</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    {% include 'Dealers/partials/order/breadcrumbs.twig' %}
+  </div>
+</div>
+{% include 'Dealers/partials/errors.twig' %}
+<form action="{% block order_form_action %}{% endblock %}" method="POST" id="order-form" class="needs-validation" novalidate {% block order_form_type %}{% endblock %}>
+  <input type="hidden" name="action" value="">
+  {% block order_page_form %}{% endblock %}
+  <div class="row">
+    <div class="{% if start is defined %}col-sm-6{% else %}col-sm-4{% endif %}">
+      <button type="button" class="btn btn-primary btn-block save-button" data-action="exit">Save and Exit</button>
+    </div>
+    {% if start is not defined %}
+    <div class="col-sm-4">
+      <button type="button" class="btn btn-secondary btn-block save-button" data-action="back">Save and Go Back</button>
+    </div>
+    {% endif %}
+    <div class="{% if start is defined %}col-sm-6{% else %}col-sm-4{% endif %}">
+      <button type="button" class="btn btn-success btn-block save-button" data-action="continue">Save and Continue</button>
+    </div>
+  </div>
+</form>
+<div class="row mt-3">
+  <div class="col-12">
+    {% block order_table %}{% endblock %}
+  </div>
+</div>
+{% block content_footer %}{% endblock %}
+{% endblock %}

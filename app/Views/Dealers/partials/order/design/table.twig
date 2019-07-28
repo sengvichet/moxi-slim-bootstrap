@@ -1,0 +1,41 @@
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th colspan="4"><h3 class="text-center">Order Details</h3></th>
+    </tr>
+    <tr>
+      <th colspan="2">Monthly Fees</th>
+      <th colspan="2">Start Up Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="logo-row">
+      <td>Logo:</td>
+      <td>{% if (order.costs.logo is defined) %}
+        {{ costs.logo.options[order.costs.logo - 1].cost }}
+      {% else %}
+        0
+      {% endif %}</td>
+      <td>Logo:</td>
+      <td>{% if (order.costs.logo is defined) %}
+        {{ costs.logo.options[order.costs.logo - 1].setup }}
+      {% else %}
+        0
+      {% endif %}</td>
+    </tr>
+    <tr id="color-row">
+      <td>Colors:</td>
+      <td>{% if (order.costs.colors is defined) %}
+        {{ costs.colors.options[order.costs.colors - 1].cost }}
+      {% else %}
+        0
+      {% endif %}</td>
+      <td>Colors:</td>
+      <td>{% if (order.costs.colors is defined) %}
+        {{ costs.colors.options[order.costs.colors - 1].setup }}
+      {% else %}
+        0
+      {% endif %}</td>
+    </tr>
+  </tbody>
+</table>

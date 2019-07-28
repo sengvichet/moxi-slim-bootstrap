@@ -1,0 +1,58 @@
+<?php
+/**
+ * This file contains a form errors messages service.
+ *
+ * PHP version 7.1
+ * 
+ * @category Dealers
+ * @package  Dealers
+ * @author   LAMPDev <oksana@lamp-dev.com>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version  GIT:
+ * @link     http://lamp-dev.com
+ */
+namespace App\Services;
+
+use App\Kernel\ServiceInterface;
+use Classes\FormErrors;
+
+/**
+ * This class is a form errors messages service.
+ *
+ * @category Dealers
+ * @package  Dealers
+ * @author   LAMPDev <oksana@lamp-dev.com>
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @link     http://lamp-dev.com
+ */
+class FormErrorsService implements ServiceInterface
+{
+
+    /**
+     * Service register name
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'formErrors';
+    }
+
+    /**
+     * Register new service on dependency container
+     *
+     * @return FormErrors
+     */
+    public function register()
+    {
+        return function ($container) {
+            $formErrors = new FormErrors(
+                $container->settings['config']
+            );
+
+            unset($container);
+
+            return $formErrors;
+        };
+    }
+}

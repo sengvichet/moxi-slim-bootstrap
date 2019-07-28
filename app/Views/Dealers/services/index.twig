@@ -1,0 +1,404 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Services &amp; Billing{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+<style type="text/css">
+  ul.service-list {
+  list-style: none;
+  padding-left: 12px; 
+}
+ul.service-list li:before {
+  font-weight: bold;
+  content: '✓';
+  margin-right: 10px;
+}
+</style>
+  <h1 class="text-center">Services &amp; Billing</h1>
+  <hr>
+  <!-- Billing -->
+  <div class="row">
+    <div class="col-sm-2 text-center">
+     <img src="/assets/images/services/billing.png" width="75" height="75" alt="Billing">
+    </div>
+    <div class="col-sm-8">
+      <h2 class="text-center">Billing</h2>
+      {% if billing is defined and billing %}
+        <ul class="list-text">
+          <li><span>Billing:</span> {{ billing.billing_frequency|capitalize }}</li>
+          <li><span>Next Bill Date:</span> {{ billing.next_bill_date|date('j/n/Y') }} </li>
+          <li><span>Billing Details:</span> {{ billing.billing_details }}</li>
+          <li><span>Payment Method:</span> {{ billing.payment_method }}</li>
+        </ul>
+      {% else %}
+        <div class="alert alert-danger">Your billing settings are not defined.</div>
+      {% endif %}
+      <p class="mt-5">Interested in automated payments?</p>
+      <a href="mailto:heather@moxximarketing.com">Email heather@moxximarketing.com for more information!</a>
+    </div>
+  </div>
+  <hr>
+  <!-- Website Services -->
+  <div class="row">
+    <div class="col-sm-2 text-center">
+      <img src="/assets/images/services/services.png" width="75" height="75" alt="Services">
+    </div>
+    <div class="col-sm-8">
+      <h2 class="text-center">Services</h2>
+      <p class="text-center font-italic">Your Website and Marketing Services via {{(user.portal_type == 0) ? 'Place1SEO' : 'Moxxi Marketing'}} </p>
+      {% if user.portal_type == 1 %}
+      <h2>Marketing Portal</h2>
+      <ul class="service-list"><li>Review and modify all company informations in one central location.</li>
+        <li>Respond to client reviews from Google My Business.</li>
+        <li>Create Google My Business Posts for Your Business.</li>
+        <li>Listing Leader distributes accurate information for your business across leading search engine directories.</li>
+        <li>Observe advertising, social media, referral traffic analytics and reporting.</li></ul>
+      {% else %}
+      {% endif %}      
+      <h2>Social Marketing</h2>
+      {% if user.portal_type == 1 %}
+      <ul class="service-list"><li>Social Media Posts per week on Facebook and Twitter as agreed in contract.</li>
+        <li>Posts to Instagram and Google My Business as agreed in contract.</li>
+        <li>Includes Graphic Design, Copywriting, Paid Ad Managment.</li></ul>
+      {% else %}
+      <ul class="service-list"><li>You are not currently enrolled in this marketing strategy service.</li>
+        <li>Social Media Marketing brings your busineses presence front and center to your audience.</li>
+        <li>Engage with existing and potential clients by sharing posts designed.</li></ul>
+      {% endif %}
+      <h2>PPC Advertising</h2>
+      {% if user.portal_type == 1 %}
+      <ul class="service-list"><li>Google Ads and Bing PPC Campaign Management.</li>
+        <li>Any amount exceeding this will be billed at 15% of ad spend.</li></ul>
+      {% else %}
+      <ul class="service-list"><li>You are not currently enrolled in this marketing strategy service.</li>
+        <li>Google Ads and Bing PPC Campaign Management serves to enhance your online reputation and help clients find your business when searching online.</li>
+        <li>Targeted ads derived from keyword strategies correlate to website landing pages.</li></ul>
+      {% endif %}
+      <h2>Blog</h2>
+      {% if user.portal_type == 1 %}
+      <ul class="service-list"><li>Monthly blog with topic coordinated with keyword research and current trends.</li>
+        <li>Graphic Design or Images Developed as Needed.</li></ul>
+      {% else %}
+      <ul class="service-list"><li>You are not currently enrolled in this marketing strategy service.</li>
+        <li>Monthly blog writing creates a stronger online authority for your business.</li>
+        <li>Blog posts are coordinated with keyword research and current trends to help your website rank and be found on search engines.</li>
+        <li>Blog posts serve to increase your audience with engaging information and backlinks that help SEO strategies.</li></ul>
+      {% endif %}
+      <h2>Video</h2>
+      {% if user.portal_type == 1 %}
+      <ul class="service-list"><li>Video package includes social media short videos and representative video.</li>
+        <li>Client will work with Moxxi Inc, to ensure that video shoots provide adequate material for a minimum of 10 videos annually.</li>
+        <li>Up to (5) maximum video shoots for content generation ü Videos produced equals 12 annually.</li></ul>
+      {% else %}
+      <ul class="service-list"><li>You are not currently enrolled in this marketing strategy service.</li>
+        <li>Video production creates dynamic content to help your business stay front and center to your existing and potential clients.</li>
+        <li>Create credibility for your business and demonstrate to clients and search engines alike your credibility as a company</li></ul>
+      {% endif %}
+      <h2>Email Campaign</h2>
+      {% if user.portal_type == 1 %}
+      <ul class="service-list"><li>Email Campaign service as agreed upon in your contract.</li></ul>
+      {% else %}
+      <ul class="service-list"><li>You are not currently enrolled in this marketing strategy service.</li>
+        <li>Email campaigns remain one of the most effective marketing tools at your disposal.</li>
+        <li>Establish reliable, direct connections to build healthy client relationships.</li>
+        <li>Enhance your ROI and mobile presence to complement and compound social</li></ul>
+      {% endif %}
+      {% if user.portal_type == 1 %}
+       <h2>Pring Ads & In-House Marketing Media Design</h2>
+      <ul class="service-list"><li> Projects quoted separately from Marketing Services Contract. Contact us for more information.</li>
+        <li>We are more than happy to see how we can meet your needs best!</li></ul>
+       {% else %}
+      {% endif %}
+      {% if user.portal_type == 1 %}
+       <h2>Website Hosting + SEO</h2>
+      <ul class="service-list"><li>Website hosting, security, updates, glitch repair, uptime monitoring, and monthly backup.</li>
+        <li>Technical SEO, Rich Snippet Coding and keyword content optimization, website landing page design, and content generation coinciding with marketing strategy.</li>
+        <li>Custom design work or content writing is quoted separately from Marketing Services Contract.</li>
+        <li>Custom coding work is quoted separately from Marketing Services Contract</li></ul>
+      {% else %}
+      {% endif %}
+    </div>
+  </div>
+  <!-- Google My Business -->
+  <div class="row">
+    <div class="col-sm-2 text-center">
+      <img src="/assets/images/services/gmb.png" width="75" height="75" alt="Google My Business">
+    </div>
+    <div class="col-sm-8">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th class="w-50 h3" id="gmb">Google My Business</th>
+            <th class="w-50"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Subscribed: {{ (subscriptions.gmb is defined and subscriptions.gmb.is_approved) ? 'Yes' : 'Not Subscribed' }}</td>
+            <td>${{ (subscriptions.gmb is defined and subscriptions.gmb.is_approved) ? services.gmb.cost : 0 }} / Quarter</td>
+          </tr>
+          {% if not subscriptions.gmb is defined or not subscriptions.gmb.is_approved %}
+            <tr>
+              <td colspan="2">
+                <div class="alert alert-turquoise sign-up-alert" role="alert" data-service="gmb">
+                  Interested in Signing up?
+                </div>
+              </td>
+            </tr>
+            <tr class="sign-up-form" data-service="gmb" {% if not subscriptions.gmb is defined %}style="display: none"{% endif %}>
+              <td colspan="2">
+                <form action="{{ action }}" method="POST">
+                  <div class="form-row">
+                  <div class="form-group col-sm-1">
+                    <label class="control-label col-form-label col-form-label-sm">Yes</label>
+                    <input type="checkbox" name="subscribed" class="form-control" {% if subscriptions.gmb is defined and not subscriptions.gmb.is_approved and subscriptions.gmb.quarters %}checked{% endif %}>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm"># of Quarters</label>
+                    <input type="number" name="quarters" class="form-control" min="1"
+                    value="{% if subscriptions.gmb is defined and not subscriptions.gmb.is_approved and subscriptions.gmb.quarters %}{{ subscriptions.gmb.quarters }}{% endif %}"
+                    {% if not (subscriptions.gmb is defined and not subscriptions.gmb.is_approved and subscriptions.gmb.quarters) %}disabled="disabled"{% endif %}>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm">Total Price</label>
+                    <input type="number" name="total_price" class="form-control" disabled="disabled" readonly="readonly"
+                    value="{% if subscriptions.gmb is defined and not subscriptions.gmb.is_approved and subscriptions.gmb.quarters %}{{ subscriptions.gmb.quarters * services.gmb.cost }}{% endif %}">
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm">&nbsp;</label>
+                    <button type="submit" class="btn btn-success form-control align-middle" {% if not (subscriptions.gmb is defined and not subscriptions.gmb.is_approved and subscriptions.gmb.quarters) %}disabled="disabled"{% endif %}>Submit</button>
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <a href="https://place1seo.com/services/google-my-business-portal" target="_blank">Click here to learn about this service</a>
+                  </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Local Listings -->
+  <div class="row">
+    <div class="col-sm-2 text-center">
+    </div>
+    <div class="col-sm-8">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th class="w-50 h3" id="local_listings">Local Listings</th>
+            <th class="w-50"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Subscribed: {{ (subscriptions.local_listings is defined and subscriptions.local_listings.is_approved) ? 'Yes' : 'Not Subscribed' }}</td>
+            <td>${{ (subscriptions.local_listings is defined and subscriptions.local_listings.is_approved) ? services.local_listings.cost : 0 }} / Quarter</td>
+          </tr>
+          {% if not subscriptions.local_listings is defined or not subscriptions.local_listings.is_approved %}
+            <tr>
+              <td colspan="2">
+                <div class="alert alert-turquoise sign-up-alert" role="alert" data-service="local_listings">Interested in Signing up?</div>
+              </td>
+            </tr>
+            <tr class="sign-up-form" data-service="local_listings" {% if not subscriptions.local_listings is defined %}style="display: none"{% endif %}>
+              <td colspan="2">
+                <form action="{{ action }}" method="POST">
+                  <div class="form-row">
+                  <div class="form-group col-sm-1">
+                    <label class="control-label col-form-label col-form-label-sm">Yes</label>
+                    <input type="checkbox" name="subscribed" class="form-control" {% if subscriptions.local_listings is defined and not subscriptions.local_listings.is_approved and subscriptions.local_listings.quarters %}checked{% endif %}>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm"># of Quarters</label>
+                    <input type="number" name="quarters" class="form-control" min="1"
+                    value="{% if subscriptions.local_listings is defined and not subscriptions.local_listings.is_approved and subscriptions.local_listings.quarters %}{{ subscriptions.local_listings.quarters }}{% endif %}"
+                    {% if not (subscriptions.local_listings is defined and not subscriptions.local_listings.is_approved and subscriptions.local_listings.quarters) %}disabled="disabled"{% endif %}>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm">Total Price</label>
+                    <input type="number" name="total_price" class="form-control"
+                    disabled="disabled" readonly="readonly"
+                    value="{% if subscriptions.local_listings is defined and not subscriptions.local_listings.is_approved and subscriptions.local_listings.quarters %}{{ subscriptions.local_listings.quarters * services.local_listings.cost }}{% endif %}">
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm">&nbsp;</label>
+                    <button type="submit" class="btn btn-success form-control align-middle" {% if not (subscriptions.local_listings is defined and not subscriptions.local_listings.is_approved and subscriptions.local_listings.quarters) %}disabled="disabled"{% endif %}>Submit</button>
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <a href="https://place1seo.com/services/local-listings" target="_blank">Click here to learn about this service</a>
+                  </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Social Media -->
+  <div class="row">
+    <div class="col-sm-2 text-center">
+    </div>
+    <div class="col-sm-8">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th class="w-50 h3" id="social_media">Social Media</th>
+            <th class="w-50"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Subscribed: {{ (subscriptions.social_media is defined and subscriptions.social_media.is_approved) ? 'Yes' : 'Not Subscribed' }}</td>
+            <td>${{ (subscriptions.social_media is defined and subscriptions.social_media.is_approved) ? services.social_media.cost : 0 }} / Quarter</td>
+          </tr>
+          {% if not subscriptions.social_media is defined or not subscriptions.social_media.is_approved %}
+            <tr>
+              <td colspan="2">
+                <div class="alert alert-turquoise sign-up-alert" role="alert" data-service="social_media">Interested in Signing up?</div>
+              </td>
+            </tr>
+            <tr class="sign-up-form" data-service="social_media" {% if not subscriptions.social_media is defined %}style="display: none"{% endif %}>
+              <td colspan="2">
+                <form action="{{ action }}" method="POST">
+                  <div class="form-row">
+                  <div class="form-group col-sm-1">
+                    <label class="control-label col-form-label col-form-label-sm">Yes</label>
+                    <input type="checkbox" name="subscribed" class="form-control" {% if subscriptions.social_media is defined and not subscriptions.social_media.is_approved and subscriptions.social_media.quarters %}checked{% endif %}>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm"># of Quarters</label>
+                    <input type="number" name="quarters" class="form-control" min="1"
+                    value="{% if subscriptions.social_media is defined and not subscriptions.social_media.is_approved and subscriptions.social_media.quarters %}{{ subscriptions.social_media.quarters }}{% endif %}"
+                    {% if not (subscriptions.social_media is defined and not subscriptions.social_media.is_approved and subscriptions.social_media.quarters) %}disabled="disabled"{% endif %}>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm">Total Price</label>
+                    <input type="number" name="total_price" class="form-control" disabled="disabled" readonly="readonly"
+                    value="{% if subscriptions.social_media is defined and not subscriptions.social_media.is_approved and subscriptions.social_media.quarters %}{{ subscriptions.social_media.quarters * services.social_media.cost }}{% endif %}">
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm">&nbsp;</label>
+                    <button type="submit" class="btn btn-success form-control align-middle" {% if not (subscriptions.social_media is defined and not subscriptions.social_media.is_approved and subscriptions.social_media.quarters) %}disabled="disabled"{% endif %}>Submit</button>
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <a href="https://place1seo.com/services/social-media" target="_blank">Click here to learn about this service</a>
+                  </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Local Google Ads -->
+  <div class="row">
+    <div class="col-sm-2 text-center">
+    </div>
+    <div class="col-sm-8">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th class="w-50 h3" id="local_google_ads">Local Google Ads</th>
+            <th class="w-50"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Subscribed: {{ (subscriptions.local_google_ads is defined and subscriptions.local_google_ads.is_approved) ? 'Yes' : 'Not Subscribed' }}</td>
+            <td>${{ (subscriptions.local_google_ads is defined and subscriptions.local_google_ads.is_approved) ? services.local_google_ads.cost : 0 }} / Quarter</td>
+          </tr>
+          {% if not subscriptions.local_google_ads is defined or not subscriptions.local_google_ads.is_approved %}
+            <tr>
+              <td colspan="2">
+                <div class="alert alert-turquoise sign-up-alert" role="alert" data-service="local_google_ads">Interested in Signing up?</div>
+              </td>
+            </tr>
+            <tr class="sign-up-form" data-service="local_google_ads" {% if not subscriptions.local_google_ads is defined %}style="display: none"{% endif %}>
+              <td colspan="2">
+                <form action="{{ action }}" method="POST">
+                  <div class="form-row">
+                  <div class="form-group col-sm-1">
+                    <label class="control-label col-form-label col-form-label-sm">Yes</label>
+                    <input type="checkbox" name="subscribed" class="form-control" {% if subscriptions.local_google_ads is defined and not subscriptions.local_google_ads.is_approved and subscriptions.local_google_ads.quarters %}checked{% endif %}>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm"># of Quarters</label>
+                    <input type="number" name="quarters" class="form-control" min="1"
+                    value="{% if subscriptions.local_google_ads is defined and not subscriptions.local_google_ads.is_approved and subscriptions.local_google_ads.quarters %}{{ subscriptions.local_google_ads.quarters }}{% endif %}"
+                    {% if not (subscriptions.local_google_ads is defined and not subscriptions.local_google_ads.is_approved and subscriptions.local_google_ads.quarters) %}disabled="disabled"{% endif %}>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm">Total Price</label>
+                    <input type="number" name="total_price" class="form-control" disabled="disabled" readonly="readonly"
+                    value="{% if subscriptions.local_google_ads is defined and not subscriptions.local_google_ads.is_approved and subscriptions.local_google_ads.quarters %}{{ subscriptions.local_google_ads.quarters * services.local_google_ads.cost }}{% endif %}">
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <label class="control-label col-form-label col-form-label-sm">&nbsp;</label>
+                    <button type="submit" class="btn btn-success form-control align-middle" {% if not (subscriptions.local_google_ads is defined and not subscriptions.local_google_ads.is_approved and subscriptions.local_google_ads.quarters) %}disabled="disabled"{% endif %}>Submit</button>
+                  </div>
+                  <div class="form-group col-sm-2">
+                    <a href="https://place1seo.com/services/local-google-ads" target="_blank">Click here to learn about this service</a>
+                  </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          {% endif %}
+          <tr>
+            <td>Discretionary Ad Budget: $500 / month</td>
+            <td rowspan="2"><span class="font-italic">**$450 is a service management fee, your discretionary ad budget (the amount you spend for advertising) will be paid directly to Google via a credit card from your company.</span></td>
+          </tr>
+          <tr>
+            <td>Credit Card for Ad Spend: Ending in xxxx</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- More Services -->
+  <div class="row">
+    <div class="col-sm-2 text-center">
+      <img src="/assets/images/services/more.png" width="75" height="75" alt="Interested In More Services?">
+    </div>
+    <div class="col-sm-8">
+      <h2 class="text-center">Interested In More Services?</h2>
+      <p class="text-center font-italic">Let our experts help grow your online presence!</p>
+      <ul class="list-text">
+        <li><span>Contact Us:</span> <a href="mailto:nic@moxximarketing.com">nic@moxximarketing.com</a></li>
+        <li><span>More Information:</span> <a href="https://place1seo.com/">https://place1seo.com/</a></li>
+      </ul>
+    </div>
+  </div>
+  <hr>
+  <!-- Support -->
+  <div class="row">
+    <div class="col-sm-2 text-center">
+      <img src="/assets/images/services/support.png" width="75" height="75" alt="Support">
+    </div>
+    <div class="col-sm-8">
+      <h2 class="text-center">Support</h2>
+      <p class="text-center font-italic">How can we assist you?</p>
+      <ul class="list-text">
+        <li><span>Troubleshooting:</span> <a href="mailto:nic@moxximarketing.com">nic@moxximarketing.com</a></li>
+        <li><span>Billing:</span> <a href="mailto:heather@moxximarketing.com">heather@moxximarketing.com</a></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer_scripts %}
+  {{ parent() }}
+  <script>
+    var services = {{ services|json_encode|raw }};
+  </script>
+  <script src="/assets/js/sweetalert2.all.min.js"></script>
+  <script src="/assets/js/services/index.js"></script>
+{% endblock %}

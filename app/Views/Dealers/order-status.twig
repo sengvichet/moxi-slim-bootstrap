@@ -1,0 +1,28 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Order Status{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center">Order Status</h1>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Costs</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for service in services %}
+            <tr>
+              <td><a href="{{ service.link }}">{{ service.title }}</a></td>
+              <td></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

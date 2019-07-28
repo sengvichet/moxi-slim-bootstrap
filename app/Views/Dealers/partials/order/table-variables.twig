@@ -1,0 +1,24 @@
+      {% set products_total = (messages.input[0].products is defined)
+        ? costs.products.options[messages.input[0].products - 1]
+        : ((order.costs.products is defined)
+          ? costs.products.options[order.costs.products - 1]
+          : {cost: 0, setup: 0})
+      %}
+      {% set specsheets_total = (messages.input[0].specsheets is defined)
+        ? costs.specsheets.options[messages.input[0].specsheets - 1]
+        : ((order.costs.specsheets is defined)
+          ? costs.specsheets.options[order.costs.specsheets - 1]
+          : {cost: 0, setup: 0})
+      %}
+      {% set ecommerce_total = (messages.input[0].ecommerce is defined)
+        ? costs.ecommerce.options[messages.input[0].ecommerce - 1]
+        : ((order.costs.ecommerce is defined)
+          ? costs.ecommerce.options[order.costs.ecommerce - 1]
+          : {cost: 0, setup: 0})
+      %}
+      {% set pricing_total = (messages.input[0].pricing is defined)
+        ? costs.pricing.options[messages.input[0].pricing - 1]
+        : ((order.costs.pricing is defined)
+          ? costs.pricing.options[order.costs.pricing - 1]
+          : {cost: 0, setup: 0})
+      %}

@@ -1,0 +1,14 @@
+<nav class="nav">
+  <div class="nav nav-pills" id="nav-tab" role="tablist">
+    {% for tab in tabs %}
+      {% if page in tab.pages %}
+      <a class="nav-link nav-tab {% if loop.first %}active{% endif %}"
+         id="nav-{{ tab.name }}-tab" href="#nav-{{ tab.name }}" data-toggle="tab"
+         role="tab" aria-controls="nav-{{ tab.name }}" aria-selected="false" title="{{ tab.title }}">
+        {% if icon %}<i class="{{ tab.class }}"></i>{% else %}<i class="{{ tab.class }} d-xxl-none"></i>{% endif %}
+        {% if not icon %}<span class="d-none d-xxl-inline-display">{{ tab.title }}</span>{% endif %}
+      </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</nav>

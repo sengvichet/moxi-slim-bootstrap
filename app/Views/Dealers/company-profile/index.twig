@@ -1,0 +1,72 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Dealers Company Profile{% endblock %}
+{% block header_styles %}
+  <link href="/assets/css/material-switch.css" rel="stylesheet">
+  <link href="/assets/css/checkbox.css" rel="stylesheet">
+  <link href="/assets/css/fileupload/blueimp-gallery.min.css" rel="stylesheet">
+  <link href="/assets/css/fileupload/jquery.fileupload.css" rel="stylesheet">
+  <link href="/assets/css/fileupload/jquery.fileupload-ui.css" rel="stylesheet">
+  <link href="/assets/css/bootstrap-tagsinput.css" rel="stylesheet">
+{% endblock %}
+{% block footer_scripts %}
+  <script>
+    {% if contact_information.data.categories is defined %}
+      var companyCategories = {{ contact_information.data.categories|json_encode|raw }};
+    {% else %}
+      var companyCategories = [];
+    {% endif %}
+  </script>
+  <script src="/assets/js/sweetalert2.all.min.js"></script>
+  <script src="/assets/js/bootstrap-form-validation.js"></script>
+  <script src="/assets/js/company-profile/contact-information.js"></script>
+  <script src="/assets/js/company-profile/website-information.js"></script>
+  <script src="/assets/js/company-profile/essential-information.js"></script>
+  <script src="/assets/js/company-profile/social-media.js"></script>
+  <script src="/assets/js/company-profile/company-photos.js"></script>
+  <script src="/assets/js/fileupload/tmpl.min.js"></script>
+  <script src="/assets/js/fileupload/load-image.all.min.js"></script>
+  <script src="/assets/js/fileupload/jquery.blueimp-gallery.min.js"></script>
+  <script src="/assets/js/fileupload/canvas-to-blob.min.js"></script>
+  <script src="/assets/js/fileupload/jquery.ui.widget.js"></script>
+  <script src="/assets/js/fileupload/jquery.iframe-transport.js"></script>
+  <script src="/assets/js/fileupload/jquery.fileupload.js"></script>
+  <script src="/assets/js/fileupload/jquery.fileupload-process.js"></script>
+  <script src="/assets/js/fileupload/jquery.fileupload-image.js"></script>
+  <script src="/assets/js/fileupload/jquery.fileupload-ui.js"></script>
+  <script src="/assets/js/fileupload/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="/assets/js/bootstrap-tagsinput.min.js"></script>
+  <script>
+    var tab = '{% if messages.tab is defined %}'
+    + '{{ messages.tab.name }}'
+    +' {% else %}{{ tabs|first.name }}{% endif %}';
+    $(document).ready(function () {
+      $('#nav-tab a').removeClass('active');
+      $('#nav-' + tab + '-tab').addClass('active');
+      $('.nav-tab').click(function() {
+        $('.errors-section').remove();
+      });
+    });
+    var page = '{{ page }}';
+</script>
+{% endblock %}
+{% block topbar %}
+ {% include 'Dealers/partials/topbar/company-profile.twig' %}
+{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+<div class="tab-content" id="nav-tabContent">
+  {% for tab in tabs %}
+    {% if page in tab.pages %}
+    <div class="tab-pane fade {% if messages.tab is defined %}
+      {% if messages.tab.name == tab.name %}show active{% endif %}
+      {% else %}{% if loop.first %}show active{% endif %}{% endif %}"
+      id="nav-{{ tab.name }}" role="tabpanel" aria-labelledby="nav-{{ tab.name }}-tab">
+      {% include 'Dealers/company-profile/' ~ tab.name ~ '.twig' %}
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}

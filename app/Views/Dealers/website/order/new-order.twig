@@ -1,0 +1,17 @@
+{% extends 'Dealers/layouts/new-order.twig' %}
+{% block footer_scripts %}
+  {{ parent() }}
+  <script>
+    var costs = {{ costs|json_encode|raw }};
+    var totals = {{ totals|json_encode|raw }};
+  </script>
+{% endblock %}
+{% block order_form_action %}/{{ action.form }}{% endblock %}
+{% block order_table %}
+  {% include 'Dealers/partials/order/totals-table.twig' %}
+{% endblock %}
+{% block content_footer %}
+<div class="sticky-div bg-warning text-bold">
+  {% include 'Dealers/partials/order/summary-table.twig' %}
+</div>
+{% endblock %}

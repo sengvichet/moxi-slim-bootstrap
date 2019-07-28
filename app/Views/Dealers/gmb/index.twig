@@ -1,0 +1,181 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Google My Business{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+  {% if forbidden %}
+    <img src="/assets/images/gmb/dashboard.png" class="img-fluid">
+    <div class="modal fade forbidden-modal" tabindex="-1" role="dialog" aria-labelledby="forbidden-modal-title" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-secondary">
+          <div class="modal-header">
+            <h1 class="modal-title mx-auto text-white" id="forbidden-modal-title">Section Unavailable!</h1>
+            <a href="/" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </a>
+          </div>
+          <div class="modal-body text-center">
+            <img src="/assets/images/padlock.png" width="100">
+            <p class="mt-3 font-large text-white">Please contact your account manager to learn more about Place1SEO's managed Google My Business Accounts.</p>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-lg btn-block btn-primary" href="/{{ action.services }}#gmb">Activate GMB section</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <h1>Google My Business</h1>
+    {#{% if not has_insights and not has_reviews %}
+      <button class="btn btn-primary refresh-btn" data-type="all">Refresh data</button>
+    {% else %}
+        {% if not has_insights %}
+          <button class="btn btn-primary refresh-btn" data-type="insight">Refresh insights data</button>
+        {% endif %}
+        {% if not has_reviews %}
+          <button class="btn btn-primary refresh-btn" data-type="review">Refresh reviews data</button>
+        {% endif %}
+    {% endif %}#}
+  {% endif %}
+  {% if not forbidden %}
+  <div class="row">
+    <div class="col-sm-4">
+      <p><b>Period: </b></p>
+      <p><span>{{ period.current.start|date('j M\\. Y') }} - {{ period.current.end|date('j M.\\ Y') }}</span>
+      comparing to <span>{{ period.previous.start|date('j M\\. Y') }} - {{ period.previous.end|date('j M\\. Y') }}</span></p>
+    </div>
+    <div class="col-sm-4">
+      <p><b>GMB Account ID: </b></p>
+      <p>{{ account }}</p>
+    </div>
+    <div class="col-sm-4">
+      <p><b>GMB Location ID: </b></p>
+      <form id="location-form">
+      <select class="form-control" name="location" onchange="document.getElementById('location-form').submit()">
+        {% for key, location in locations.id %}
+          <option value="{{ location }}" {% if selected_location.id == location %}selected{% endif %}>{{ locations.name[key] }}</option>
+        {% endfor %}
+      </select>
+    </form>
+    </div>
+  </div>
+  <h2 class="text-center mt-4 mb-4">Google My Business Performance Summary</h2>
+  <div class="row">
+    <div class="col-md-4 col-xl-3">
+      <div class="row mt-2 mb-2">
+        <div class="col-6">
+          <img src="/assets/images/gmb/website_visits.png" width="100">
+        </div>
+        <div class="col-6 align-self-center">
+          <p class="text-secondary h6 font-weight-light mb-0">Website Visits</p>
+          <h2 class="mb-0">{{ prepared_gmb.website_visits.count.current }}</h2>
+          <h6 class="{{ (prepared_gmb.website_visits.count.percent > 0) ? 'text-success' : ((prepared_gmb.website_visits.count.percent == 0) ? 'text-warning' : 'text-danger') }}">
+            <i class="fa {{ (prepared_gmb.website_visits.count.percent > 0) ? 'fa-arrow-up' : ((prepared_gmb.website_visits.count.percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i>&nbsp;{{ prepared_gmb.website_visits.count.percent }}
+          </h6>
+        </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-6">
+          <img src="/assets/images/gmb/directions.png" width="100">
+        </div>
+        <div class="col-6 align-self-center">
+          <p class="text-secondary h6 font-weight-light mb-0">Directions</p>
+          <h2 class="mb-0">{{ prepared_gmb.directions.count.current }}</h2>
+          <h6 class="{{ (prepared_gmb.directions.count.percent > 0) ? 'text-success' : ((prepared_gmb.directions.count.percent == 0) ? 'text-warning' : 'text-danger') }}">
+            <i class="fa {{ (prepared_gmb.directions.count.percent > 0) ? 'fa-arrow-up' : ((prepared_gmb.directions.count.percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i>&nbsp;{{ prepared_gmb.directions.count.percent }}
+          </h6>
+        </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-6">
+          <img src="/assets/images/gmb/phone_calls.png" width="100">
+        </div>
+        <div class="col-6 align-self-center">
+          <p class="text-secondary h6 font-weight-light mb-0">Phone Calls</p>
+          <h2 class="mb-0">{{ prepared_gmb.phone_calls.count.current }}</h2>
+          <h6 class="{{ (prepared_gmb.phone_calls.count.percent > 0) ? 'text-success' : ((prepared_gmb.phone_calls.count.percent == 0) ? 'text-warning' : 'text-danger') }}">
+            <i class="fa {{ (prepared_gmb.phone_calls.count.percent > 0) ? 'fa-arrow-up' : ((prepared_gmb.phone_calls.count.percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i>
+            &nbsp;{{ prepared_gmb.phone_calls.count.percent }}
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 col-xl-9">
+      <canvas id="gmb-chart" width="400" height="300"></canvas>
+    </div>
+  </div>
+  <h2 class="text-center mt-4 mb-4">Manage Listing</h2>
+  <div class="row mt-2 mb-2">
+    <div class="col-3">
+      <img src="/assets/images/gmb/reviews.png" width="100">
+    </div>
+    <div class="col-3">
+      <p class="text-secondary h6 font-weight-light mb-0">Review Score</p>
+      <h2 class="mb-0">{{ prepared_gmb.review_score.count.current }}</h2>
+      <h6 class="{{ (prepared_gmb.review_score.count.percent > 0) ? 'text-success' : ((prepared_gmb.review_score.count.percent == 0) ? 'text-warning' : 'text-danger') }}">
+      <i class="fa {{ (prepared_gmb.review_score.count.percent > 0) ? 'fa-arrow-up' : ((prepared_gmb.review_score.count.percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i>
+        {{ prepared_gmb.review_score.count.percent }}
+      </h6>
+    </div>
+    <div class="col-3">
+      <p class="text-secondary h6 font-weight-light mb-0">Total Reviews</p>
+      <h2 class="mb-0">{{ prepared_gmb.total_reviews.count.current }}</h2>
+      <h6 class="{{ (prepared_gmb.total_reviews.count.percent > 0) ? 'text-success' : ((prepared_gmb.total_reviews.count.percent == 0) ? 'text-warning' : 'text-danger') }}">
+      <i class="fa {{ (prepared_gmb.total_reviews.count.percent > 0) ? 'fa-arrow-up' : ((prepared_gmb.total_reviews.count.percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i>
+        {{ prepared_gmb.total_reviews.count.percent }}
+      </h6>
+    </div>
+    <div class="col-3 align-self-center">
+      <a class="btn btn-lg btn-block btn-primary" href="{{ url.reviews }}">See Reviews</a>
+    </div>
+  </div>
+  <div class="row mt-2 mb-2">
+    <div class="col-3">
+      <img src="/assets/images/gmb/posts.png" width="100">
+    </div>
+    <div class="col-3">
+      <p class="text-secondary h6 font-weight-light mb-0">Total Posts</p>
+      <h2 class="mb-0">{{ prepared_gmb.total_posts.count.current }}</h2>
+      <h6 class="{{ (prepared_gmb.total_posts.count.percent > 0) ? 'text-success' : ((prepared_gmb.total_posts.count.percent == 0) ? 'text-warning' : 'text-danger') }}">
+      <i class="fa {{ (prepared_gmb.total_posts.count.percent > 0) ? 'fa-arrow-up' : ((prepared_gmb.total_posts.count.percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i>
+        {{ prepared_gmb.total_posts.count.percent }}
+      </h6>
+    </div>
+    <div class="col-3">
+      <p class="text-secondary h6 font-weight-light mb-0">Post Views</p>
+      <h2 class="mb-0">{{ prepared_gmb.post_views.count.current }}</h2>
+      <h6 class="{{ (prepared_gmb.post_views.count.percent > 0) ? 'text-success' : ((prepared_gmb.post_views.count.percent == 0) ? 'text-warning' : 'text-danger') }}">
+      <i class="fa {{ (prepared_gmb.post_views.count.percent > 0) ? 'fa-arrow-up' : ((prepared_gmb.post_views.count.percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i>
+        {{ prepared_gmb.post_views.count.percent }}
+      </h6>
+    </div>
+    {#<div class="col-3">
+      <p class="text-secondary h6 font-weight-light mb-0">Post Actions</p>
+      <h2 class="mb-0">{{ prepared_gmb.post_actions.count.current }}</h2>
+      <h6 class="{{ (prepared_gmb.post_actions.count.percent > 0) ? 'text-success' : ((prepared_gmb.post_actions.count.percent == 0) ? 'text-warning' : 'text-danger') }}">
+      <i class="fa {{ (prepared_gmb.post_actions.count.percent > 0) ? 'fa-arrow-up' : ((prepared_gmb.post_actions.count.percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i>
+        {{ prepared_gmb.post_actions.count.percent }}
+      </h6>
+    </div>#}
+    <div class="col-3 align-self-center">
+      <a class="btn btn-lg btn-block btn-primary" href="{{ url.post_new }}">Create Post</a>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}
+{% block footer_scripts %}
+  {% if forbidden %}
+    <script>
+    $(document).ready(function() {
+      $('.forbidden-modal').modal({backdrop: 'static', keyboard: false});
+    });
+    </script>
+  {% else %}
+    <script>var refreshUrl = '{{ action.refresh }}';</script>
+    <script src="/assets/js/gmb/refresh.js"></script>
+    <script>var data = {{ prepared_gmb|json_encode|raw }};</script>
+    <script src="/assets/js/Chart.bundle.min.js"></script>
+    <script src="/assets/js/gmb/weekly-activity-chart.js"></script>
+  {% endif %}
+{% endblock %}

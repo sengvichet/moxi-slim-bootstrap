@@ -1,0 +1,69 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Google My Business - Reviews{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+  <h1>Google My Business Reviews</h1>
+  <div class="row">
+    <div class="col-12">
+      <a class="btn btn-secondary" href="/{{ action.back }}">Back To GMB Dashboard</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 text-right">
+      <p><b>GMB Location ID: </b></p>
+    </div>
+    <div class="col-sm-6">
+      <form id="location-form">
+      <select class="form-control" name="location" onchange="document.getElementById('location-form').submit()">
+        {% for key, location in locations.id %}
+          <option value="{{ location }}" {% if selected_location.id == location %}selected{% endif %}>{{ locations.name[key] }}</option>
+        {% endfor %}
+      </select>
+    </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      {% if reviews|length %}
+      {% for review in reviews %}
+        <div class="card mt-3 mb-3">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-4">
+                {% for i in 1..review.star_rating %}
+                  <i class="fa fa-star text-warning"></i>
+                {% endfor %}
+                {% if review.star_rating < 5 %}
+                  {% for i in review.star_rating..4 %}
+                    <i class="fa fa-star text-secondary"></i>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="col-4 text-center">{{ review.reviewer_name }}</div>
+              <div class="col-4 text-right text-muted">{{ review.create_timestamp|date('F j Y \\a\\t H:i') }} GMT</div>
+            </div>
+          </div>
+          <div class="card-body">
+            {{ review.comment }}
+          </div>
+          <div class="card-footer text-muted">
+            {% if review.reply_comment %}
+              <p><i>{{ review.reply_comment }}</i></p>
+              <p>
+                <a class="btn btn-primary" href="/{{ action.review|replace({':review': review.review_id}) }}">View and Edit</a>
+                <span class="float-right">{{ review.reply_update_timestamp|date('F j Y \\a\\t H:i') }} GMT</span>
+              </p>
+            {% else %}
+              <a class="btn btn-primary" href="/{{ action.review|replace({':review': review.review_id}) }}">Reply</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+      {% else %}
+        <h3 class="text-center mt-3 mb-3">No reviews yet</h3>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

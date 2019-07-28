@@ -1,0 +1,24 @@
+<!-- Header Section -->
+<header class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row bd-navbar">
+  <a class="navbar-brand" href="/" title="Home">
+    {% if company.business_name is defined %}{{ company.business_name }}{% endif %}
+  </a>
+  <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+    {% if user is defined and user is not empty %}
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+    {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+    {% endif %}
+  </ul>
+  <a href="/" class="navbar-logo">
+    {% if user.portal_type == 1 %}
+      <img src="http://moxximarketing.com/templates/yootheme/cache/moxxi-marketing-logo-5730c2ce.webp" height="45" class="img-responsive" alt="Dealers Logo"/>
+    {% else %}
+      <img src="/assets/images/logo.png" height="45" class="img-responsive" alt="Dealers Logo"/>
+    {% endif %}
+  </a>
+</header><!-- Header Section /- -->

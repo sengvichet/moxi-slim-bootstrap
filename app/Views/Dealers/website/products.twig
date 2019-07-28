@@ -1,0 +1,58 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Dealers Select Products{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+  <div class="page-header">
+    <h1>Dealer eStore Inventory Selection Tool</h1>
+  </div>
+  <div class="row card">
+    <div class="card-header text-white bg-success">
+      <p class="card-text">Below you will find a list of available Vendors to showcase on your eStore website. This tool will allow you the opportunity to hand select the number of products you want on your website. As you select a Vendor the available products for that Vendor will be counted at the top of the screen. Use this tool to design a Vendor selection and product count that works for your monthly budget.</p>
+    </div>
+    <div class="card-body">
+      <div class="h3 alert alert-info">It is <u>VERY IMPORTANT</u> that you <u>save</u> by clicking the button below at least <u>once per hour</u> in order to avoid losing your work.</div>
+      <div class="row">
+        <div class="col-8">
+          <p class="h2">Total # of Products Selected <span id="totalproducts">{% if totals is defined %}{{ totals.products }}{% endif %}</span></p>
+          <p class="h2">Total # of Vendors Selected <span id="totalvendors">{% if totals is defined %}{{ totals.vendors }}{% endif %}</span></p>
+          <div class="form-inline h2">
+            <div class="form-group">
+              <label for="difopt" style="font-weight: normal;">Which product package did you select?</label>
+              <select id="difopt" class="form-control">
+                <option value="10000">up-to-10,000</option>
+                <option value="25000">10,001-25,000</option>
+                <option value="50000">25,001-50,000</option>
+              </select>
+            </div>
+          </div>
+          <p class="h2">Difference <span id="totaldiff"></span></p>
+        </div>
+        <div class="col-4 text-center" id="toolsubmit">
+          <img src="/assets/images/website/finalize_inventory.png" alt="CLICK HERE When you are ready to finalize your Inventory" class="mw-100">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row table-title">
+    <div class="col-12 text-center">
+      <h2>eStore Product Inventory Selection Tool</h2>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Click on + to See Vendor's Categories</th>
+          <th># of Products Available</th>
+          <th># of Products Selected</th>
+        </tr>
+      </thead>
+      <tbody id="selectdata">
+        {% if products is defined %}{{ products }}{% endif %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'Dealers/layouts/order.twig' %}
+{% block title %}Logo{% endblock %}
+{% block header_styles %}
+  <link href="/assets/css/button-upload.css" rel="stylesheet">
+{% endblock %}
+{% block header_scripts %}
+  {{ parent() }}
+  <script src="/assets/js/button-upload.js"></script>
+  <script>
+    var costs = {{ costs|json_encode|raw }};
+    var totals = {{ totals|json_encode|raw }};
+  </script>
+{% endblock %}
+{% block order_page_title %}Logo{% endblock %}
+{% block order_page_percentage %}
+  {% if percentage.value is defined %}{{ percentage.value }}{% else %}0{% endif %}
+{% endblock %}
+{% block order_form_action %}/{{ action.form }}{% endblock %}
+{% block order_page_content %}
+{% include 'Dealers/partials/errors.twig' %}
+{% endblock %}
+{% set costs_type = 'logo' %}
+{% block order_buttons %}
+  <ul class="list-group order-buttons-list">
+    {% for option in costs[costs_type].options %}
+      {% if option.title %}
+      <li class="list-group-item">
+        <button type="button" class="btn btn-block btn-lg
+        {% if order.costs[costs_type] is defined %}
+          {% if order.costs[costs_type] == option.id %}btn-primary{% else %}btn-secondary{% endif %}
+        {% else %}
+          {% if costs[costs_type].default == option.id %}btn-primary{% else %}btn-secondary{% endif %}
+        {% endif %}" data-option-name="{{ costs_type }}" data-option-value="{{ option.id }}">{{ option.title }}
+          <span class="badge badge-light">{% if option.setup %}${{ option.setup }}{% else %}Included{% endif %}</span>
+        </button>
+      </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+  <label class="btn btn-lg btn-block btn-primary btn-file">
+  Upload Image File Here <input type="file" name="logo_file" style="display: none;" accept="{{ fields.order_logo.logo.format }}" files="">
+  </label>
+  <span id="file-span">{{ company_logo.filename }}</span>
+  {% if order.order.id is defined %}
+    <input type="hidden" name="order_id" value="{{ order.order.id }}">
+  {% endif %}
+  <input type="hidden" name="{{ costs_type }}" value="{% if order.costs[costs_type] is defined %}{{ order.costs[costs_type] }}{% else %}{{ costs[costs_type].default }}{% endif %}">
+{% endblock %}
+{% block order_form_type %}enctype="multipart/form-data"{% endblock %}
+{% block order_table %}
+  {% include 'Dealers/partials/order/design/table.twig' %}
+{% endblock %}
+{% block order_page_top_description %}
+<p class="text-center">Please upload your Logo here in the Highest Resolution you have. If you need a new logo, or need your logo redesigned for a higher resolution, please let us know here. Once you have made your selection, please save and continue.</p>
+<p class="text-center">For More information on Logo Resolution, Quality, or Image Type, please <a href="#">Click Here</a>.</p>
+{% endblock %}
+{% block order_page_bottom_description %}
+<p class="text-center">Follow the steps to make selections and build your custom website. When the Percentage of Completion reaches 100% you will be led to a Pricing page that will summarize the start-up cost and monthly fee associated with your selections. You can always make edits as you go and save your work to finish the order later.</p>
+<p class="text-center">If you have any questions, please email Nic Monette at <a href="mailto: nic@moxximarketing">nic@moxximarketing</a>.</p>
+{% endblock %}

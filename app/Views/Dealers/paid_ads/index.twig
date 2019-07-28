@@ -1,0 +1,174 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Paid Ads{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+  {% if forbidden %}
+    <img src="/assets/images/paid_ads/dashboard.png" class="img-fluid">
+    <div class="modal fade forbidden-modal" tabindex="-1" role="dialog" aria-labelledby="forbidden-modal-title" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-secondary">
+          <div class="modal-header">
+            <h1 class="modal-title mx-auto text-white" id="forbidden-modal-title">Section Unavailable!</h1>
+            <a href="/" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </a>
+          </div>
+          <div class="modal-body text-center">
+            <img src="/assets/images/padlock.png" width="100">
+            <p class="mt-3 font-large text-white">Please contact your account manager to learn more about Place1SEO's managed Paid Ads Accounts.</p>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-lg btn-block btn-primary" href="/{{ action.services }}#local_google_ads">Activate Paid Ads section</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <h1 class="text-center">Google PPC Summary</h1>
+    {% if periods and totals and counts %}
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="btn-group">
+            <button type="button" class="btn btn-large btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="paid-ads-period-button">
+              {{ periods|first.start|date('F j, Y') }} - {{ periods|first.end|date('F j, Y') }}
+            </button>
+            <div class="dropdown-menu" id="paid-ads-period-dropdown">
+              {% for period in periods %}
+                <a class="dropdown-item" href="javascript:void(0);"
+                  data-period_start="{{ period.start }}">
+                  {{ period.start|date('F j, Y') }} - {{ period.end|date('F j, Y') }}
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          {% set current  = periods|keys[0] %}
+          {% set previous = (periods|keys|length > 1) ? periods|keys[1] : -1 %}
+          <!-- Spend -->
+          <div class="row">
+              <div class="col-md-6">
+                <img src="/assets/images/paid_ads/spend.png" width="75" height="75">
+              </div>
+              <div class="col-md-6">
+                <p class="text-secondary h4 font-weight-light mb-0">Spend</p>
+                <h2 class="mb-0" id="spend-count">{{ totals[periods[current].start].spend }}</h2>
+                {% if not totals[periods[current].start].spend %}
+                  {% set percent = -100 %}
+                {% endif %}
+                {% if not periods[previous] is defined or not totals[periods[previous].start].spend %}
+                  {% set percent = 0 %}
+                {% endif %}
+                {% if periods[current] is defined and periods[previous] is defined
+                  and totals[periods[current].start].spend and totals[periods[previous].start].spend %}
+                  {% set percent = (totals[periods[current].start].spend / totals[periods[previous].start].spend) * 100 - 100 %}
+                {% endif %}
+                <h6 id="spend-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+                  <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+                </h6>
+              </div>
+          </div>
+          <!-- Impressions -->
+          <div class="row">
+              <div class="col-md-6">
+                <img src="/assets/images/paid_ads/impressions.png" width="75" height="75">
+              </div>
+              <div class="col-md-6">
+                <p class="text-secondary h4 font-weight-light mb-0">Impressions</p>
+                <h2 class="mb-0" id="impressions-count">{{ totals[periods[current].start].impressions }}</h2>
+                {% if not totals[periods[current].start].impressions %}
+                  {% set percent = -100 %}
+                {% endif %}
+                {% if not periods[previous] is defined or not totals[periods[previous].start].impressions %}
+                  {% set percent = 0 %}
+                {% endif %}
+                {% if periods[current] is defined and periods[previous] is defined
+                  and totals[periods[current].start].impressions and totals[periods[previous].start].impressions %}
+                  {% set percent = (totals[periods[current].start].impressions / totals[periods[previous].start].impressions) * 100 - 100 %}
+                {% endif %}
+                <h6 id="impressions-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+                  <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+                </h6>
+              </div>
+          </div>
+          <!-- Clicks -->
+          <div class="row">
+              <div class="col-md-6">
+                <img src="/assets/images/paid_ads/clicks.png" width="75" height="75">
+              </div>
+              <div class="col-md-6">
+                <p class="text-secondary h4 font-weight-light mb-0">Clicks</p>
+                <h2 class="mb-0" id="clicks-count">{{ totals[periods[current].start].clicks }}</h2>
+                {% if not totals[periods[current].start].clicks %}
+                  {% set percent = -100 %}
+                {% endif %}
+                {% if not periods[previous] is defined or not totals[periods[previous].start].clicks %}
+                  {% set percent = 0 %}
+                {% endif %}
+                {% if periods[current] is defined and periods[previous] is defined
+                  and totals[periods[current].start].clicks and totals[periods[previous].start].clicks %}
+                  {% set percent = (totals[periods[current].start].clicks / totals[periods[previous].start].clicks) * 100 - 100 %}
+                {% endif %}
+                <h6 id="clicks-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+                  <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+                </h6>
+              </div>
+          </div>
+          <!-- Conversions -->
+          <div class="row">
+              <div class="col-md-6">
+                <img src="/assets/images/paid_ads/conversions.png" width="75" height="75">
+              </div>
+              <div class="col-md-6">
+                <p class="text-secondary h4 font-weight-light mb-0">Conversions</p>
+                <h2 class="mb-0" id="conversions-count">{{ totals[periods[current].start].conversions }}</h2>
+                {% if not totals[periods[current].start].conversions %}
+                  {% set percent = -100 %}
+                {% endif %}
+                {% if not periods[previous] is defined or not totals[periods[previous].start].conversions %}
+                  {% set percent = 0 %}
+                {% endif %}
+                {% if periods[current] is defined and periods[previous] is defined
+                  and totals[periods[current].start].conversions and totals[periods[previous].start].conversions %}
+                  {% set percent = (totals[periods[current].start].conversions / totals[periods[previous].start].conversions) * 100 - 100 %}
+                {% endif %}
+                <h6 id="conversions-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+                  <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+                </h6>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <canvas id="ppc-chart" width="400" height="300"></canvas>
+        </div>
+      </div>
+    {% else %}
+      <div class="alert alert-danger">Sorry, there is not enough data to display.</div>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
+{% block footer_scripts %}
+  {{ parent() }}
+  {% if not forbidden and periods and totals and counts %}
+  <script>
+    var totals  = {{ totals|json_encode|raw }};
+    var counts  = {{ counts|json_encode|raw }};
+    var periods = {{ periods|json_encode|raw }};
+  </script>
+  <script src="/assets/js/Chart.bundle.min.js"></script>
+  <script src="/assets/js/paid-ads/ppc-chart.js"></script>
+  <script src="/assets/js/paid-ads/index.js"></script>
+  {% else %}
+    <script>
+    $(document).ready(function() {
+      $('.forbidden-modal').modal({backdrop: 'static', keyboard: false});
+    });
+    </script>
+  {% endif %}
+{% endblock %}
+

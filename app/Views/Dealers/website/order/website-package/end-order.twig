@@ -1,0 +1,39 @@
+{% extends 'Dealers/website/order/order.twig' %}
+{% block title %}Great Job!{% endblock %}
+{% block order_page_title %}Great Job!{% endblock %}
+{% block order_page_top_description %}
+<h2 class="text-center">You have made your basic website selections for your website with Place1SEO.</h2>
+<p>Please review your selections and Click on the “Save and Continue” button to move on to the next section to add
+your Company Information.</p>
+<h2 class="text-center">Please review your selections and click on the box to make any needed change:</h2>
+<div class="row mt-5 mb-3">
+  <div class="col-12 table-responsive">
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <td width="33.3%">You have selected {{ costs.products.options[order.costs.products - 1].title }}</td>
+          <td width="33.3%">You have {% if costs.specsheets.options[order.costs.specsheets - 1].title == 'No' %}not{% endif %} selected to have Spec Sheets</td>
+          <td width="33.3%">You {% if costs.ecommerce.options[order.costs.ecommerce - 1].title == 'No' %}do not{% endif %} want a shopping cart and {% if costs.pricing.options[order.costs.pricing - 1].title == 'No' %}do not{% endif %} want pricing</td>
+        </tr>
+      </tbody>
+      <tfoot class="bg-secondary text-white">
+        <tr>
+          <td><b>Subtotal</b></td>
+          <td><b>Monthly Fees:</b>
+            {{ costs.products.options[order.costs.products - 1].cost
+            + costs.specsheets.options[order.costs.specsheets - 1].cost
+            + costs.ecommerce.options[order.costs.ecommerce - 1].cost
+            + costs.pricing.options[order.costs.pricing - 1].cost }}</td>
+          <td><b>Start Up Cost:</b>
+            {{ costs.products.options[order.costs.products - 1].setup
+            + costs.specsheets.options[order.costs.specsheets - 1].setup
+            + costs.ecommerce.options[order.costs.ecommerce - 1].setup
+            + costs.pricing.options[order.costs.pricing - 1].setup }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block order_buttons %}{% endblock %}
+{% block order_table %}{% endblock %}

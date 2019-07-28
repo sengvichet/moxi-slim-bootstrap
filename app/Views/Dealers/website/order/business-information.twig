@@ -1,0 +1,42 @@
+{% extends 'Dealers/layouts/order.twig' %}
+{% block title %}Business Information{% endblock %}
+{% block header_styles %}
+  <link href="/assets/css/material-switch.css" rel="stylesheet">
+  <link href="/assets/css/checkbox.css" rel="stylesheet">
+{% endblock %}
+{% block footer_scripts %}
+  {{ parent() }}
+  <script>var page = '{{ page }}';</script>
+  <script src="/assets/js/company-profile/contact-information.js"></script>
+  <script src="/assets/js/company-profile/essential-information.js"></script>
+  <script src="/assets/js/website/business-information.js"></script>
+{% endblock %}
+{% block order_page_title %}Business Information{% endblock %}
+{% block order_form_action %}/{{ action.form }}{% endblock %}
+{% block order_buttons %}
+  <p>Is the information on the right correct?</p>
+  <div class="row mb-3">
+    <div class="col-sm-12">
+      <button type="button" class="btn btn-block btn-lg btn-warning edit-info-button">Edit</button>
+    </div>
+  </div>
+  <input type="hidden" name="order_id" value="{{ order.order.id }}">
+{% endblock %}
+{% block order_table %}
+  <div id="contact-information-div">
+    <form></form>
+    {% include 'Dealers/partials/topbar/company-profile.twig' %}
+    <div class="tab-content mt-3" id="nav-tabContent">
+    {% for tab in tabs %}
+      {% if page in tab.pages %}
+        <div class="tab-pane fade {% if messages.tab is defined %}
+          {% if messages.tab.name == tab.name %}show active{% endif %}
+          {% else %}{% if loop.first %}show active{% endif %}{% endif %}"
+          id="nav-{{ tab.name }}" role="tabpanel" aria-labelledby="nav-{{ tab.name }}-tab">
+          {% include 'Dealers/company-profile/' ~ tab.name ~ '.twig' %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+{% endblock %}

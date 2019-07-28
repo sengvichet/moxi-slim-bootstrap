@@ -1,0 +1,213 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - Paid Ads{% endblock %}
+
+{% block header_styles %}
+  {{ parent() }}
+  <link rel="stylesheet" type="text/css" href="/assets/DataTables/datatables.min.css">
+{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/home-button.twig' %}
+<h1>Admin - Paid Ads</h1>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Add Paid Ads Data</h3>
+  </div>
+  <div class="card-body">
+    {% include 'Dealers/partials/errors.twig' %}
+    <form action="/{{ action.save }}" method="POST" class="needs-validation" novalidate>
+      <div class="row">
+        <!-- Dealer -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="dealer-select">Dealer</label>
+          <select id="dealer-select" name="dealer" required
+            class="form-control
+            {% if messages.error.dealer is defined %}is-invalid{% endif %}">
+            {% for dealer in dealers %}
+              <option value="{{ dealer.id }}"
+                {% if messages.input.dealer is defined and messages.input.dealer == dealer.id %}selected{% endif %}>
+                  {% if dealer.first_name or dealer.last_name %}{{ dealer.first_name }} {{ dealer.last_name }}{% else %}{{ dealer.email }}{% endif %}
+              </option>
+            {% endfor %}
+          </select>
+          {% if messages.error.dealer is defined %}
+            {% for error in messages.error.dealer %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid dealer.</div>
+          {% endif %}
+        </div>
+        <!-- Year -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="year-input">Year</label>
+          <input type="number" name="year" id="year-input" required class="form-control
+            {% if messages.error.year is defined %}is-invalid{% endif %}"
+            min="{{ 'now'|date('Y') - 1 }}" max="{{ 'now'|date('Y') }}"
+            placeholder="{{ 'now'|date('Y') }}"
+            value="{% if messages.input.year is defined %}{{ messages.input.year }}{% endif %}">
+          {% if messages.error.year is defined %}
+            {% for error in messages.error.year %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid year.</div>
+          {% endif %}
+        </div>
+        <!-- Month -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="month-select">Month</label>
+          <select name="month" id="month-input" required
+            class="form-control
+            {% if messages.error.month is defined %}is-invalid{% endif %}">
+            {% for month in ['january', 'february', 'march', 'april', 'may', 'june',
+              'july', 'august', 'september', 'october', 'november', 'december'] %}
+              <option value="{{ loop.index }}"
+                {% if messages.input.month is defined and messages.input.month == loop.index %}selected{% endif %}>
+                {{ month|capitalize }}
+              </option>
+            {% endfor %}
+          </select>
+          {% if messages.error.month is defined %}
+            {% for error in messages.error.month %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid month.</div>
+          {% endif %}
+        </div>
+        <!-- Impressions -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="impressions-input">Impressions</label>
+          <input type="number" name="impressions" id="impressions-input" required
+            class="form-control
+            {% if messages.error.impressions is defined %}is-invalid{% endif %}"
+            min="{{ fields.impressions.min_value }}"
+            max="{{ fields.impressions.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.impressions is defined %}{{ messages.input.impressions }}{% endif %}">
+          {% if messages.error.impressions is defined %}
+            {% for error in messages.error.impressions %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid impressions number.</div>
+          {% endif %}
+        </div>
+        <!-- Clicks -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="clicks-input">Clicks</label>
+          <input type="number" name="clicks" id="clicks-input" required
+            class="form-control
+            {% if messages.error.clicks is defined %}is-invalid{% endif %}"
+            min="{{ fields.clicks.min_value }}"
+            max="{{ fields.clicks.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.clicks is defined %}{{ messages.input.clicks }}{% endif %}">
+          {% if messages.error.clicks is defined %}
+            {% for error in messages.error.clicks %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid clicks number.</div>
+          {% endif %}
+        </div>
+        <!-- Conversions -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="conversions-input">Conversions</label>
+          <input type="number" name="conversions" id="conversions-input" required
+            class="form-control
+            {% if messages.error.conversions is defined %}is-invalid{% endif %}"
+            min="{{ fields.conversions.min_value }}"
+            max="{{ fields.conversions.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.conversions is defined %}{{ messages.input.conversions }}{% endif %}">
+          {% if messages.error.conversions is defined %}
+            {% for error in messages.error.conversions %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid conversion number.</div>
+          {% endif %}
+        </div>
+        <!-- Spend -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="spend-input">Spend</label>
+          <input type="number" name="spend" id="spend-input" required
+            class="form-control
+            {% if messages.error.spend is defined %}is-invalid{% endif %}"
+            min="{{ fields.spend.min_value }}"
+            max="{{ fields.spend.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.spend is defined %}{{ messages.input.spend }}{% endif %}">
+          {% if messages.error.spend is defined %}
+            {% for error in messages.error.spend %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid spend number.</div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary float-right">Create</button>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Dealers Paid Ads Data</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="paid-ads-data-table">
+          <thead>
+            <tr>
+              <th>Dealer</th>
+              <th>Year</th>
+              <th>Month</th>
+              <th>Impressions</th>
+              <th>Clicks</th>
+              <th>Conversions</th>
+              <th>Spend</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in data %}
+              {% set dealer = dealers[row.dealer_id] %}
+              <tr>
+                <td>{% if dealer.first_name or dealer.last_name %}
+                  {{ dealer.first_name }} {{ dealer.last_name }}
+                {% else %}{{ dealer.email }}{% endif %}</td>
+                <td>{{ row.date|date('Y') }}</td>
+                <td>{{ row.date|date('F') }}</td>
+                <td>{{ row.impressions }}</td>
+                <td>{{ row.clicks }}</td>
+                <td>{{ row.conversions }}</td>
+                <td>{{ row.spend }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Dealer</th>
+              <th>Year</th>
+              <th>Month</th>
+              <th>Impressions</th>
+              <th>Clicks</th>
+              <th>Conversions</th>
+              <th>Spend</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer_scripts %}
+  <script src="/assets/DataTables/datatables.min.js"></script>
+  <script src="/assets/js/bootstrap-form-validation.js"></script>
+  <script src="/assets/js/admin/paid-ads.js"></script>
+{% endblock %}

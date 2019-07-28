@@ -1,0 +1,200 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - Users{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/home-button.twig' %}
+<h1>Admin - Dealers</h1>
+{% include 'Dealers/partials/errors.twig' %}
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Create New Dealer</h3>
+  </div>
+  <div class="card-body">
+    <form action="/{{ action.save }}" method="POST" class="needs-validation" novalidate>
+      <div class="row">
+        <div class="form-group col-sm-3">
+          <label for="dealer-email-input">Email</label>
+          <input type="email" name="email" placeholder="Email" required
+            id="dealer-email-input" class="form-control
+            {% if messages.errors.email is defined %}is-invalid{% endif %}"
+            value="{% if messages.input.email is defined %}{{ messages.input.email }}{% endif %}">
+            {% if messages.error.email is defined %}
+              {% for error in messages.error.email %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="invalid-feedback">Please provide a valid email.</div>
+            {% endif %}
+        </div>
+        <div class="form-group col-sm-3">
+          <label for="dealer-password-input">Password</label>
+          <input type="password" name="password" placeholder="Password" required
+            id="dealer-password-input" class="form-control
+            {% if messages.errors.password is defined %}is-invalid{% endif %}"
+            value="">
+          {% if messages.error.password is defined %}
+            {% for error in messages.error.password %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid password.</div>
+          {% endif %}
+        </div>
+            <div class="form-group col-sm-3">
+          <label for="dealer-account-select">Portal Type</label>
+          <select name="portal_type" id="portal-type-select"
+            class="form-control
+            {% if messages.errors.portal_type is defined %}is-invalid{% endif %}">
+            <option value="0">Place1SEO Portal</option>
+            <option value="1">Moxxi Marketing Portal</option>
+          </select>
+          {% if messages.error.portal_type is defined %}
+            {% for error in messages.error.portal_type %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid type.</div>
+          {% endif %}
+        </div>
+        <div class="form-group col-sm-3">
+          <label for="dealer-account-select">GMB Account</label>
+          <select name="account_id" id="dealer-account-select"
+            class="form-control
+            {% if messages.errors.account_id is defined %}is-invalid{% endif %}">
+            <option value="0">No GMB Account</option>
+            {% for account in accounts %}
+              <option value="{{ account.account_id }}"
+              {% if messages.input.account_id is defined and messages.input.account_id == account.account_id %}selected{% endif %}>{{ account.account_name }}</option>
+            {% endfor %}
+          </select>
+          {% if messages.error.account_id is defined %}
+            {% for error in messages.error.account_id %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid account.</div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary float-right">Create</button>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Update Dealer</h3>
+  </div>
+  <div class="card-body">
+    <form action="/{{ action.save }}" method="POST" class="needs-validation" novalidate>
+      <div class="row">
+        <div class="form-group col-sm-4">
+          <label for="dealer-old-email-input">Old Email</label>
+          <select name="id" id="dealer-old-email-input" class="form-control" required>
+            {% for dealer in dealers %}
+              <option value="{{ dealer.id }}">{{ dealer.email }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-sm-4">
+          <label for="dealer-new-email-input">New Email</label>
+          <input type="email" name="email" placeholder="Email" required
+            id="dealer-new-email-input" class="form-control
+            {% if messages.errors.email is defined %}is-invalid{% endif %}"
+            value="{% if messages.input.email is defined %}{{ messages.input.email }}{% endif %}">
+            {% if messages.error.email is defined %}
+              {% for error in messages.error.email %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="invalid-feedback">Please provide a valid email.</div>
+            {% endif %}
+        </div>
+        <div class="form-group col-sm-4">
+          <label for="dealer-new-password-input">New Password</label>
+          <input type="password" name="password" placeholder="Password" required
+            id="dealer-new-password-input" class="form-control
+            {% if messages.errors.password is defined %}is-invalid{% endif %}"
+            value="">
+          {% if messages.error.password is defined %}
+            {% for error in messages.error.password %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid password.</div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary float-right">Update</button>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Dealers</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Location</th>
+          <th>Company</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dealer in dealers %}
+          <tr>
+            <td>{% if dealer.first_name or dealer.last_name %}{{ dealer.first_name }} {{ dealer.last_name }}{% else %}{{ dealer.email }}{% endif %}</td>
+            <td>
+              <form action="/{{ action.update }}" method="POST">
+              <div class="input-group">
+                <select name="account_id" id="dealer-account-select-{{ dealer.id }}" class="form-control"
+                  {% if dealer.account_id %}disabled{% endif %}>
+                  <option value="0">No GMB Account</option>
+                  {% for account in accounts %}
+                    <option value="{{ account.account_id }}"
+                    {% if dealer.account_id == account.account_id %}selected{% endif %}>{{ account.account_name }}</option>
+                  {% endfor %}
+                </select>
+                {% if not dealer.account_id %}
+                <div class="input-group-append">
+                  <input type="hidden" name="dealer_id" value="{{ dealer.id }}">
+                  <button class="btn btn-primary" type="submit">Assign Location</button>
+                </div>
+                {% endif %}
+                </form>
+              </div>
+            </td>
+            <td>
+              {% if not dealer.company_id %}
+                {% if dealer.account_id %}
+                  <button class="btn btn-primary create-company-button" type="button" data-dealer="{{ dealer.id }}">
+                    Create Company
+                  </button>
+                {% else %}
+                  <span class="font-small">You can create a company based on the location data<br> after you assign a location.</span>
+                {% endif %}
+              {% else %}
+                {{ dealer.company_name }}
+              {% endif %}
+            </td>
+            <td>
+              <form action="/{{ action.delete }}/{{ dealer.id }}">
+                <button class="btn btn-danger delete-dealer-button"><i class="fa fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block footer_scripts %}
+  <script src="/assets/js/sweetalert2.all.min.js"></script>
+  <script src="/assets/js/bootstrap-form-validation.js"></script>
+  <script>var createCompanyUrl = '/{{ action.create }}';</script>
+  <script src="/assets/js/admin/dealers.js"></script>
+{% endblock %}

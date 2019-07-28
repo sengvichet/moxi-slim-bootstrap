@@ -1,0 +1,241 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - Social Media{% endblock %}
+
+{% block header_styles %}
+  {{ parent() }}
+  <link rel="stylesheet" type="text/css" href="/assets/DataTables/datatables.min.css">
+{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/home-button.twig' %}
+<h1>Admin - Social Media</h1>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Add Social Media Data</h3>
+  </div>
+  <div class="card-body">
+    {% include 'Dealers/partials/errors.twig' %}
+    <form action="/{{ action.save }}" method="POST" class="needs-validation" novalidate>
+      <div class="row">
+        <!-- Dealer -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="dealer-select">Dealer</label>
+          <select id="dealer-select" name="dealer" required
+            class="form-control
+            {% if messages.error.dealer is defined %}is-invalid{% endif %}">
+            {% for dealer in dealers %}
+              <option value="{{ dealer.id }}"
+                {% if messages.input.dealer is defined and messages.input.dealer == dealer.id %}selected{% endif %}>
+                  {% if dealer.first_name or dealer.last_name %}{{ dealer.first_name }} {{ dealer.last_name }}{% else %}{{ dealer.email }}{% endif %}
+              </option>
+            {% endfor %}
+          </select>
+          {% if messages.error.dealer is defined %}
+            {% for error in messages.error.dealer %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid dealer.</div>
+          {% endif %}
+        </div>
+        <!-- Year -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="year-input">Year</label>
+          <input type="number" name="year" id="year-input" required class="form-control
+            {% if messages.error.year is defined %}is-invalid{% endif %}"
+            min="{{ 'now'|date('Y') - 1 }}" max="{{ 'now'|date('Y') }}"
+            placeholder="{{ 'now'|date('Y') }}"
+            value="{% if messages.input.year is defined %}{{ messages.input.year }}{% endif %}">
+          {% if messages.error.year is defined %}
+            {% for error in messages.error.year %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid year.</div>
+          {% endif %}
+        </div>
+        <!-- Month -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="month-select">Month</label>
+          <select name="month" id="month-input" required
+            class="form-control
+            {% if messages.error.month is defined %}is-invalid{% endif %}">
+            {% for month in ['january', 'february', 'march', 'april', 'may', 'june',
+              'july', 'august', 'september', 'october', 'november', 'december'] %}
+              <option value="{{ loop.index }}"
+                {% if messages.input.month is defined and messages.input.month == loop.index %}selected{% endif %}>
+                {{ month|capitalize }}
+              </option>
+            {% endfor %}
+          </select>
+          {% if messages.error.month is defined %}
+            {% for error in messages.error.month %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid month.</div>
+          {% endif %}
+        </div>
+        <!-- Day of Week -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="day-select">Day Of Week</label>
+          <select name="day" id="day-select" required
+            class="form-control
+            {% if messages.error.day is defined %}is-invalid{% endif %}">
+            {% for day in ['monday', 'tuesday', 'wednesday', 'thursday',
+              'friday', 'saturday', 'sunday'] %}
+              <option value="{{ day }}"
+                {% if messages.input.day is defined and messages.input.day == day %}selected{% endif %}>
+                {{ day|capitalize }}
+              </option>
+            {% endfor %}
+          </select>
+          {% if messages.error.day is defined %}
+            {% for error in messages.error.day %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid day of week.</div>
+          {% endif %}
+        </div>
+        <!-- Platform -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="platform-select">Platform</label>
+          <select id="platform-select" name="platform" required
+            class="form-control
+            {% if messages.error.platform is defined %}is-invalid{% endif %}">
+            {% for platform in platforms %}
+              <option value="{{ platform.id }}"
+                {% if messages.input.platform is defined and messages.input.platform == platform.id %}selected{% endif %}>
+                  {{ platform.title }}
+              </option>
+            {% endfor %}
+          </select>
+          {% if messages.error.platform is defined %}
+            {% for error in messages.error.platform %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid platform.</div>
+          {% endif %}
+        </div>
+        <!-- Posts -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="posts-input">Posts</label>
+          <input type="number" name="posts" id="post-input" required
+            class="form-control
+            {% if messages.error.posts is defined %}is-invalid{% endif %}"
+            min="{{ fields.posts.min_value }}"
+            max="{{ fields.posts.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.posts is defined %}{{ messages.input.posts }}{% endif %}">
+          {% if messages.error.posts is defined %}
+            {% for error in messages.error.posts %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid posts number.</div>
+          {% endif %}
+        </div>
+        <!-- Engagements -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="engagements-input">Engagements</label>
+          <input type="number" name="engagements" id="engagements-input" required
+            class="form-control
+            {% if messages.error.engagements is defined %}is-invalid{% endif %}"
+            min="{{ fields.engagements.min_value }}"
+            max="{{ fields.engagements.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.engagements is defined %}{{ messages.input.engagements }}{% endif %}">
+          {% if messages.error.engagements is defined %}
+            {% for error in messages.error.engagements %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid engagements number.</div>
+          {% endif %}
+        </div>
+        <!-- Impressions -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="impressions-input">Impressions</label>
+          <input type="number" name="impressions" id="impressions-input"
+            class="form-control
+            {% if messages.error.impressions is defined %}is-invalid{% endif %}"
+            min="{{ fields.impressions.min_value }}"
+            max="{{ fields.impressions.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.impressions is defined %}{{ messages.input.impressions }}{% endif %}">
+          {% if messages.error.impressions is defined %}
+            {% for error in messages.error.impressions %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid impressions number.</div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary float-right">Create</button>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Dealers Social Media Data</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="social-media-data-table">
+          <thead>
+            <tr>
+              <th>Dealer</th>
+              <th>Year</th>
+              <th>Month</th>
+              <th>Day of Week</th>
+              <th>Platform</th>
+              <th>Posts</th>
+              <th>Engagements</th>
+              <th>Impressions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in data %}
+              {% set dealer = dealers[row.dealer_id] %}
+              <tr>
+                <td>{% if dealer.first_name or dealer.last_name %}
+                  {{ dealer.first_name }} {{ dealer.last_name }}
+                {% else %}{{ dealer.email }}{% endif %}</td>
+                <td>{{ row.date|date('Y') }}</td>
+                <td>{{ row.date|date('F') }}</td>
+                <td>{{ row.day_of_week|capitalize }}</td>
+                <td>{{ platforms[row.social_media_id].title }}</td>
+                <td>{{ row.posts }}</td>
+                <td>{{ row.engagements }}</td>
+                <td>{{ (row.impressions == null) ? 'N/A' : row.impressions }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Dealer</th>
+              <th>Year</th>
+              <th>Month</th>
+              <th>Day of Week</th>
+              <th>Platform</th>
+              <th>Posts</th>
+              <th>Engagements</th>
+              <th>Impressions</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer_scripts %}
+  <script src="/assets/DataTables/datatables.min.js"></script>
+  <script src="/assets/js/bootstrap-form-validation.js"></script>
+  <script src="/assets/js/admin/social-media.js"></script>
+{% endblock %}

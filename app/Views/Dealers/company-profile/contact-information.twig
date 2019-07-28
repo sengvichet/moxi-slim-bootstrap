@@ -1,0 +1,460 @@
+<h5 class="text-uppercase">Business Information</h5>
+{% include 'Dealers/partials/errors.twig' %}
+<form action="/{{ contact_information.action }}" method="POST" id="contact-information-form" class="needs-validation" novalidate>
+  <input type="hidden" name="company_id" value="{% if contact_information.data.company %}{{ contact_information.data.company.id }}{% endif %}">
+  <div class="form-group row">
+    <label for="business-name-input" class="col-sm-3 col-form-label">Business Name</label>
+    <div class="col-sm-9">
+      <input type="text" id="business-name-input"
+        class="form-control {% if messages.error.company.business_name is defined %}is-invalid{% endif %}"
+        name="business_name" placeholder="Business Name" required
+        maxlength="{{ fields.company.business_name.max_length }}"
+        value="{% if messages.input.business_name is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.business_name }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.business_name }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.business_name is defined %}
+        {% for error in messages.error.company.business_name %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid business name.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="brand-name-input" class="col-sm-3 col-form-label">Brand Name</label>
+    <div class="col-sm-9">
+      <input type="text" id="brand-name-input"
+        class="form-control {% if messages.error.company.brand_name is defined %}is-invalid{% endif %}"
+        name="brand_name" placeholder="Brand Name" required
+        maxlength="{{ fields.company.brand_name.max_length }}"
+        value="{% if messages.input.brand_name is defined and messages.error.count is defined and messages.error.count  %}{{ messages.input.brand_name }}{% else %}{% if contact_information.data.company.brand_name is defined %}{{ contact_information.data.company.brand_name }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.brand_name is defined %}
+        {% for error in messages.error.company.brand_name %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid brand name.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="categories-input" class="col-sm-3 col-form-label">Service Categories</label>
+    <div class="col-sm-9">
+      <select id="categories-input" data-role="tagsinput" multiple>
+        {% if contact_information.data.categories is defined %}
+          {% for category in contact_information.data.categories %}
+            <option value="{{ category.id }}">{{ category.title }}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+      <input type="hidden" name="categories" value="">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="opening-date-input" class="col-sm-3 col-form-label">Opening Date</label>
+    <div class="col-sm-9">
+      <input type="date" id="opening-date-input" name="opening_date"
+        class="form-control {% if messages.error.company.opening_date is defined %}is-invalid{% endif %}"
+        value="{% if messages.input.opening_date is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.opening_date }}{% else %}{% if contact_information.data.company.opening_date is defined %}{{ contact_information.data.company.opening_date }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.opening_date is defined %}
+        {% for error in messages.error.company.opening_date %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid opening date.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="street-address-input" class="col-sm-3 col-form-label">Street Address</label>
+    <div class="col-sm-9">
+      <input type="text" id="street-address-input"
+        class="form-control {% if messages.error.company.street_address is defined %}is-invalid{% endif %}"
+        name="street_address" placeholder="Street Address" required
+        maxlength="{{ fields.company.street_address.max_length }}"
+        value="{% if messages.input.street_address is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.street_address }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.street }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.street_address is defined %}
+        {% for error in messages.error.company.street_address %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid street.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="street-address-input" class="col-sm-3 col-form-label">Address Line 2</label>
+    <div class="col-sm-9">
+      <input type="text" id="address-line-2-input"
+        class="form-control {% if messages.error.company.address_line_2 is defined %}is-invalid{% endif %}"
+        name="address_line_2" placeholder="Address Line 2"
+        maxlength="{{ fields.company.address_line_2.max_length }}"
+        value="{% if messages.input.address_line_2 is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.address_line_2 }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.address_line_2 }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.address_line_2 is defined %}
+        {% for error in messages.error.company.address_line_2 %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid address line 2.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="city-input" class="col-sm-3 col-form-label">City</label>
+    <div class="col-sm-9">
+      <input type="text" id="city-input" name="city"
+        class="form-control {% if messages.error.company.city is defined %}is-invalid{% endif %}"
+        placeholder="City" required maxlength="{{ fields.company.city.max_length }}"
+        value="{% if messages.input.city is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.city }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.city }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.city is defined %}
+        {% for error in messages.error.company.city %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid city.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="state-input" class="col-sm-3 col-form-label">State</label>
+    <div class="col-sm-9">
+      <input type="text" id="state-input" name="state"
+        class="form-control {% if messages.error.company.state is defined %}is-invalid{% endif %}"
+        placeholder="State" required maxlength="{{ fields.company.state.max_length }}"
+        value="{% if messages.input.state is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.state }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.state }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.state is defined %}
+        {% for error in messages.error.company.state %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid state.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="zip-code-input" class="col-sm-3 col-form-label">Zip Code</label>
+    <div class="col-sm-9">
+      <input type="text" id="zip-code-input" name="zip_code"
+        class="form-control {% if messages.error.company.zip_code is defined %}is-invalid{% endif %}"
+        placeholder="" required maxlength="{{ fields.company.zip_code.max_length }}"
+        value="{% if messages.input.zip_code is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.zip_code }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.zip }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.zip_code is defined %}
+        {% for error in messages.error.company.zip_code %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid zip code.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="website-input" class="col-sm-3 col-form-label">Website URL</label>
+    <div class="col-sm-9">
+      <input type="url" id="website-input" name="website"
+        class="form-control {% if messages.error.company.website is defined %}is-invalid{% endif %}"
+        placeholder="http://website.net" required maxlength="{{ fields.company.website.max_length }}"
+        value="{% if messages.input.website is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.website }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.website }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.website is defined %}
+        {% for error in messages.error.company.website %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Hint: try pasting your website link directly from the web browser.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="company-phone-input" class="col-sm-3 col-form-label">Company Phone</label>
+    <div class="col-sm-9">
+      <input type="tel" id="company-phone-input" name="company_phone"
+      class="form-control {% if messages.error.company.company_phone is defined %}is-invalid{% endif %}"
+      placeholder="" required maxlength="{{ fields.company.company_phone.max_length }}"
+      value="{% if messages.input.company_phone is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.company_phone }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.phone }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.company_phone is defined %}
+        {% for error in messages.error.company.company_phone %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid phone.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="company-email-input" class="col-sm-3 col-form-label">Company Email</label>
+    <div class="col-sm-9">
+      <input type="email" id="company-email-input" name="company_email"
+        class="form-control {% if messages.error.company.company_email is defined %}is-invalid{% endif %}"
+        placeholder="company@email.net" required
+        value="{% if messages.input.company_email is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.company_email }}{% else %}{% if contact_information.data.company %}{{ contact_information.data.company.email }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.company.company_email is defined %}
+        {% for error in messages.error.company.company_email %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid email.</div>
+      {% endif %}
+    </div>
+  </div>
+  <h6 class="font-italic">Primary Company Contact:</h6>
+  <input type="hidden" name="primary_contact_id" value="{% if contact_information.data.contacts.primary[0] is defined %}{{ contact_information.data.contacts.primary[0].id }}{% endif %}">
+  <div class="form-group row">
+    <label for="primary-contact-first-name-input" class="col-sm-3 col-form-label">First Name</label>
+    <div class="col-sm-9">
+      <input type="text" id="primary-contact-first-name-input"
+        class="form-control {% if messages.error.primary_contact.primary_contact_first_name is defined %}is-invalid{% endif %}"
+        name="primary_contact_first_name" placeholder="First Name" required
+        maxlength="{{ fields.contact.primary_contact_first_name.max_length }}"
+        value="{% if messages.input.primary_contact_first_name is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.primary_contact_first_name }}{% else %}{% if contact_information.data.contacts.primary[0] is defined%}{{ contact_information.data.contacts.primary[0].first_name }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.primary_contact.primary_contact_first_name is defined %}
+        {% for error in messages.error.primary_contact.primary_contact_first_name %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid first name.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="primary-contact-last-name-input" class="col-sm-3 col-form-label">Last Name</label>
+    <div class="col-sm-9">
+      <input type="text" id="primary-contact-last-name-input"
+        class="form-control {% if messages.error.primary_contact.primary_contact_last_name is defined %}is-invalid{% endif %}"
+      name="primary_contact_last_name" placeholder="Last Name" required
+      maxlength="{{ fields.contact.primary_contact_last_name.max_length }}"
+      value="{% if messages.input.primary_contact_last_name is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.primary_contact_last_name }}{% else %}{% if contact_information.data.contacts.primary[0] is defined %}{{ contact_information.data.contacts.primary[0].last_name }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.primary_contact.primary_contact_last_name is defined %}
+        {% for error in messages.error.primary_contact.primary_contact_last_name %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid last name.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="primary-contact-position-input" class="col-sm-3 col-form-label">Position</label>
+    <div class="col-sm-9">
+      <input type="text" id="primary-contact-position-input"
+        class="form-control {% if messages.error.primary_contact.primary_contact_position is defined %}is-invalid{% endif %}"
+        name="primary_contact_position" placeholder="Position" required
+        maxlength="{{ fields.contact.primary_contact_position.max_length }}"
+        value="{% if messages.input.primary_contact_position is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.primary_contact_position }}{% else %}{% if contact_information.data.contacts.primary[0] is defined %}{{ contact_information.data.contacts.primary[0].position }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.primary_contact.primary_contact_position is defined %}
+        {% for error in messages.error.primary_contact.primary_contact_position %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid position.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="primary-contact-email-input" class="col-sm-3 col-form-label">Email</label>
+    <div class="col-sm-9">
+      <input type="email" id="primary-contact-email-input"
+        class="form-control {% if messages.error.primary_contact.primary_contact_email is defined %}is-invalid{% endif %}"
+        name="primary_contact_email" placeholder="primary@email.net" required
+        value="{% if messages.input.primary_contact_email is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.primary_contact_email }}{% else %}{% if contact_information.data.contacts.primary[0] is defined %}{{ contact_information.data.contacts.primary[0].email }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.primary_contact.primary_contact_email is defined %}
+        {% for error in messages.error.primary_contact.primary_contact_email %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid email.</div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="primary-contact-mobile-number-input" class="col-sm-3 col-form-label">Mobile Number</label>
+    <div class="col-sm-9">
+      <input type="tel" id="primary-contact-mobile-number-input"
+        class="form-control {% if messages.error.primary_contact.primary_contact_mobile_number is defined %}is-invalid{% endif %}"
+        name="primary_contact_mobile_number" placeholder=""
+        maxlength="{{ fields.contact.primary_contact_mobile_number.max_length }}"
+        value="{% if messages.input.primary_contact_mobile_number is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.primary_contact_mobile_number }}{% else %}{% if contact_information.data.contacts.primary[0] is defined %}{{ contact_information.data.contacts.primary[0].mobile_number }}{% endif %}{% endif %}">
+      <div class="valid-feedback">Looks good!</div>
+      {% if messages.error.primary_contact.primary_contact_mobile_number is defined %}
+        {% for error in messages.error.primary_contact.primary_contact_mobile_number %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        <div class="invalid-feedback">Please provide a valid mobile number.</div>
+      {% endif %}
+    </div>
+  </div>
+  {% if contact_information.data.contacts.additional is defined and contact_information.data.contacts.additional|length %}
+    {% for additional in contact_information.data.contacts.additional %}
+      <div class="additional-contact-form-group">
+        <h6 class="font-italic">Additional Key Personnel {{ loop.index }}<br>(recommended):</h6>
+        <input type="hidden" name="additional_contact_id[]" value="{{ additional.id }}">
+        <div class="form-group row">
+          <label for="additional-contact-first-name-input-{{ loop.index }}" class="col-sm-3 col-form-label">First Name</label>
+          <div class="col-sm-9">
+            <input type="text" id="additional-contact-first-name-input-{{ loop.index }}"
+              class="form-control required {% if messages.error.additional_contact[loop.index - 1].additional_contact_first_name is defined %}is-invalid{% endif %}"
+              name="additional_contact_first_name[]" placeholder="First Name"
+              maxlength="{{ fields.contact.additional_contact_first_name.max_length }}"
+              value="{% if messages.input.additional_contact_first_name[loop.index - 1] is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.additional_contact_first_name[loop.index - 1] }}{% else %}{{ additional.first_name }}{% endif %}">
+            <div class="valid-feedback">Looks good!</div>
+            {% if messages.error.additional_contact[loop.index - 1].additional_contact_first_name is defined %}
+              {% for error in messages.error.additional_contact[loop.index - 1].additional_contact_first_name %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="invalid-feedback">Please provide a valid first name.</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="additional-contact-last-name-input-{{ loop.index }}" class="col-sm-3 col-form-label">Last Name</label>
+          <div class="col-sm-9">
+            <input type="text" id="additional-contact-last-name-input-{{ loop.index }}"
+              class="form-control required {% if messages.error.additional_contact[loop.index - 1].additional_contact_last_name is defined %}is-invalid{% endif %}"
+            name="additional_contact_last_name[]" placeholder="Last Name"
+            maxlength="{{ fields.contact.additional_contact_last_name.max_length }}"
+            value="{% if messages.input.additional_contact_last_name[loop.index - 1] is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.additional_contact_last_name[loop.index - 1] }}{% else %}{{ additional.last_name }}{% endif %}">
+            <div class="valid-feedback">Looks good!</div>
+            {% if messages.error.additional_contact[loop.index - 1].additional_contact_last_name is defined %}
+              {% for error in messages.error.additional_contact[loop.index - 1].additional_contact_last_name %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="invalid-feedback">Please provide a valid last name.</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="additional-contact-position-input-{{ loop.index }}" class="col-sm-3 col-form-label">Position</label>
+          <div class="col-sm-9">
+            <input type="text" id="additional-contact-position-input-{{ loop.index }}"
+              class="form-control required {% if messages.error.additional_contact[loop.index - 1].additional_contact_position is defined %}is-invalid{% endif %}"
+              name="additional_contact_position[]" placeholder="Position"
+              maxlength="{{ fields.contact.additional_contact_position.max_length }}"
+              value="{% if messages.input.additional_contact_position[loop.index - 1] is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.additional_contact_position[loop.index - 1] }}{% else %}{{ additional.position }}{% endif %}">
+            <div class="valid-feedback">Looks good!</div>
+            {% if messages.error.additional_contact[loop.index - 1].additional_contact_position is defined %}
+              {% for error in messages.error.additional_contact[loop.index - 1].additional_contact_position %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="invalid-feedback">Please provide a valid position.</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="additional-contact-email-input-{{ loop.index }}" class="col-sm-3 col-form-label">Email</label>
+          <div class="col-sm-9">
+            <input type="email" id="additional-contact-email-input-{{ loop.index }}"
+              class="form-control required {% if messages.error.additional_contact[loop.index - 1].additional_contact_email is defined %}is-invalid{% endif %}"
+              name="additional_contact_email[]" placeholder="additional@email.net"
+              value="{% if messages.input.additional_contact_email[loop.index - 1] is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.additional_contact_email[loop.index - 1] }}{% else %}{{ additional.email }}{% endif %}">
+            <div class="valid-feedback">Looks good!</div>
+            {% if messages.error.additional_contact[loop.index - 1].additional_contact_email is defined %}
+              {% for error in messages.error.additional_contact[loop.index - 1].additional_contact_email %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="invalid-feedback">Please provide a valid email.</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="additional-contact-mobile-number-input-{{ loop.index }}" class="col-sm-3 col-form-label">Mobile Number</label>
+          <div class="col-sm-9">
+            <input type="tel" id="additional-contact-mobile-number-input-{{ loop.index }}"
+              class="form-control {% if messages.error.additional_contact[loop.index - 1].additional_contact_mobile_number is defined %}is-invalid{% endif %}"
+              name="additional_contact_mobile_number[]" placeholder=""
+              maxlength="{{ fields.contact.additional_contact_mobile_number.max_length }}"
+              value="{% if messages.input.additional_contact_mobile_number[loop.index - 1] is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.additional_contact_mobile_number[loop.index - 1] }}{% else %}{{ additional.mobile_number }}{% endif %}">
+            <div class="valid-feedback">Looks good!</div>
+            {% if messages.error.additional_contact[loop.index - 1].additional_contact_mobile_number is defined %}
+              {% for error in messages.error.additional_contact[loop.index - 1].additional_contact_mobile_number %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="invalid-feedback">Please provide a valid mobile number.</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="additional-contact-form-group">
+      <h6 class="font-italic">Additional Key Personnel<br>(recommended):</h6>
+      <input type="hidden" name="additional_contact_id[]" value="0">
+      <div class="form-group row">
+        <label for="additional-contact-first-name-input-{{ loop.index }}" class="col-sm-3 col-form-label">First Name</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control required" id="additional-contact-first-name-input-{{ loop.index }}"
+            name="additional_contact_first_name[]" placeholder="First Name"
+            maxlength="{{ fields.contact.additional_contact_first_name.max_length }}">
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please provide a valid first name.</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="additional-contact-last-name-input-{{ loop.index }}" class="col-sm-3 col-form-label">Last Name</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control required" id="additional-contact-last-name-input-{{ loop.index }}"
+            name="additional_contact_last_name[]" placeholder="Last Name"
+            maxlength="{{ fields.contact.additional_contact_last_name.max_length }}">
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please provide a valid last name.</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="additional-contact-position-input-{{ loop.index }}" class="col-sm-3 col-form-label">Position</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control required" id="additional-contact-position-input-{{ loop.index }}"
+            name="additional_contact_position[]" placeholder="Position"
+            maxlength="{{ fields.contact.additional_contact_position.max_length }}">
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please provide a valid position.</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="additional-contact-email-input-{{ loop.index }}" class="col-sm-3 col-form-label">Email</label>
+        <div class="col-sm-9">
+          <input type="email" class="form-control required" id="additional-contact-email-input-{{ loop.index }}"
+            name="additional_contact_email[]" placeholder="additional@email.net">
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please provide a valid email.</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="additional-contact-mobile-number-input-{{ loop.index }}" class="col-sm-3 col-form-label">Mobile Number</label>
+        <div class="col-sm-9">
+          <input type="tel" class="form-control" id="additional-contact-mobile-number-input-{{ loop.index }}"
+            name="additional_contact_mobile_number[]" placeholder=""
+            maxlength="{{ fields.contact.additional_contact_mobile_number.max_length }}">
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Please provide a valid mobile number.</div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <button class="btn btn-sm btn-primary" id="add-contact-button">+ Additional Key Personnel</button>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <input type="submit" class="btn btn-sm btn-success" id="submit-input" name="submit" value="Save changes">
+    </div>
+  </div>
+</form>

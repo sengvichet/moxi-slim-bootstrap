@@ -1,0 +1,209 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - GMB{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/home-button.twig' %}
+<h2 class="text-center mt-3 mb-3">Pull data from API</h2>
+<div class="card-group text-center mt-3">
+  <div class="card border-primary">
+      <div class="card-header">
+        <h3>Locations</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if locations is defined and locations|length %}
+            There {% if locations|length == 1 %}is{% else %}are{% endif %} <span class="badge badge-primary">{{ locations|length }}</span> location{% if locations|length > 1 %}s{% endif %}.
+          {% else %}
+            There are no locations yet.
+          {% endif %}
+        </p>
+        <p class="card-text">
+          {% if timestamps.location is defined and timestamps.location %}
+            Last time locations have been updated at <span class="badge badge-primary">{{ timestamps.location|date("F jS \\a\\t g:ia") }} GMT</span>.
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-footer">
+        <button type="button" class="btn btn-primary refresh-btn" data-type="location">Update Locations</button>
+      </div>
+    </div>
+  {#<div class="card border-primary">
+      <div class="card-header">
+        <h3>Locations Information</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if information is defined %}
+            There {% if information == 1 %}is{% else %}are{% endif %} <span class="badge badge-primary">{{ information }}</span> business{% if information > 1 %}es{% endif %}.
+          {% else %}
+            There are no locations information yet.
+          {% endif %}
+        </p>
+        <p class="card-text">
+          {% if timestamps.information is defined and timestamps.information %}
+            Last time businesses have been updated at <span class="badge badge-primary">{{ timestamps.information|date("F jS \\a\\t g:ia") }} GMT</span>.
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-footer">
+        <button type="button" class="btn btn-primary refresh-btn" data-type="information">Update Information</button>
+      </div>
+    </div>#}
+</div>
+<div class="card-group text-center mt-3">
+    <div class="card border-primary">
+      <div class="card-header">
+        <h3>Insights</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if timestamps is defined and timestamps.insight %}
+            Last time insights have been updated at <span class="badge badge-primary">{{ timestamps.insight|date("F jS \\a\\t g:ia") }} GMT</span>.
+          {% else %}
+            There are no insights yet.
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-footer">
+        <button type="button" class="btn btn-primary refresh-btn" data-type="insight">Update Insights</button>
+      </div>
+    </div>
+    <div class="card border-primary">
+      <div class="card-header">
+        <h3>Reviews</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if timestamps is defined and timestamps.review %}
+            Last time reviews have been updated at <span class="badge badge-primary">{{ timestamps.review|date("F jS \\a\\t g:ia") }} GMT</span>.
+          {% else %}
+            There are no reviews yet.
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-footer">
+        <button type="button" class="btn btn-primary refresh-btn" data-type="review">Update Reviews</button>
+      </div>
+    </div>
+  <div class="card border-primary">
+      <div class="card-header">
+        <h3>Posts</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if timestamps is defined and timestamps.post %}
+            Last time posts have been updated at <span class="badge badge-primary">{{ timestamps.post|date("F jS \\a\\t g:ia") }} GMT</span>.
+          {% else %}
+            There are no posts yet.
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-footer">
+        <button type="button" class="btn btn-primary refresh-btn" data-type="post">Update Posts</button>
+      </div>
+    </div>
+</div>
+<h2 class="text-center mt-3 mb-3">Push data to API</h2>
+<div class="card-group text-center mt-3">
+      <div class="card border-primary">
+      <div class="card-header">
+        <h3>Business</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if updates.business is defined and updates.business %}
+            There {% if updates.business == 1 %}is{% else %}are{% endif %}
+            <span class="badge badge-primary">{{ updates.business }}</span>
+            business{% if updates.business > 1 %}es{% endif %} to update.
+          {% else %}
+            There are no businesses to update yet.
+          {% endif %}
+        </p>
+        <p class="card-text">
+          {% if timestamps.business is defined and timestamps.business %}
+            Last time businesses have been updated at
+            <span class="badge badge-primary">{{ timestamps.business|date("F jS \\a\\t g:ia") }} GMT</span>.
+          {% else %}
+            Businesses have never been updated.
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="/{{ action.location }}" class="btn btn-primary">Review Information</a>
+        <button type="button" class="btn btn-primary refresh-btn" data-type="business">Update Information</button>
+      </div>
+    </div>
+    <div class="card border-primary">
+      <div class="card-header">
+        <h3>Reviews Replies</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if updates.reply is defined and updates.reply %}
+            There {% if updates.reply == 1 %}is{% else %}are{% endif %} <span class="badge badge-primary">{{ updates.reply }}</span> new {% if updates.reply == 1 %}reply{% else %}replies{% endif %}.
+          {% else %}
+            There are no new replies.
+          {% endif %}
+        </p>
+        <p class="card-text">
+          {% if timestamps.reply is defined and timestamps.reply %}
+            Last time replies have been updated at <span class="badge badge-primary">{{ timestamps.reply|date("F jS \\a\\t g:ia") }} GMT</span>.
+          {% else %}
+            Replies have never been updated.
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="/{{ action.review }}" class="btn btn-primary">Review Replies</a>
+        <button type="button" class="btn btn-primary refresh-btn" data-type="reply">Update Replies</button>
+      </div>
+    </div>
+  <div class="card border-primary">
+      <div class="card-header">
+        <h3>New Posts</h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if updates.post_new is defined and updates.post_new %}
+            There {% if updates.post_new == 1 %}is{% else %}are{% endif %} <span class="badge badge-primary">{{ updates.post_new }}</span> new post{% if updates.post_new > 1 %}s{% endif %} to update.
+          {% else %}
+            There are no new posts to update.
+          {% endif %}
+        </p>
+        <p class="card-text">
+          {% if timestamps.post_new is defined and timestamps.post_new %}
+            Last time posts have been updated at <span class="badge badge-primary">{{ timestamps.post_new|date("F jS \\a\\t g:ia") }} GMT</span>.
+          {% else %}
+            Posts have never been updated.
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-footer">
+        <a href="/{{ action.post }}" class="btn btn-primary">Review New Posts</a>
+        <button type="button" class="btn btn-primary refresh-btn" data-type="post_new">Update New Posts</button>
+      </div>
+    </div>
+</div>
+<div class="row text-center mt-3">
+  <div class="col-12" id="summary">
+  </div>
+</div>
+{% endblock %}
+
+{% block footer_scripts %}
+  <script>
+    var refreshUrl = {
+      location: '/{{ action.location }}',
+      insight: '/{{ action.insight }}',
+      review: '/{{ action.review }}',
+      reply: '/{{ action.reply }}',
+      post: '/{{ action.post }}',
+      post_new: '/{{action.post_new }}',
+      business: '/{{ action.business }}',
+      information: '/{{ action.information }}'
+    };
+  </script>
+  <script src="/assets/js/sweetalert2.all.min.js"></script>
+  <script src="/assets/js/admin/gmb/refresh.js"></script>
+{% endblock %}

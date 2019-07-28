@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dealers">
+  <meta name="author" content="Dealers">
+
+  <title>{% block title %}{% endblock %}</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/fontawesome/all.min.css" rel="stylesheet">
+  <link href="/assets/css/custom.css" rel="stylesheet">
+
+  <!-- FAVICON-->
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" sizes="96x96">
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/favicon-touch.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/favicon-touch.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/favicon-touch.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/favicon-touch.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/favicon-touch.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/favicon-touch.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/favicon-touch.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/favicon-touch.png">
+
+  <meta name="msapplication-TileColor" content="#2b5797">
+  <meta name="msapplication-TileImage" content="/favicon-touch.png">
+
+  <!-- CSS -->
+  {% block header_styles %}{% endblock %}
+
+  <!-- SCRIPTS --> <!-- home -->
+  {% block header_scripts %}{% endblock %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+{% include 'Common/partials/header.twig' %}
+
+<div class="container-fluid">
+{% block content %}{% endblock %}
+</div>
+
+{% include 'Common/partials/footer.twig' %}
+
+{% block footer_scripts %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>NEW DEALER MARKETING PACKAGE REQUEST</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; font-size: 16px;">
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+    <thead bgcolor="lightgrey">
+        <tr>
+            <th colspan="2"><h1>NEW DEALER MARKETING PACKAGE REQUEST</h1></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr align="center">
+            <td colspan="2"><i>Contact dealer for any missing information and enter it, then create billing.</i></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">Do You NEED Full Ecommerce including check out and the ability to process sales?</td>
+            <td width="50%">{{ order.ecommerce }}</td>
+        </tr>
+        <tr>
+            <td width="50%">How many products do you want to showcase?</td>
+            <td width="50%">{{ order.products }}</td>
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">Do you want to provide Spec Sheets?</td>
+            <td width="50%">{{ order.specsheets }}</td>
+        </tr>
+        <tr>
+            <td width="50%">Do you want to display product pricing?</td>
+            <td width="50%">{{ order.pricing }}</td>
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">Business Reviews and Generation, Business Listing Distribution and Sync, Social Media Management Portal?</td>
+            <td width="50%">{{ order.portal }}</td>
+        </tr>
+        <tr>
+            <td width="50%">Social Media Add-Ons?</td>
+            <td width="50%">{{ order.social }}</td>
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">Do you want professional help to manage and optimize your AdWords account?</td>
+            <td width="50%">{{ order.ppc }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr align="center" bgcolor="lightgrey">
+            <td colspan="2"><h2>Company Information</h2></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td width="50%">Contact Name (First Last)</td>
+            <td width="50%">{{ contact.first_name }} {{ contact.last_name }}</td>
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">Contact Email Address</td>
+            <td width="50%">{{ contact.email }}</td>
+        </tr>
+        <!-- company.domain-start -->
+        <tr>
+            <td width="50%">Website URL (Domain Name)</td>
+            <td width="50%">{{ company.domain }}</td>
+        </tr>
+        <!-- company.domain-end -->
+        <tr bgcolor="#eeeeee">
+            <td width="50%">Company Name</td>
+            <td width="50%">{{ company.business_name }}</td>
+        </tr>
+        <tr>
+            <td width="50%">Company Address</td>
+            <td width="50%">{{ company.street }} {{ company.city }} {{ company.state }} {{ company.zip }}</td>
+        </tr>
+        <!-- company.email-start -->
+        <tr bgcolor="#eeeeee">
+            <td width="50%">Company Address to Display on Website</td>
+            <td width="50%">{{ company.email }}</td>
+        </tr>
+        <!-- company.email-end -->
+        <tr>
+            <td width="50%">Mailing Address</td>
+            <td width="50%">{{ company.email_mail }}</td>
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">Company Phone Number</td>
+            <td width="50%">{{ company.phone }}</td>
+        </tr>
+        <!-- google_services.has_analytics-start -->
+        <tr>
+            <td width="50%">Do you have a Google Analytics account?</td>
+            <td width="50%">Yes</td>
+        </tr>
+        <!-- google_services.has_analytics-end -->
+        <!-- social_media-start -->
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr align="center" bgcolor="lightgrey">
+            <td colspan="2"><h2>Online Marketing</h2></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td width="50%">Do you have a Facebook Page?</td>
+            <!-- social_media.facebook.1-start -->
+            <td width="50%">Yes</td>
+            <!-- social_media.facebook.1-end -->
+            <!-- social_media.facebook.0-start -->
+            <td width="50%">No</td>
+            <!-- social_media.facebook.0-end -->
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">If yes, do you know the name of the Facebook Page?</td>
+            <td width="50%">{{ social_media.facebook.name }}</td>
+        </tr>
+        <tr>
+            <td width="50%">Do you have a Twitter Handle?</td>
+            <!-- social_media.twitter.1-start -->
+            <td width="50%">Yes</td>
+            <!-- social_media.twitter.1-end -->
+            <!-- social_media.twitter.0-start -->
+            <td width="50%">No</td>
+            <!-- social_media.twitter.0-end -->
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">If yes, do you know the name of the Twitter handle?</td>
+            <td width="50%">{{ social_media.twitter.name }}</td>
+        </tr>
+        <tr>
+            <td width="50%">Have you set up Google My Business?</td>
+            <!-- google_services.has_gmb.1-start -->
+            <td width="50%">Yes</td>
+            <!-- google_services.has_gmb.1-end -->
+            <!-- google_services.has_gmb.0-start -->
+            <td width="50%">No</td>
+            <!-- google_services.has_gmb.0-end -->
+        </tr>
+        <!-- social_media-end -->
+        <!-- adwords-start -->
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr align="center" bgcolor="lightgrey">
+            <td colspan="2"><h2>AdWords Pay-Per-Click Marketing</h2></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td width="50%">Do you have an AdWords PPC account currently?</td>
+            <!-- google_services.has_adwords_ppc.1-start -->
+            <td width="50%">Yes</td>
+            <!-- google_services.has_adwords_ppc.1-end -->
+            <!-- google_services.has_adwords_ppc.0-start -->
+            <td width="50%">No</td>
+            <!-- google_services.has_adwords_ppc.0-end -->
+        </tr>
+        <tr bgcolor="#eeeeee">
+            <td width="50%">If yes, what is your monthly budget?</td>
+            <td width="50%">{{ google_services.adwords_ppc_budget }}</td>
+        </tr>
+        <!-- adwords-end -->
+    </tbody>
+</table>
+</body>
+</html>

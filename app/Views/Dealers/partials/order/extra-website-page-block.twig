@@ -1,0 +1,36 @@
+<div class="extra-website-page" id="extra-website-page-{{i}}">
+            <div class="row mt-5">
+              <div class="col-12">
+                <h2>{{ cost.title|replace({'{id}': i}) }} <span class="badge info-tool" data-toggle="tooltip" data-placement="top" title="{{ cost.title }}"><i class="fa fa-info-circle"></i></span></h2>
+              </div>
+            </div>
+            <div class="row mr-1 mb-3 mt-3 pl-3">
+              <div class="col-12 row-bordered border-secondary pt-3 pb-4 ">
+                <h3>Select The Website Page Type <span class="badge info-tool" data-toggle="tooltip" data-placement="top" title="Choose Page Type"><i class="fa fa-info-circle"></i></span></h3>
+                <select class="custom-select extra-page-type-select col-11 mb-3" id="extra-page-type-select-{{ i }}" name="extra_website_page[]">
+                  {% for option in costs.extra_website_page.options %}
+                    <option value="{{ option.id }}"
+                      {% if page == option.id %}selected{% endif %}
+                      data-option-name="extra_website_page"
+                      data-option-value="{{ option.id }}"
+                      data-option-index="{{ i }}">
+                      &middot; {{ option.title }}{% if option.setup %} - ${{ option.setup }}{% endif %}
+                    </option>
+                  {% endfor %}
+                </select>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="extra-page-title-label-{{ i }}">Page Title</span>
+                  </div>
+                  <input type="text" class="form-control text-center"
+                  placeholder="What will be the title of this website page? ex: About Us" aria-label="(Enter Text Here)"
+                  aria-describedby="extra-page-title-label-{{ i }}" name="extra_website_page_title[]"
+                  value="{{ order.extra_website_pages[i] }}">
+                  <span class="badge info-tool large-badge col-1" data-toggle="tooltip" data-placement="top" title="Page Title"><i class="fa fa-info-circle"></i></span>
+                </div>
+                <button type="button" class="btn btn-danger remove-page-button float-right">
+                <i class="fa fa-trash"></i>&nbsp;Remove Page
+                </button>
+              </div>
+            </div>
+          </div>

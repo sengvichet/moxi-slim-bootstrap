@@ -1,0 +1,192 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - Listing Leader{% endblock %}
+
+{% block header_styles %}
+  {{ parent() }}
+  <link rel="stylesheet" type="text/css" href="/assets/DataTables/datatables.min.css">
+{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/home-button.twig' %}
+<h1>Admin - Listing Leader</h1>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Add Listing Leader Data</h3>
+  </div>
+  <div class="card-body">
+    {% include 'Dealers/partials/errors.twig' %}
+    <form action="/{{ action.save }}" method="POST" class="needs-validation" novalidate>
+      <div class="row">
+        <!-- Dealer -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="dealer-select">Dealer</label>
+          <select id="dealer-select" name="dealer" required
+            class="form-control
+            {% if messages.error.dealer is defined %}is-invalid{% endif %}">
+            {% for dealer in dealers %}
+              <option value="{{ dealer.id }}"
+                {% if messages.input.dealer is defined and messages.input.dealer == dealer.id %}selected{% endif %}>
+                  {% if dealer.first_name or dealer.last_name %}{{ dealer.first_name }} {{ dealer.last_name }}{% else %}{{ dealer.email }}{% endif %}
+              </option>
+            {% endfor %}
+          </select>
+          {% if messages.error.dealer is defined %}
+            {% for error in messages.error.dealer %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid dealer.</div>
+          {% endif %}
+        </div>
+        <!-- Year -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="year-input">Year</label>
+          <input type="number" name="year" id="year-input" required class="form-control
+            {% if messages.error.year is defined %}is-invalid{% endif %}"
+            min="{{ 'now'|date('Y') - 1 }}" max="{{ 'now'|date('Y') }}"
+            placeholder="{{ 'now'|date('Y') }}"
+            value="{% if messages.input.year is defined %}{{ messages.input.year }}{% endif %}">
+          {% if messages.error.year is defined %}
+            {% for error in messages.error.year %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid year.</div>
+          {% endif %}
+        </div>
+        <!-- Month -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="month-select">Month</label>
+          <select name="month" id="month-input" required
+            class="form-control
+            {% if messages.error.month is defined %}is-invalid{% endif %}">
+            {% for month in ['january', 'february', 'march', 'april', 'may', 'june',
+              'july', 'august', 'september', 'october', 'november', 'december'] %}
+              <option value="{{ loop.index }}"
+                {% if messages.input.month is defined and messages.input.month == loop.index %}selected{% endif %}>
+                {{ month|capitalize }}
+              </option>
+            {% endfor %}
+          </select>
+          {% if messages.error.month is defined %}
+            {% for error in messages.error.month %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid month.</div>
+          {% endif %}
+        </div>
+        <!-- Correct Listing -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="listing-correct-input">Correct Listings</label>
+          <input type="number" name="listing_correct" id="listing-correct-input" required
+            class="form-control
+            {% if messages.error.listing_correct is defined %}is-invalid{% endif %}"
+            min="{{ fields.listing_correct.min_value }}"
+            max="{{ fields.listing_correct.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.listing_correct is defined %}{{ messages.input.listing_correct }}{% endif %}">
+          {% if messages.error.listing_correct is defined %}
+            {% for error in messages.error.listing_correct %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid listing number.</div>
+          {% endif %}
+        </div>
+        <!-- Listing Processing -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="listing-processing-input">Processing Listings</label>
+          <input type="number" name="listing_processing" id="listing-processing-input" required
+            class="form-control
+            {% if messages.error.listing_processing is defined %}is-invalid{% endif %}"
+            min="{{ fields.listing_processing.min_value }}"
+            max="{{ fields.listing_processing.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.listing_processing is defined %}{{ messages.input.listing_processing }}{% endif %}">
+          {% if messages.error.listing_processing is defined %}
+            {% for error in messages.error.listing_processing %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid listing number.</div>
+          {% endif %}
+        </div>
+        <!-- Total Referral Traffic -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="total-referral-traffic-input">Total Referral Traffic</label>
+          <input type="number" name="total_referral_traffic" id="total-referral-traffic-input" required
+            class="form-control
+            {% if messages.error.total_referral_traffic is defined %}is-invalid{% endif %}"
+            min="{{ fields.total_referral_traffic.min_value }}"
+            max="{{ fields.total_referral_traffic.max_value }}"
+            placeholder="5"
+            value="{% if messages.input.total_referral_traffic is defined %}{{ messages.input.total_referral_traffic }}{% endif %}">
+          {% if messages.error.total_referral_traffic is defined %}
+            {% for error in messages.error.total_referral_traffic %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid traffic number.</div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary float-right">Create</button>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Dealers Listing Leader Data</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="listing-leader-data-table">
+          <thead>
+            <tr>
+              <th>Dealer</th>
+              <th>Year</th>
+              <th>Month</th>
+              <th>Correct Listing</th>
+              <th>Processing Listings</th>
+              <th>Total Referral Traffic</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in data %}
+              {% set dealer = dealers[row.dealer_id] %}
+              <tr>
+                <td>{% if dealer.first_name or dealer.last_name %}
+                  {{ dealer.first_name }} {{ dealer.last_name }}
+                {% else %}{{ dealer.email }}{% endif %}</td>
+                <td>{{ row.date|date('Y') }}</td>
+                <td>{{ row.date|date('F') }}</td>
+                <td>{{ row.listing_correct }}</td>
+                <td>{{ row.listing_processing }}</td>
+                <td>{{ row.total_referral_traffic }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Dealer</th>
+              <th>Year</th>
+              <th>Month</th>
+              <th>Correct Listing</th>
+              <th>Processing Listings</th>
+              <th>Total Referral Traffic</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer_scripts %}
+  <script src="/assets/DataTables/datatables.min.js"></script>
+  <script src="/assets/js/bootstrap-form-validation.js"></script>
+  <script src="/assets/js/admin/listing-leader.js"></script>
+{% endblock %}

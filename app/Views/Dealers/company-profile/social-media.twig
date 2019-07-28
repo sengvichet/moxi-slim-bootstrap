@@ -1,0 +1,70 @@
+<h5 class="text-uppercase">Social Media</h5>
+<p>Please enter the URLs for the Social Media accounts you currently use for your business.</p>
+{% include 'Dealers/partials/errors.twig' %}
+<form action="/{{ social_media.action }}" method="POST" id="social-media-form" class="needs-validation" novalidate>
+  <input type="hidden" name="company_id" value="{% if contact_information.data.company %}{{ contact_information.data.company.id }}{% endif %}">
+  {% if social_media.social_media is defined %}
+    {% for media in social_media.social_media %}
+      <div class="form-group row {% if media.has_login %}mb-5{% endif %}">
+        <div class="col-3 col-sm-1 {% if not media.has_login %}mb-3{% endif %}">
+          <img src="/assets/images/social_media/{{ media.name }}.png" alt="{{ media.title }}" width="50">
+        </div>
+        <div class="col-9 col-sm-3 {% if not media.has_login %}mb-3{% endif %} d-flex align-self-center">
+          <h6 class="mb-0">{{ media.title }}</h6>
+        </div>
+        <div class="col-12 col-sm-8">
+          <input type="text" name="social_media[{{ media.id }}]"
+            class="form-control {% if messages.error.social_media[media.name] is defined %}is-invalid{% endif %}"
+            maxlength="{{ fields.social_media[media.name].max_length }}"
+            value="{% if messages.input.social_media[media.id] is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.social_media[media.id] }}{% else %}{% if social_media.data.social_media[media.id] is defined %}{{ social_media.data.social_media[media.id].url }}{% endif %}{% endif %}">
+          {% if messages.error.social_media[media.name] is defined %}
+            {% for error in messages.error.social_media[media.name] %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% if media.has_login %}
+        <!--<div class="row">-->
+          <div class="col-sm-4">&nbsp;</div>
+          <div class="col-sm-4">
+            <label for="{{ media.name }}-username-input">Username</label>
+            <input type="text" name="social_media_username[{{ media.id }}]"
+              id="{{ media.name }}-username-input"
+              class="form-control {% if messages.error.social_media_username[media.name] is defined %}is-invalid{% endif %}"
+              maxlength="{{ fields.social_media_username[media.name].max_length }}"
+              value="{% if messages.input.social_media_username[media.id] is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.social_media_username[media.id] }}{% else %}{% if social_media.data.social_media[media.id].username is defined %}{{ social_media.data.social_media[media.id].username }}{% endif %}{% endif %}">
+            {% if messages.error.social_media_username[media.name] is defined %}
+              {% for error in messages.error.social_media_username[media.name] %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+          </div>
+          <div class="col-sm-4">
+            <label for="{{ media.name }}-password-input">Password</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <button class="btn btn-outline-secondary show-password-button" type="button" data-media="{{ media.name }}">Show</button>
+                </div>
+                <input type="password" name="social_media_password[{{ media.id }}]"
+                  id="{{ media.name }}-password-input"
+                  class="form-control {% if messages.error.social_media_password[media.name] is defined %}is-invalid{% endif %}"
+                  maxlength="{{ fields.social_media_password[media.name].max_length }}"
+                  value="{% if messages.input.social_media_password[media.id] is defined and messages.error.count is defined and messages.error.count %}{{ messages.input.social_media_password[media.id] }}{% else %}{% if social_media.data.social_media[media.id].password is defined %}{{ social_media.data.social_media[media.id].password }}{% endif %}{% endif %}">
+                {% if messages.error.social_media_password[media.name] is defined %}
+                  {% for error in messages.error.social_media_password[media.name] %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                  {% endfor %}
+                {% endif %}
+            </div>
+          </div>
+        <!--</div>-->
+      {% endif %}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <input type="submit" class="btn btn-md btn-warning" value="Save Changes">
+    </div>
+  </div>
+</form>

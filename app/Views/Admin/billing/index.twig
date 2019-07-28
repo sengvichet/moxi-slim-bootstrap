@@ -1,0 +1,159 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - Billing{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/home-button.twig' %}
+<h1>Admin - Billing</h1>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Dealer Billing Data</h3>
+  </div>
+  <div class="card-body">
+    {% include 'Dealers/partials/errors.twig' %}
+    <form action="/{{ action.save }}" method="POST" class="needs-validation" novalidate>
+      <div class="row">
+        <!-- Dealer -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="dealer-select">Dealer</label>
+          <select name="dealer" id="dealer-select"
+            class="form-control
+            {% if messages.errors.dealer is defined %}is-invalid{% endif %}">
+            {% for dealer in dealers %}
+              <option value="{{ dealer.id }}"
+              {% if messages.input.dealer is defined and messages.input.dealer == dealer.id %}selected{% endif %}>{% if dealer.first_name or dealer.last_name %}{{ dealer.first_name }} {{ dealer.last_name }}{% else %}{{ dealer.email }}{% endif %}</option>
+            {% endfor %}
+          </select>
+          {% if messages.error.dealer is defined %}
+            {% for error in messages.error.dealer %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid dealer.</div>
+          {% endif %}
+        </div>
+        <!-- Billing Frequency -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="billing-frequency-select">Billing Frequency</label>
+          <select name="billing_frequency" id="billing-frequency-select"
+            class="form-control
+            {% if messages.errors.billing_frequency is defined %}is-invalid{% endif %}">
+              <option value="monthly"
+              {% if messages.input.billing_frequency is defined and messages.input.billing_frequency == 'monthly' %}selected{% endif %}>Monthly</option>
+              <option value="quarterly"
+              {% if messages.input.billing_frequency is defined and messages.input.billing_frequency == 'quarterly' %}selected{% endif %}>Quarterly</option>
+              <option value="annualy"
+              {% if messages.input.billing_frequency is defined and messages.input.billing_frequency == 'annualy' %}selected{% endif %}>Annualy</option>
+          </select>
+          {% if messages.error.billing_frequency is defined %}
+            {% for error in messages.error.billing_frequency %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid billing frequency.</div>
+          {% endif %}
+        </div>
+        <!-- Next Bill Date -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="next-bill-date-input">Next Bill Date</label>
+          <input type="date" id="next-bill-date-input" name="next_bill_date" required
+            class="form-control
+            {% if messages.errors.next_bill_date is defined %}is-invalid{% endif %}"
+            min="{{ fields.next_bill_date.min_value }}"
+            value="{% if messages.input.next_bill_date is defined %}{{ messages.input.next_bill_date }}{% endif %}">
+          {% if messages.error.next_bill_date is defined %}
+            {% for error in messages.error.next_bill_date %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid bill date.</div>
+          {% endif %}
+        </div>
+        <!-- Billing Details -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="billing-details-input">Billing Details</label>
+          <input type="text" id="billing-details-input" name="billing_details" required
+            class="form-control
+            {% if messages.errors.billing_details is defined %}is-invalid{% endif %}"
+            maxlength="{{ fields.billing_details.max_length }}"
+            value="{% if messages.input.billing_details is defined %}{{ messages.input.billing_details }}{% endif %}">
+          {% if messages.error.billing_details is defined %}
+            {% for error in messages.error.billing_details %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide valid billing details.</div>
+          {% endif %}
+        </div>
+        <!-- Payment Method -->
+        <div class="form-group col-sm-4 col-lg-3">
+          <label for="payment-method-input">Payment Method</label>
+          <input type="text" id="payment-method-input" name="payment_method" required
+            class="form-control
+            {% if messages.errors.payment_method is defined %}is-invalid{% endif %}"
+            maxlength="{{ fields.payment_method.max_length }}"
+            value="{% if messages.input.payment_method is defined %}{{ messages.input.payment_method }}{% endif %}">
+          {% if messages.error.payment_method is defined %}
+            {% for error in messages.error.payment_method %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide valid payment method.</div>
+          {% endif %}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary float-right">Create</button>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Dealers Billing Data</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="billing-data-table">
+          <thead>
+            <tr>
+              <th>Dealer</th>
+              <th>Billing</th>
+              <th>Next Bill Date</th>
+              <th>Billing Details</th>
+              <th>Payment Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in data %}
+              {% set dealer = dealers[row.dealer_id] %}
+              <tr>
+                <td>{% if dealer.first_name or dealer.last_name %}
+                  {{ dealer.first_name }} {{ dealer.last_name }}
+                {% else %}{{ dealer.email }}{% endif %}</td>
+                <td>{{ row.billing_frequency|capitalize }}</td>
+                <td>{{ row.next_bill_date }}</td>
+                <td>{{ row.billing_details }}</td>
+                <td>{{ row.payment_method }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Dealer</th>
+              <th>Billing</th>
+              <th>Next Bill Date</th>
+              <th>Billing Details</th>
+              <th>Payment Method</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer_scripts %}
+  <script src="/assets/DataTables/datatables.min.js"></script>
+  <script src="/assets/js/bootstrap-form-validation.js"></script>
+  <script src="/assets/js/admin/billing.js"></script>
+{% endblock %}

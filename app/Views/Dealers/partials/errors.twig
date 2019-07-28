@@ -1,0 +1,21 @@
+{% if messages is defined and messages is not empty %}
+<div class="row mt-3 mb-3 errors-section">
+  <div class="col">
+    <ul class="list-group">
+      {#{% if messages['error'] is defined %}
+        {% for message in messages['error'] %}
+          <li class="list-group-item list-group-item-danger">
+            {{ message }}
+          </li>
+        {% endfor %}#}
+      {% if messages['message'] is defined %}
+        {% for message in messages['message'] %}
+          <li class="list-group-item list-group-item-{% if message.status == 'success' %}success{% else %}danger{% endif %}">
+            {{ message.text }}
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endif %}

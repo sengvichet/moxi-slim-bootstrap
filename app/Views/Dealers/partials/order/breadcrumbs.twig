@@ -1,0 +1,13 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    {% for item in breadcrumbs %}
+      <li class="breadcrumb-item {% if item.name == routeGroup %}active{% endif %}">
+        {% if item.name != routeGroup %}
+          <a href="{{ item.link }}">{{ item.title }}</a>
+        {% else %}
+          {{ item.title }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</nav>

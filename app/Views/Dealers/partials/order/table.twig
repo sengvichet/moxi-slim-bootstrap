@@ -1,0 +1,94 @@
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th colspan="4"><h3 class="text-center">Order Details</h3></th>
+    </tr>
+    <tr>
+      <th>Website Option</th>
+      <th>Selection Made</th>
+      <th>Monthly Fees</th>
+      <th>Start Up Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="products-row">
+      <td># of Products:</td>
+      <td>{% if (order.costs.products is defined) %}
+      {{ costs.products.options[order.costs.products - 1].title }}{% endif %}</td>
+      <td>{% if (order.costs.products is defined) %}
+        ${{ costs.products.options[order.costs.products - 1].cost }}
+      {% else %}
+        $0
+      {% endif %}</td>
+      <td>{% if (order.costs.products is defined) %}
+        ${{ costs.products.options[order.costs.products - 1].setup }}
+      {% else %}
+        $0
+      {% endif %}</td>
+    </tr>
+    <tr id="specsheets-row">
+      <td>Spec Sheets:</td>
+      <td>{% if (order.costs.specsheets is defined) %}
+        {{ costs.specsheets.options[order.costs.specsheets - 1].title }}
+      {% endif %}</td>
+      <td>{% if (order.costs.specsheets is defined) %}
+        ${{ costs.specsheets.options[order.costs.specsheets - 1].cost }}
+      {% else %}
+        $0
+      {% endif %}</td>
+      <td>{% if (order.costs.specsheets is defined) %}
+        ${{ costs.specsheets.options[order.costs.specsheets - 1].setup }}
+      {% else %}
+        $0
+      {% endif %}</td>
+    </tr>
+    <tr id="ecommerce-row">
+      <td>Shopping Cart:</td>
+      <td>{% if (order.costs.ecommerce is defined) %}
+        {{ costs.ecommerce.options[order.costs.ecommerce - 1].title }}
+      {% endif %}</td>
+      <td>{% if (order.costs.ecommerce is defined) %}
+        ${{ costs.ecommerce.options[order.costs.ecommerce - 1].cost }}
+      {% else %}
+        $0
+      {% endif %}</td>
+      <td>{% if (order.costs.ecommerce is defined) %}
+        ${{ costs.ecommerce.options[order.costs.ecommerce - 1].setup }}
+      {% else %}
+        $0
+      {% endif %}</td>
+    </tr>
+    <tr id="pricing-row">
+      <td>Pricing:</td>
+      <td>{% if (order.costs.pricing is defined) %}
+        {{ costs.pricing.options[order.costs.pricing - 1].title }}
+      {% endif %}</td>
+      <td>{% if (order.costs.pricing is defined) %}
+        ${{ costs.pricing.options[order.costs.pricing - 1].cost }}
+      {% else %}
+        $0
+      {% endif %}</td>
+      <td>{% if (order.costs.pricing is defined) %}
+        ${{ costs.pricing.options[order.costs.pricing - 1].setup }}
+      {% else %}
+        $0
+      {% endif %}</td>
+    </tr>
+    <tr id="social-row">
+      <td>Add Ons:</td>
+      <td>{% if (order.costs.social is defined) %}
+        {{ costs.social.options[order.costs.social - 1].title }}
+      {% endif %}</td>
+      <td>{% if (order.costs.social is defined) %}
+        ${{ costs.social.options[order.costs.social - 1].cost }}
+      {% else %}
+        $0
+      {% endif %}</td>
+      <td>{% if (order.costs.social is defined) %}
+        ${{ costs.social.options[order.costs.social - 1].setup }}
+      {% else %}
+        $0
+      {% endif %}</td>
+    </tr>
+  </tbody>
+</table>

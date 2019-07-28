@@ -1,0 +1,289 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - GMB - Posts{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/gmb-button.twig' %}
+<h2 class="text-center mt-3 mb-3">Review Posts</h2>
+
+<!-- Standard Posts -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">New Standard Posts from Dealers</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="new-standard-posts-table">
+          <thead>
+            <tr>
+              <th class="search">Location</th>
+              <th class="search">Summary</th>
+              <th>Photo</th>
+              <th class="search">CTA Type</th>
+              <th class="search">CTA URL</th>
+              <th class="search">Created At</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for post in posts.new %}
+              {% if post.topic_type == 'standard' %}
+              {% set location = locations[post.location_id] %}
+              <tr>
+                <td>{{ location.location_name }}</td>
+                <td>{{ post.summary }}</td>
+                <td>{% if media[post.post_id].source_url is defined %}
+                  <img src="{{ media[post.post_id].source_url }}" style="max-width: 100px; max-height: 100px;">
+                {% endif %}</td>
+                <td>{{ post.cta_type|replace({'_': ' '})|capitalize }}</td>
+                <td>{% if post.cta_url %}<a href="{{ post.cta_url }}">{{ post.cta_url }}</a>{% endif %}</td>
+                <td>{{ post.create_time|date('F j, Y H:i:s') }}</td>
+                <td>
+                  <form action="/{{ action.delete }}/{{ post.post_id }}">
+                    <button type="button" class="btn btn-danger delete-post-button"><i class="fa fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th class="search">Location</th>
+              <th class="search">Summary</th>
+              <th>Photo</th>
+              <th class="search">CTA Type</th>
+              <th class="search">CTA URL</th>
+              <th class="search">Created At</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Event Posts -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">New Event Posts from Dealers</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="new-event-posts-table">
+          <thead>
+            <tr>
+              <th class="search">Location</th>
+              <th class="search">Title</th>
+              <th class="search">Summary</th>
+              <th>Photo</th>
+              <th class="search">Start Time</th>
+              <th class="search">End Time</th>
+              <th class="search">CTA Type</th>
+              <th class="search">CTA URL</th>
+              <th class="search">Created At</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for post in posts.new %}
+              {% if post.topic_type == 'event' %}
+              {% set location = locations[post.location_id] %}
+              {% set event = events[post.post_id] %}
+              <tr>
+                <td>{{ location.location_name }}</td>
+                <td>{{ event.title }}</td>
+                <td>{{ post.summary }}</td>
+                <td>{% if media[post.post_id].source_url is defined %}
+                  <img src="{{ media[post.post_id].source_url }}" style="max-width: 100px; max-height: 100px;">
+                {% endif %}</td>
+                <td>{{ event.start_time|date('F j, Y H:i:s') }}</td>
+                <td>{{ event.end_time|date('F j, Y H:i:s') }}</td>
+                <td>{{ post.cta_type|replace({'_': ' '})|capitalize }}</td>
+                <td>{% if post.cta_url %}<a href="{{ post.cta_url }}">{{ post.cta_url }}</a>{% endif %}</td>
+                <td>{{ post.create_time|date('F j, Y H:i:s') }}</td>
+                <td>
+                  <form action="/{{ action.delete }}/{{ post.post_id }}">
+                    <button type="button" class="btn btn-danger delete-post-button"><i class="fa fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th class="search">Location</th>
+              <th class="search">Title</th>
+              <th class="search">Summary</th>
+              <th>Photo</th>
+              <th class="search">Start Time</th>
+              <th class="search">End Time</th>
+              <th class="search">CTA Type</th>
+              <th class="search">CTA URL</th>
+              <th class="search">Created At</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Offer Posts -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">New Offer Posts from Dealers</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="new-offer-posts-table">
+          <thead>
+            <tr>
+              <th class="search">Location</th>
+              <th class="search">Title</th>
+              <th class="search">Summary</th>
+              <th>Photo</th>
+              <th class="search">Start Time</th>
+              <th class="search">End Time</th>
+              <th class="search">CTA Type</th>
+              <th class="search">CTA URL</th>
+              <th class="search">Coupon Code</th>
+              <th class="search">Redeem Online URL</th>
+              <th class="search">Terms &amp; Conditions</th>
+              <th class="search">Created At</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for post in posts.new %}
+              {% if post.topic_type == 'offer' %}
+              {% set location = locations[post.location_id] %}
+              {% set event = events[post.post_id] %}
+              {% set offer = offers[post.post_id] %}
+              <tr>
+                <td>{{ location.location_name }}</td>
+                <td>{{ event.title }}</td>
+                <td>{{ post.summary }}</td>
+                <td>{% if media[post.post_id].source_url is defined %}
+                  <img src="{{ media[post.post_id].source_url }}" style="max-width: 100px; max-height: 100px;">
+                {% endif %}</td>
+                <td>{{ event.start_time|date('F j, Y H:i:s') }}</td>
+                <td>{{ event.end_time|date('F j, Y H:i:s') }}</td>
+                <td>{{ post.cta_type|replace({'_': ' '})|capitalize }}</td>
+                <td>{% if post.cta_url %}<a href="{{ post.cta_url }}">{{ post.cta_url }}</a>{% endif %}</td>
+                <td>{{ offer.coupon_code }}</td>
+                <td>{{ offer.redeem_online_url }}</td>
+                <td>{{ offer.terms_conditions }}</td>
+                <td>{{ post.create_time|date('F j, Y H:i:s') }}</td>
+                <td>
+                  <form action="/{{ action.delete }}/{{ post.post_id }}">
+                    <button type="button" class="btn btn-danger delete-post-button"><i class="fa fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th class="search">Location</th>
+              <th class="search">Title</th>
+              <th class="search">Summary</th>
+              <th>Photo</th>
+              <th class="search">Start Time</th>
+              <th class="search">End Time</th>
+              <th class="search">CTA Type</th>
+              <th class="search">CTA URL</th>
+              <th class="search">Coupon Code</th>
+              <th class="search">Redeem Online URL</th>
+              <th class="search">Terms &amp; Conditions</th>
+              <th class="search">Created At</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Product Posts -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">New Product Posts from Dealers</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="new-product-posts-table">
+          <thead>
+            <tr>
+              <th class="search">Location</th>
+              <th class="search">Product Name</th>
+              <th class="search">Summary</th>
+              <th>Photo</th>
+              <th class="search">Min Price</th>
+              <th class="search">Max Price</th>
+              <th class="search">CTA Type</th>
+              <th class="search">CTA URL</th>
+              <th class="search">Created At</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for post in posts.new %}
+              {% if post.topic_type == 'product' %}
+              {% set location = locations[post.location_id] %}
+              {% set product = products[post.post_id] %}
+              <tr>
+                <td>{{ location.location_name }}</td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ post.summary }}</td>
+                <td>{% if media[post.post_id].source_url is defined %}
+                  <img src="{{ media[post.post_id].source_url }}" style="max-width: 100px; max-height: 100px;">
+                {% endif %}</td>
+                <td>${{ product.lower_price_units }}.{{ product.lower_price_nanos }}</td>
+                <td>${{ product.upper_price_units }}.{{ product.upper_price_nanos }}</td>
+                <td>{{ post.cta_type|replace({'_': ' '})|capitalize }}</td>
+                <td>{% if post.cta_url %}<a href="{{ post.cta_url }}">{{ post.cta_url }}</a>{% endif %}</td>
+                <td>{{ post.create_time|date('F j, Y H:i:s') }}</td>
+                <td>
+                  <form action="/{{ action.delete }}/{{ post.post_id }}">
+                    <button type="button" class="btn btn-danger delete-post-button"><i class="fa fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th class="search">Location</th>
+              <th class="search">Product Name</th>
+              <th class="search">Summary</th>
+              <th>Photo</th>
+              <th class="search">Min Price</th>
+              <th class="search">Max Price</th>
+              <th class="search">CTA Type</th>
+              <th class="search">CTA URL</th>
+              <th class="search">Created At</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer_scripts %}
+  <script src="/assets/js/sweetalert2.all.min.js"></script>
+  <script src="/assets/DataTables/datatables.min.js"></script>
+  <script src="/assets/js/admin/posts.js"></script>
+{% endblock %}

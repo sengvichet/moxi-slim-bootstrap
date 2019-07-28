@@ -1,0 +1,151 @@
+{% extends 'Dealers/website/order/new-order.twig' %}
+{% block title %}Website Pages &amp; Options{% endblock %}
+{% block order_page_title %}Website Pages &amp; Options{% endblock %}
+{% block order_page_form %}
+  {% set cost = costs.website_page %}
+  {% for i in 1..included_pages_number %}
+    <div id="website_page-{{i}}">
+      <div class="row mt-5">
+        <div class="col-12">
+          <h2>{{ cost.title|replace({'{id}': i}) }} <span class="badge info-tool" data-toggle="tooltip" data-placement="top" title="{{ cost.title }}"><i class="fa fa-info-circle"></i></span></h2>
+        </div>
+      </div>
+      <div class="row mr-1 mb-3 mt-3 pl-3">
+        <div class="col-12 row-bordered border-secondary pt-3 pb-4">
+          <h3>Select The Website Page Type
+            <span class="badge info-tool" data-toggle="tooltip" data-placement="top" title="Choose Page Type"><i class="fa fa-info-circle"></i></span>
+          </h3>
+          <select class="custom-select page-type-select col-11 mb-3" name="website_page[]">
+            {% for option in costs.website_page.options %}
+              <option value="{{ option.id }}"
+                {% if messages.input[0].website_page is defined %}
+                  {% if messages.input[0].website_page is iterable %}
+                    {% if messages.input[0].website_page[i - 1] is defined %}
+                      {% if messages.input[0].website_page[i - 1] == option.id %}selected{% endif %}
+                    {% endif %}
+                  {% else %} {# is not iterable #}
+                    {% if i == 1 and messages.input[0].website_page == option.id %}selected{% endif %}
+                  {% endif %}
+                {% else %}
+                  {% if order.costs.website_page is defined %}
+                    {% if order.costs.website_page is iterable %}
+                      {% if order.costs.website_page[i - 1] is defined %}
+                        {% if order.costs.website_page[i - 1] == option.id %}selected{% endif %}
+                      {% endif %}
+                    {% else %} {# is not iterable #}
+                      {% if i == 1 and order.costs.website_page == option.id %}selected{% endif %}
+                    {% endif %}
+                  {% else %} {# is not defined #}
+                    {% if costs.website_page.default == option.id %}selected{% endif %}
+                  {% endif %}
+                {% endif %}
+                data-option-name="website_page"
+                data-option-value="{{ option.id }}"
+                data-option-index="{{ i }}">
+                &middot; {{ option.title }}{% if option.setup %} - ${{ option.setup }}{% endif %}
+              </option>
+            {% endfor %}
+          </select>
+          <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="page-title-label-{{ i }}">Page Title</span>
+              </div>
+              <input type="text" class="form-control text-center"
+              placeholder="What will be the title of this website page? ex: About Us"
+              aria-label="What will be the title of this website page? ex: About Us"
+              aria-describedby="page-title-label-{{ i }}" name="website_page_title[]"
+              value="{% if messages.input[0].website_page_title[i - 1] is defined %}{{ messages.input[0].website_page_title[i - 1] }}{% else %}{% if order.website_pages[i] is defined %}{{ order.website_pages[i] }}{% endif %}{% endif %}">
+              <span class="badge info-tool large-badge col-1" data-toggle="tooltip" data-placement="top" title="Page Title"><i class="fa fa-info-circle"></i></span>
+          </div>
+          <button type="button" class="btn btn-danger clear-page-button float-right">
+            <i class="fa fa-trash"></i>&nbsp;Remove Page
+          </button>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  <div class="row mt-3 mb-3">
+    <div class="col-12">
+      <button type="button" class="btn btn-lg" id="add-extra-page-button" disabled="disabled">
+        <i class="fa fa-plus"></i> Add Another Page?
+      </button>
+      <span class="badge info-tool large-badge align-middle" data-toggle="tooltip" data-placement="top" title="Add Another Page"><i class="fa fa-info-circle"></i></span>
+    </div>
+  </div>
+  <div id="extra-pages">
+    <div class="extra-website-page template" style="display: none">
+        <div class="row mt-5">
+          <div class="col-12">
+            <h2>Extra Page #<span class="extra-page-no"></span> <span class="badge info-tool" data-toggle="tooltip" data-placement="top" title=""><i class="fa fa-info-circle"></i></span></h2>
+          </div>
+        </div>
+        <div class="row mr-1 mb-3 mt-3 pl-3">
+          <div class="col-12 row-bordered border-secondary pt-3 pb-4 ">
+            <h3>Select The Website Page Type <span class="badge info-tool" data-toggle="tooltip" data-placement="top" title="Choose Page Type"><i class="fa fa-info-circle"></i></span></h3>
+            <select class="custom-select extra-page-type-select col-11 mb-3" name="extra_website_page[]">
+              {% for option in costs.extra_website_page.options %}
+                <option value="{{ option.id }}"
+                  {% if costs.extra_website_page.default == option.id %}selected{% endif %}
+                  data-option-name="extra_website_page"
+                  data-option-value="{{ option.id }}"
+                  data-option-index="">
+                  &middot; {{ option.title }}{% if option.setup %} - ${{ option.setup }}{% endif %}
+                </option>
+              {% endfor %}
+            </select>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text extra-page-title-label">Page Title</span>
+              </div>
+              <input type="text" class="form-control text-center"
+              placeholder="What will be the title of this website page? ex: About Us" aria-label="(Enter Text Here)"
+              aria-describedby="" name="extra_website_page_title[]"
+              value="">
+              <span class="badge info-tool large-badge col-1" data-toggle="tooltip" data-placement="top" title="Page Title"><i class="fa fa-info-circle"></i></span>
+            </div>
+            <button type="button" class="btn btn-danger remove-page-button float-right">
+            <i class="fa fa-trash"></i>&nbsp;Remove Page
+            </button>
+          </div>
+        </div>
+    </div>
+    {% if messages.input[0].extra_website_page is defined %}
+      {% set cost = costs.extra_website_page %}
+      {% if messages.input[0].extra_website_page is iterable %}
+        {% for i, page in messages.input[0].extra_website_page %}
+          {% set i = i + 1 %}
+          {% include 'Dealers/partials/order/extra-website-page-input-block.twig' %}
+        {% endfor %}
+      {% else %}
+        {% set page = messages.input[0].extra_website_page %}
+        {% set i = 1 %}
+        {% include 'Dealers/partials/order/extra-website-page-input-block.twig' %}
+      {% endif %}
+    {% else %}
+      {% if order.costs.extra_website_page is defined %}
+        {% set cost = costs.extra_website_page %}
+        {% if order.costs.extra_website_page is iterable %}
+          {% for i, page in order.costs.extra_website_page %}
+            {% set i = i + 1 %}
+            {% include 'Dealers/partials/order/extra-website-page-block.twig' %}
+          {% endfor %}
+        {% else %}
+          {% set page = order.costs.extra_website_page %}
+          {% set i = 1 %}
+          {% include 'Dealers/partials/order/extra-website-page-block.twig' %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  </div>
+  {% if order.order.id is defined %}
+    <input type="hidden" name="order_id" value="{{ order.order.id }}">
+  {% endif %}
+{% endblock %}
+{% block footer_scripts %}
+{{ parent() }}
+<script>
+  $('.info-tool').tooltip();
+  var order = {{ order|json_encode|raw }};
+</script>
+<script src="/assets/js/website/website-pages.js"></script>
+{% endblock %}

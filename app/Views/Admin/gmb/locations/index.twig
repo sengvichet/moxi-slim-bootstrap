@@ -1,0 +1,267 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - GMB - Locations{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/gmb-button.twig' %}
+<h2 class="text-center mt-3 mb-3">Review Locations Updates</h2>
+{% include 'Dealers/partials/errors.twig' %}
+<!-- Standard Posts -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Locations Updates</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <form id="location-select-form">
+          <div class="input-group">
+            <select class="form-control" name="location">
+              {% for id, item in locations %}
+                <option value="{{ item.location.location_id }}"
+                  {% if id == location %}selected{% endif %}>{{ item.location.location_name }}</option>
+              {% endfor %}
+            </select>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">Select Location To Review</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered table-striped" id="locations-table">
+          <thead>
+            <tr>
+              <th class="search">Field</th>
+              <th class="search">Value Before</th>
+              <th class="search">Value After</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Location Name / Business Name</td>
+              <td>{{ locations[location].location.location_name }}</td>
+              <td>{{ companies[company].company.business_name }}</td>
+              <td>
+                {% if locations[location].location.location_name != companies[company].company.business_name %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="location_name">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Address Line 1 / Street</td>
+              <td>{{ locations[location].location.address_line_1 }}</td>
+              <td>{{ companies[company].company.street }}</td>
+              <td>
+                {% if locations[location].location.address_line_1 != companies[company].company.street %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="address_line_1">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Address Line 2</td>
+              <td>{{ locations[location].location.address_line_2 }}</td>
+              <td>{{ companies[company].company.address_line_2 }}</td>
+              <td>
+                {% if locations[location].location.address_line_2 != companies[company].company.address_line_2 %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="address_line_2">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>City</td>
+              <td>{{ locations[location].location.city }}</td>
+              <td>{{ companies[company].company.city }}</td>
+              <td>
+                {% if locations[location].location.city != companies[company].company.city %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="city">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>State</td>
+              <td>{{ locations[location].location.state }}</td>
+              <td>{{ companies[company].company.state }}</td>
+              <td>
+                {% if locations[location].location.state != companies[company].company.state %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="state">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Postal Code</td>
+              <td>{{ locations[location].location.postal_code }}</td>
+              <td>{{ companies[company].company.zip }}</td>
+              <td>
+                {% if locations[location].location.postal_code != companies[company].company.zip %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="postal_code">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Primary Phone / Company Phone</td>
+              <td>{{ locations[location].location.primary_phone }}</td>
+              <td>{{ companies[company].company.phone }}</td>
+              <td>
+                {% if locations[location].location.primary_phone != companies[company].company.phone %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="primary_phone">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Website URL</td>
+              <td>{{ locations[location].location.website_url }}</td>
+              <td>{{ companies[company].company.website }}</td>
+              <td>
+                {% if locations[location].location.website_url != companies[company].company.website %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="primary_phone">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td>{{ locations[location].location.description }}</td>
+              <td>{{ companies[company].description }}</td>
+              <td>
+                {% if locations[location].location.description != companies[company].description %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="description">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Categories</td>
+              <td>
+                {% for category in locations[location].categories %}
+                  {{ category }}<br>
+                {% endfor %}
+              </td>
+              <td>
+                {% for category in companies[company].categories %}
+                  {{ category }}<br>
+                {% endfor %}
+              </td>
+              <td>
+                {% if discards[location].categories %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="categories">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Regular Hours</td>
+              <td>
+                <table class="table table-borderless">
+                {% for hours in locations[location].regular_hours %}
+                  <tr>
+                  <td>{{ hours.open_day|capitalize }}</td>
+                  <td>{{ hours.open_time|date('H:i') }}</td>
+                  <td>{{ hours.close_time|date('H:i') }}</td>
+                  </tr>
+                {% endfor %}
+                </table>
+              </td>
+              <td>
+                <table class="table table-borderless">
+                  {% for hours in companies[company].hours %}
+                  <tr>
+                  <td>{{ hours.day|capitalize }}</td>
+                  <td>{{ hours.start|date('H:i') }}</td>
+                  <td>{{ hours.end|date('H:i') }}</td>
+                  </tr>
+                  {% endfor %}
+                </table>
+              </td>
+              <td>
+                {% if discards[location].hours %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="regular_hours">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Payment Methods</td>
+              <td>
+                {% for method in locations[location].payment_methods %}
+                  {{ method }}<br>
+                {% endfor %}
+              </td>
+              <td>
+                {% for method in companies[company].payment_methods %}
+                  {{ method }}<br>
+                {% endfor %}
+              </td>
+              <td>
+                {% if discards[location].payment_methods %}
+                  <form action="/{{ action.update }}" method="POST">
+                    <input type="hidden" name="field" value="payment_methods">
+                    <input type="hidden" name="location" value="{{ location }}">
+                    <button type="submit" class="btn btn-danger">Discard</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th class="search">Field</th>
+              <th class="search">Value Before</th>
+              <th class="search">Value After</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer_scripts %}
+  <script src="/assets/js/sweetalert2.all.min.js"></script>
+  <script src="/assets/DataTables/datatables.min.js"></script>
+  <script src="/assets/js/admin/locations.js"></script>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'Admin/layouts/index.twig' %}
+
+{% block title %}Admin - Services{% endblock %}
+
+{% block page_content %}
+{% include 'Admin/partials/home-button.twig' %}
+<h1>Admin - Services</h1>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Subscribe Dealer to Services</h3>
+  </div>
+  <div class="card-body">
+    {% include 'Dealers/partials/errors.twig' %}
+    <form action="/{{ action.save }}" method="POST" class="needs-validation" novalidate>
+      <div class="row">
+        <div class="form-group col-sm-4 col-lg-3 col-xl-2">
+          <label for="dealer-select"><br>Email</label>
+          <select name="dealer" id="dealer-select"
+            class="form-control
+            {% if messages.errors.dealer is defined %}is-invalid{% endif %}">
+            {% for dealer in dealers %}
+              <option value="{{ dealer.id }}"
+              {% if messages.input.dealer is defined and messages.input.dealer == dealer.id %}selected{% endif %}>{{ dealer.email }}</option>
+            {% endfor %}
+          </select>
+          {% if messages.error.dealer is defined %}
+            {% for error in messages.error.dealer %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          {% else %}
+            <div class="invalid-feedback">Please provide a valid dealer.</div>
+          {% endif %}
+        </div>
+        {% for service in services %}
+          <div class="form-group col-sm-4 col-lg-3 col-xl-2">
+            <label for="{{ service.name }}-input">{{ service.title }}<br>- ${{ service.cost }}</label>
+            <input type="number" name="{{ service.name }}_quarters" id="{{ service.name }}-input"
+              min="{{ fields.quarters.min_value }}" value="0"
+              class="form-control
+              {% if messages.errors[service.name] is defined %}is-invalid{% endif %}">
+            {% if messages.error[service.name] is defined %}
+              {% for error in messages.error[service.name] %}
+                <div class="invalid-feedback">{{ error }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="invalid-feedback">Please provide a valid quarters number.</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-success">Subscribe</button>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="text-center">Dealers Service Data</h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-bordered" id="services-data-table">
+          <thead>
+            <tr>
+              <th>Dealer</th>
+              {% for service in services %}
+                <th>{{ service.title }}</th>
+                <th id="admin-approved">Approve</th>
+              {% endfor %}
+              <th>Total Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for dealer_id, row in data %}
+              {% set dealer = dealers[dealer_id] %}
+              <tr>
+                <td>{{ dealer.email }}</td>
+                {% for service in services %}
+                  <td>{% if row[service.id] %}{{ row[service.id].quarters }} qrts.{% else %}-{% endif %}</td>
+                  <td>
+                    {% if row[service.id] and row[service.id].quarters %}
+                      <button type="button" data-dealer="{{ dealer_id }}" data-service="{{ service.id }}" data-approved="{% if row[service.id].is_approved %}1{% else %}0{% endif %}" class="approve-button btn btn-sm btn-{% if row[service.id].is_approved %}secondary{% else %}success{% endif %}">{% if row[service.id].is_approved %}Disapprove{% else %}Approve{% endif %}</button>
+                    {% endif %}
+                  </td>
+                {% endfor %}
+                <td>${{ row.total }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Dealer</th>
+              {% for service in services %}
+                <th>{{ service.title }}</th>
+                <th id="admin-approved">Approve</th>
+              {% endfor %}
+              <th>Total Cost</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block footer_scripts %}
+  <script src="/assets/DataTables/datatables.min.js"></script>
+  <script src="/assets/js/bootstrap-form-validation.js"></script>
+  <script>var updateUrl = '/{{ action.update }}';</script>
+  <script src="/assets/js/admin/services.js"></script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Dealers Website{% endblock %}
+{% block header_scripts %}
+  <script src="/assets/js/jquery-3.3.1.min.js"></script>
+  <script src="/assets/js/bootstrap.min.js"></script>
+  <script src="/assets/js/website/website.js"></script>
+{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+  <div class="row">
+    {% for card in cards %}
+      {% set disabled = card.completed_order is defined and ((card.completed_order == false and has_completed_order) or (card.completed_order and not has_completed_order)) %}
+      <div class="col">
+        <div class="col card-box card-{{ card.color }}
+          {% if disabled %}card-disabled{% endif %}" data-href="{{ card.link }}">
+          <img src="/assets/images/card_icons/{% if disabled %}disabled_{% endif %}{{ card.image }}" alt="{{ card.title }}">
+          <p class="card-title">{{ card.title }}</p>
+        </div>
+        <p class="card-description">{{ card.description }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'Dealers/website/order/new-order.twig' %}
+{% block title %}Website Package{% endblock %}
+{% block order_page_title %}Website Package{% endblock %}
+{% block order_page_form %}
+  {% for costs_type, cost in costs %}
+    {% if cost.group == 'website_package' %}
+    <div id="{{ costs_type }}">
+    <div class="row">
+      <div class="col-12">
+        <h2>{{ cost.title }} <span class="badge info-tool" data-toggle="tooltip" data-placement="top" title="{{ cost.title }}"><i class="fa fa-info-circle"></i></span></h2>
+      </div>
+    </div>
+    {% include 'Dealers/partials/order/website-package-buttons.twig' %}
+    </div>
+    <input type="hidden" name="{{ costs_type }}" value="{% if messages.input[0][costs_type] is defined %}{{ messages.input[0][costs_type] }}{% else %}{% if order.costs[costs_type] is defined %}{{ order.costs[costs_type] }}{% else %}0{% endif %}{% endif %}">
+    {% endif %}
+  {% endfor %}
+  <div class="row">
+    <div class="col-12">
+      <h2>Would You Like Parts On Your Website?</h2>
+      <p>Available August 2019</p>
+    </div>
+  </div>
+  {% if order.order.id is defined %}
+    <input type="hidden" name="order_id" value="{{ order.order.id }}">
+  {% endif %}
+{% endblock %}
+{% block footer_scripts %}
+{{ parent() }}
+<script>
+function togglePricingSection(button) {
+  (button.data('option-value') == 2) ? $('#pricing').show() : $('#pricing').hide();
+}
+$(document).ready(function() {
+  $('.info-tool').tooltip();
+  togglePricingSection($('button[data-option-name="ecommerce"].btn-primary'));
+  $('button[data-option-name="ecommerce"]').click(function () {
+    togglePricingSection($(this));
+  });
+});
+var order = {{ order|json_encode|raw }};
+</script>
+{% endblock %}

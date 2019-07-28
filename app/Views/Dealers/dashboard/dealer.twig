@@ -1,0 +1,185 @@
+{% extends 'Dealers/layouts/dashboard.twig' %}
+{% block title %}Place1SEO Portal Summary{% endblock %}
+{% block sidebar %}
+  {% include 'Dealers/partials/sidebar/dealer.twig' %}
+{% endblock %}
+{% block content %}
+  <h1 class="text-center">{{(user.portal_type == 0) ? 'Place1SEO' : 'Moxxi Marketing'}} Portal Summary</h1>
+  <div class="row">
+    <div class="col-12 text-center">
+      <div class="btn-group">
+        <button type="button" class="btn btn-large btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dashboard-period-button">
+          {{ periods|last.start|date('F j, Y') }} - {{ periods|last.end|date('F j, Y') }}
+        </button>
+        <div class="dropdown-menu" id="dashboard-period-dropdown">
+          {% for period in periods|reverse %}
+            <a class="dropdown-item" href="javascript:void(0);"
+              data-period_start="{{ period.start }}">
+              {{ period.start|date('F j, Y') }} - {{ period.end|date('F j, Y') }}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% set current  = periods|keys[periods|length - 1] %}
+  {% set previous = (periods|keys|length > 1) ? periods|keys[periods|length - 2] : -1 %}
+  <div class="row">
+    <!-- Google My Business -->
+    <div class="col-sm-6 box" data-link="{{ links.gmb }}">
+      <div class="mt-3 mb-3 ml-1 mr-1 p-3 {% if subscribed.gmb %}bg-lightblue{% else %}bg-lightgrey{% endif %} text-center">
+        <h3>Google My Business</h3>
+        {% if subscribed.gmb %}
+          <h5 class="text-muted">Calls and Directions</h5>
+          <h1 id="gmb-count">{{ (summary.gmb[periods[current].start].calls_directions is defined)
+            ? summary.gmb[periods[current].start].calls_directions : 0 }}</h1>
+          {% if not summary.gmb[periods[current].start].calls_directions is defined
+            or not summary.gmb[periods[current].start].calls_directions %}
+            {% set percent = -100 %}
+          {% endif %}
+          {% if not periods[previous] is defined
+            or not summary.gmb[periods[previous].start].calls_directions is defined
+            or not summary.gmb[periods[previous].start].calls_directions %}
+            {% set percent = 0 %}
+          {% endif %}
+          {% if periods[current] is defined and periods[previous] is defined
+            and summary.gmb[periods[current].start].calls_directions is defined
+            and summary.gmb[periods[current].start].calls_directions
+            and summary.gmb[periods[previous].start].calls_directions is defined
+            and summary.gmb[periods[previous].start].calls_directions %}
+            {% set percent =
+              (summary.gmb[periods[current].start].calls_directions /
+               summary.gmb[periods[previous].start].calls_directions)
+              * 100 - 100 %}
+          {% endif %}
+            <h6 id="gmb-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+              <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+            </h6>
+        {% else %}
+          <img src="/assets/images/padlock.png" height="115">
+        {% endif %}
+      </div>
+    </div>
+    <!-- Social Media -->
+    <div class="col-sm-6 box" data-link="{{ links.social_media }}">
+      <div class="mt-3 mb-3 ml-1 mr-1 p-3 {% if subscribed.social_media %}bg-lightblue{% else %}bg-lightgrey{% endif %} text-center">
+        <h3>Social Media</h3>
+        {% if subscribed.social_media %}
+          <h5 class="text-muted">Engagements</h5>
+          <h1 id="social-media-count">{{(summary.social_media[periods[current].start].engagements is defined)
+            ? summary.social_media[periods[current].start].engagements : 0 }}</h1>
+          {% if not summary.social_media[periods[current].start].engagements is defined
+            or not summary.social_media[periods[current].start].engagements %}
+            {% set percent = -100 %}
+          {% endif %}
+          {% if not periods[previous] is defined
+            or not summary.social_media[periods[previous].start].engagements is defined
+            or not summary.social_media[periods[previous].start].engagements %}
+            {% set percent = 0 %}
+          {% endif %}
+          {% if periods[current] is defined and periods[previous] is defined
+            and summary.social_media[periods[current].start].engagements is defined
+            and summary.social_media[periods[current].start].engagements
+            and summary.social_media[periods[previous].start].engagements is defined
+            and summary.social_media[periods[previous].start].engagements %}
+            {% set percent =
+              (summary.social_media[periods[current].start].engagements /
+               summary.social_media[periods[previous].start].engagements)
+              * 100 - 100 %}
+          {% endif %}
+            <h6 id="social_media-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+              <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+            </h6>
+          {% else %}
+            <img src="/assets/images/padlock.png" height="115">
+          {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!-- Pay Per Click -->
+    <div class="col-sm-6 box" data-link="{{ links.ppc }}">
+      <div class="mt-3 mb-3 ml-1 mr-1 p-3 {% if subscribed.local_google_ads %}bg-lightblue{% else %}bg-lightgrey{% endif %} text-center">
+        <h3>Pay Per Click</h3>
+        {% if subscribed.local_google_ads %}
+          <h5 class="text-muted">Conversions</h5>
+          <h1 id="ppc-count">{{ (summary.ppc[periods[current].start].conversions is defined)
+            ? summary.ppc[periods[current].start].conversions : 0 }}</h1>
+          {% if not summary.ppc[periods[current].start].conversions is defined
+            or not summary.ppc[periods[current].start].conversions %}
+            {% set percent = -100 %}
+          {% endif %}
+          {% if not periods[previous] is defined
+            or not summary.ppc[periods[previous].start].conversions is defined
+            or not summary.ppc[periods[previous].start].conversions %}
+            {% set percent = 0 %}
+          {% endif %}
+          {% if periods[current] is defined and periods[previous] is defined
+            and summary.ppc[periods[current].start].conversions is defined
+            and summary.ppc[periods[current].start].conversions
+            and summary.ppc[periods[previous].start].conversions is defined
+            and summary.ppc[periods[previous].start].conversions %}
+            {% set percent =
+              (summary.ppc[periods[current].start].conversions /
+               summary.ppc[periods[previous].start].conversions)
+              * 100 - 100 %}
+          {% endif %}
+            <h6 id="ppc-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+              <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+            </h6>
+          {% else %}
+            <img src="/assets/images/padlock.png" height="115">
+          {% endif %}
+      </div>
+    </div>
+    <!-- Listings -->
+    <div class="col-sm-6 box" data-link="{{ links.listings }}">
+      <div class="mt-3 mb-3 ml-1 mr-1 p-3 {% if subscribed.local_listings %}bg-lightblue{% else %}bg-lightgrey{% endif %} text-center">
+        <h3>Listings</h3>
+        {% if subscribed.local_listings %}
+          <h5 class="text-muted">Total Listings</h5>
+          <h1 id="listings-count">{{(summary.listings[periods[current].start].total is defined)
+            ? summary.listings[periods[current].start].total : 0 }}</h1>
+          {% if not summary.listings[periods[current].start].total is defined
+            or not summary.listings[periods[current].start].total %}
+            {% set percent = -100 %}
+          {% endif %}
+          {% if not periods[previous] is defined
+            or not summary.listings[periods[previous].start].total is defined
+            or not summary.listings[periods[previous].start].total %}
+            {% set percent = 0 %}
+          {% endif %}
+          {% if periods[current] is defined and periods[previous] is defined
+            and summary.listings[periods[current].start].total is defined
+            and summary.listings[periods[current].start].total
+            and summary.listings[periods[previous].start].total is defined
+            and summary.listings[periods[previous].start].total %}
+            {% set percent =
+              (summary.listings[periods[current].start].total /
+               summary.listings[periods[previous].start].total)
+              * 100 - 100 %}
+          {% endif %}
+            <h6 id="listings-percent" class="{{ (percent > 0) ? 'text-success' : ((percent == 0) ? 'text-warning' : 'text-danger') }}">
+              <i class="fa {{ (percent > 0) ? 'fa-arrow-up' : ((percent == 0) ? 'fa-arrows-alt-h' : 'fa-arrow-down') }}"></i><span>&nbsp;{{ percent|number_format(1) }}%</span>
+            </h6>
+          {% else %}
+            <img src="/assets/images/padlock.png" height="115">
+          {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <p>Welcome to {% if company.business_name is defined and company.business_name %}{{ company.business_name }}'s{% endif %} Portal. Please use the menu bar on the left to navigate for: reporting for your subscribed services, website order and update forms, and billing and service information.</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer_scripts %}
+  {{ parent() }}
+  <script>
+    var summary = {{ summary|json_encode|raw }};
+    var periods = {{ periods|reverse|json_encode|raw }};
+  </script>
+  <script src="/assets/js/dashboard/index.js"></script>
+{% endblock %}

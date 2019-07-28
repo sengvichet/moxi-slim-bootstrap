@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>UPDATED DEALER MARKETING PACKAGE REQUEST</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; font-size: 16px;">
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+    <thead bgcolor="lightgrey">
+        <tr>
+            <th><h1>UPDATED DEALER MARKETING PACKAGE REQUEST</h1></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr align="center">
+            <td><i>Contact dealer {{ dealer.email }} for any missing information and enter it, then create billing.</i></td>
+        </tr>
+    </tbody>
+</table>
+<!-- Totals -->
+<table cellpadding="10" cellspacing="0" style="width: 100%; border: 1px solid #dee2e6; background-color: #ffc107">
+                    <thead>
+                      <tr>
+                        <th colspan="4"><h3 style="text-align: center">Website Estimated Totals:</h3></th>
+                      </tr>
+                      <tr>
+                        <th>Monthly Hosting: </th>
+                        <th>${{ totals.cost }}</th>
+                        <th>Start up Costs:</th>
+                        <th>${{ totals.setup }}</th>
+                      </tr>
+                    </thead>
+</table>
+<!-- Website Package -->
+<table cellpadding="10" cellspacing="0" style="width: 100%; border: 1px solid #dee2e6">
+                    <thead>
+                        <tr style="text-align: center">
+                            <th colspan="4">Website Package</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Website Option</th>
+                            <th>Selection Made</th>
+                            <th>Monthly Fees</th>
+                            <th>Start Up Cost</th>
+                        </tr>
+                        <!-- Products -->
+                        <tr>
+                            <td>{{ costs.products.title }}</td>
+                            <td>{{ costs.products.option.title }}</td>
+                            <td>${{ costs.products.option.cost }}</td>
+                            <td>${{ costs.products.option.setup }}</td>
+                        </tr>
+                        <!-- Specsheets -->
+                        <tr>
+                            <td>{{ costs.specsheets.title }}</td>
+                            <td>{{ costs.specsheets.option.title }}</td>
+                            <td>${{ costs.specsheets.option.cost }}</td>
+                            <td>${{ costs.specsheets.option.setup }}</td>
+                        </tr>
+                        <!-- Ecommerce -->
+                        <tr>
+                            <td>{{ costs.ecommerce.title }}</td>
+                            <td>{{ costs.ecommerce.option.title }}</td>
+                            <td>${{ costs.ecommerce.option.cost }}</td>
+                            <td>${{ costs.ecommerce.option.setup }}</td>
+                        </tr>
+                        <!-- Pricing -->
+                        <tr>
+                            <td>{{ costs.pricing.title }}</td>
+                            <td>{{ costs.pricing.option.title }}</td>
+                            <td>${{ costs.pricing.option.cost }}</td>
+                            <td>${{ costs.pricing.option.setup }}</td>
+                        </tr>
+                    </tbody>
+</table>
+<!-- Home Page -->
+<table cellpadding="10" cellspacing="0" style="width: 100%; border: 1px solid #dee2e6">
+                    <thead>
+                      <tr style="text-align: center">
+                        <th colspan="4">Home Page</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Website Option</th>
+                            <th>Selection Made</th>
+                            <th>Monthly Fees</th>
+                            <th>Start Up Cost</th>
+                          </tr>
+                        <!-- Standard Banner -->
+                        <tr>
+                            <td>{{ costs.standard_banner.title }}</td>
+                            <td>{{ costs.standard_banner.option.title }}</td>
+                            <td>${{ costs.standard_banner.option.cost }}</td>
+                            <td>${{ costs.standard_banner.option.setup }}</td>
+                        </tr>
+                        <!-- Scrolling Banner -->
+                        <tr>
+                            <td>{{ costs.scrolling_banner.title }}</td>
+                            <td>{{ costs.scrolling_banner.option.title }}</td>
+                            <td>${{ costs.scrolling_banner.option.cost }}</td>
+                            <td>${{ costs.scrolling_banner.option.setup }}</td>
+                        </tr>
+                        <!-- Video Banner -->
+                        <tr>
+                            <td>{{ costs.video_banner.title }}</td>
+                            <td>{{ costs.video_banner.option.title }}</td>
+                            <td>${{ costs.video_banner.option.cost }}</td>
+                            <td>${{ costs.video_banner.option.setup }}</td>
+                        </tr>
+                        <!-- Category Images -->
+                        <tr>
+                            <td>{{ costs.category_images.title }}</td>
+                            <td>{{ costs.category_images.option.title }}</td>
+                            <td>${{ costs.category_images.option.cost }}</td>
+                            <td>${{ costs.category_images.option.setup }}</td>
+                        </tr>
+                        <!-- Category Structures -->
+                        <tr>
+                            <td>{{ costs.category_structures.title }}</td>
+                            <td>{{ costs.category_structures.option.title }}</td>
+                            <td>${{ costs.category_structures.option.cost }}</td>
+                            <td>${{ costs.category_structures.option.setup }}</td>
+                        </tr>
+                    </tbody>
+</table>
+<!-- Website Pages -->
+<table cellpadding="10" cellspacing="0" style="width: 100%; border: 1px solid #dee2e6">
+                    <thead>
+                      <tr style="text-align: center">
+                        <th colspan="4">Website Pages</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Website Option</th>
+                            <th>Selection Made</th>
+                            <th>Monthly Fees</th>
+                            <th>Start Up Cost</th>
+                        </tr>
+                        <!-- {{ website_pages }} -->
+                        <!-- {{ extra_website_pages }} -->
+                    </tbody>
+</table>
+<!-- Special Features -->
+<table cellpadding="10" cellspacing="0" style="width: 100%; border: 1px solid #dee2e6">
+                    <thead>
+                      <tr style="text-align: center">
+                        <th colspan="4">Special Features</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Website Option</th>
+                            <th>Selection Made</th>
+                            <th>Monthly Fees</th>
+                            <th>Start Up Cost</th>
+                          </tr>
+                        <!-- Logo -->
+                        <tr>
+                            <td>{{ costs.logo.title }}</td>
+                            <td>{{ costs.logo.option.title }}</td>
+                            <td>${{ costs.logo.option.cost }}</td>
+                            <td>${{ costs.logo.option.setup }}</td>
+                        </tr>
+                        <!-- Banner Ads -->
+                        <tr>
+                            <td>{{ costs.banner_ads.title }}</td>
+                            <td>{{ costs.banner_ads.option.title }}</td>
+                            <td>${{ costs.banner_ads.option.cost }}</td>
+                            <td>${{ costs.banner_ads.option.setup }}</td>
+                        </tr>
+                    </tbody>
+</table>
+<!-- Company Information -->
+<table cellpadding="10" cellspacing="0" style="width: 100%; border: 1px solid #dee2e6">
+                <thead>
+                    <tr style="text-align: center">
+                        <th colspan="2">Company Information</td>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Contact Name (First Last)</td>
+                    <td>{{ dealer.first_name }} {{ dealer.last_name }}</td>
+                </tr>
+                <tr>
+                    <td>Contact Email Address</td>
+                    <td>{{ dealer.email }}</td>
+                </tr>
+                <tr>
+                    <td>Company Name</td>
+                    <td>{{ company.business_name }}</td>
+                </tr>
+                </tbody>
+</table>
+</body>
+</html>

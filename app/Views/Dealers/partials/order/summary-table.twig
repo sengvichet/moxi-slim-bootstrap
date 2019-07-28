@@ -1,0 +1,69 @@
+<table class="table table-bordered" id="summary-table">
+  <tbody>
+    <tr class="text-center">
+      <td>Order Summary</td>
+      <td>Monthly -
+        <span data-products-total="{{ summary.products.cost }}"
+          data-specsheets-total="{{ summary.specsheets.cost }}"
+          data-ecommerce-total="{{ summary.ecommerce.cost }}"
+          data-pricing-total="{{ summary.pricing.cost }}"
+          data-standard_banner-total="{{ summary.standard_banner.cost }}"
+          data-scrolling_banner-total="{{ summary.scrolling_banner.cost }}"
+          data-video_banner-total="{{ summary.video_banner.cost }}"
+          data-category_images-total="{{ summary.category_images.cost }}"
+          data-category_structures-total="{{ summary.category_structures.cost }}"
+          {% for index, row in summary.website_page %}
+            {% if (index != 'total') %}
+              data-website_page-total_{{ index }}="{{ row.cost }}"
+            {% endif %}
+          {% endfor %}
+          {% for index, row in summary.extra_website_page %}
+            {% if (index != 'total') %}
+              data-extra_website_page-total_{{ index }}="{{ row.cost }}"
+            {% endif %}
+          {% endfor %}
+          data-logo-total="{{ summary.logo.cost }}"
+          data-banner_ads-total="{{ summary.banner_ads.cost }}">
+          ${{ summary.products.cost + summary.specsheets.cost
+            + summary.ecommerce.cost + summary.pricing.cost
+            + summary.standard_banner.cost + summary.scrolling_banner.cost
+            + summary.video_banner.cost + summary.category_images.cost
+            + summary.category_structures.cost
+            + summary.website_page.total.cost + summary.extra_website_page.total.cost
+            + summary.logo.cost + summary.banner_ads.cost }}
+          </span>
+      </td>
+      <td>Start Up -
+        <span data-products-total="{{ summary.products.setup }}"
+          data-specsheets-total="{{ summary.specsheets.setup }}"
+          data-ecommerce-total="{{ summary.ecommerce.setup }}"
+          data-pricing-total="{{ summary.pricing.setup }}"
+          data-standard_banner-total="{{ summary.standard_banner.setup }}"
+          data-scrolling_banner-total="{{ summary.scrolling_banner.setup }}"
+          data-video_banner-total="{{ summary.video_banner.setup }}"
+          data-category_images-total="{{ summary.category_images.setup }}"
+          data-category_structures-total="{{ summary.category_structures.setup }}"
+          {% for index, row in summary.website_page %}
+            {% if (index != 'total') %}
+              data-website_page-total_{{ index }}="{{ row.setup }}"
+            {% endif %}
+          {% endfor %}
+          {% for index, row in summary.extra_website_page %}
+            {% if (index != 'total') %}
+              data-extra_website_page-total_{{ index }}="{{ row.setup }}"
+            {% endif %}
+          {% endfor %}
+          data-logo-total="{{ summary.logo.setup }}"
+          data-banner_ads-total="{{ summary.banner_ads.setup }}">
+          ${{ summary.products.setup + summary.specsheets.setup
+            + summary.ecommerce.setup + summary.pricing.setup
+            + summary.standard_banner.setup + summary.scrolling_banner.setup
+            + summary.video_banner.setup + summary.category_images.setup
+            + summary.category_structures.setup
+            + summary.website_page.total.setup + summary.extra_website_page.total.setup
+            + summary.logo.setup + summary.banner_ads.setup }}
+          </span>
+      </td>
+    </tr>
+  </tbody>
+</table>

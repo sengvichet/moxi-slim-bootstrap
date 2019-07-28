@@ -1,0 +1,17 @@
+{% extends 'Dealers/layouts/order.twig' %}
+{% block title %}Design{% endblock %}
+{% block order_page_title %}Design{% endblock %}
+{% block order_page_percentage %}
+  {% if percentage.value is defined %}{{ percentage.value }}{% else %}0{% endif %}
+{% endblock %}
+{% block order_form_action %}/{{ action.form }}{% endblock %}
+{% block order_buttons %}
+<p>Congratulations! You have selected options describing how your site will function. The next step is to make some decisions and provide some information for Design. We will be looking at Website Information that may differ from your company, your Logo and Colors. Then it is onto Website pages!</p>
+{% endblock %}
+{% block order_table %}
+  {% include 'Dealers/partials/order/design/table.twig' %}
+{% endblock %}
+{% block order_page_bottom_description %}
+<p class="text-center">Follow the steps to make selections and build your custom website. When the Percentage of Completion reaches 100% you will be led to a Pricing page that will summarize the start-up cost and monthly fee associated with your selections. You can always make edits as you go and save your work to finish the order later.</p>
+<p class="text-center">If you have any questions, please email Nic Monette at <a href="mailto: nic@moxximarketing">nic@moxximarketing</a>.</p>
+{% endblock %}
